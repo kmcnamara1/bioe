@@ -1,0 +1,8 @@
+UI Design UI_1 will be the log in screenUI_2 will be the main page
+
+To generate .py from .ui
+1) delete old .py you are regenerating
+2) pyuic5 -o UI_2.py UI_2.ui   
+3) pyuic5 -x UI_2.ui -o UI_2.py
+This will have generate the .py
+4) to run python3 UI_2.py
