@@ -49,14 +49,25 @@ class Ui_MainWindow(object):
 "selection-background-color: rgb(197, 201, 201);\n"
 "")
         self.startButton.setObjectName("startButton")
+        self.startButton.setCheckable(True)
+        self.startButton.toggle()
+        self.startButton.clicked.connect(self.txtstate)
+        
         self.lineEdit = QtWidgets.QLineEdit(self.LoginFrame)
         self.lineEdit.setGeometry(QtCore.QRect(70, 50, 321, 31))
         self.lineEdit.setStyleSheet("background-color: rgb(255,252,241);\n"
-"color: rgb(115, 116, 116);\n"
-"selection-color: rgb(207, 212, 212);\n"
-"border-color: rgb(156, 160, 159);\n"
-"border-bottom-color: rgb(159, 163, 163);")
+                                        "color: rgb(115, 116, 116);\n"
+                                        "selection-color: rgb(207, 212, 212);\n"
+                                        "border-color: rgb(156, 160, 159);\n"
+                                        "border-bottom-color: rgb(159, 163, 163);")
         self.lineEdit.setObjectName("lineEdit")
+
+#################################Setting for typing input and print on enter###################################
+
+        self.lineEdit.returnPressed.connect(self.txtstate)
+	       
+###############################################################################################################
+     
         self.label = QtWidgets.QLabel(self.LoginFrame)
         self.label.setGeometry(QtCore.QRect(190, 10, 71, 21))
         self.label.setStyleSheet("font: 18pt \".AppleSystemUIFont\";\n"
@@ -87,14 +98,16 @@ class Ui_MainWindow(object):
         self.SideColum_7.setGeometry(QtCore.QRect(0, 0, 20, 741))
         self.SideColum_7.setStyleSheet("background-color: rgb(78, 78, 78)")
         self.SideColum_7.setObjectName("SideColum_7")
-        self.startButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.startButton_2.setGeometry(QtCore.QRect(30, 720, 41, 20))
-        self.startButton_2.setStyleSheet("background-color: rgba(237, 255, 229, 242);border-color: rgb(34, 34, 34);\n"
+        self.extButton = QtWidgets.QPushButton(self.centralwidget)
+        self.extButton.setGeometry(QtCore.QRect(30, 720, 41, 20))
+        self.extButton.setStyleSheet("background-color: rgba(237, 255, 229, 242);border-color: rgb(34, 34, 34);\n"
 "color: rgb(37,39,51);\n"
 "border-top-color: rgb(85, 86, 86);\n"
 "selection-background-color: rgb(197, 201, 201);\n"
 "")
-        self.startButton_2.setObjectName("startButton_2")
+        self.extButton.setObjectName("extButton")
+        self.extButton.clicked.connect(self.exitUI)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 22))
@@ -106,7 +119,14 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+##################################################################################
+    def exitUI(self):
+        sys.exit(app.exec_())
 
+    def txtstate(self):
+        text_input = self.lineEdit.text()
+        print(text_input)
+##################################################################################
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -114,7 +134,7 @@ class Ui_MainWindow(object):
         self.startButton.setText(_translate("MainWindow", "ENTER"))
         self.label.setText(_translate("MainWindow", "LOGIN: "))
         self.label_2.setText(_translate("MainWindow", "NAME:"))
-        self.startButton_2.setText(_translate("MainWindow", "EXIT"))
+        self.extButton.setText(_translate("MainWindow", "EXIT"))
 
 
 if __name__ == "__main__":
