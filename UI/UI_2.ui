@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>666</height>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -198,53 +198,7 @@ border-color: rgb(34, 34, 34);</string>
      <string>Change Patient</string>
     </property>
    </widget>
-   <widget class="QTextBrowser" name="ClinicianSection_2">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>270</y>
-      <width>211</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255); color: white;
-</string>
-    </property>
-    <property name="html">
-     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#7f7f7f;&quot;&gt; MVC&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:24pt; color:#323232;&quot;&gt;---.--mV&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:24pt; color:#323232;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
-   <widget class="QTextBrowser" name="ClinicianSection_3">
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>270</y>
-      <width>211</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255); color: white;
-</string>
-    </property>
-    <property name="html">
-     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#7f7f7f;&quot;&gt; REP&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:24pt; color:#323232;&quot;&gt;-/3&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:24pt; color:#323232;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
-   <widget class="QTextBrowser" name="ActivityLabel">
+   <widget class="QFrame" name="WelcomeFrame">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -254,19 +208,180 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255); color: white;
-</string>
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
-    <property name="html">
-     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; color:#7f7f7f;&quot;&gt; Activity&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:24pt; color:#323232;&quot;&gt;Wrist Extension&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>10</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 24pt &quot;.AppleSystemUIFont&quot;; 
+background-color: rgb(255, 255, 255);
+color: #7f7f7f</string>
+     </property>
+     <property name="text">
+      <string>ACTIVITY</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>40</y>
+       <width>171</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 24pt &quot;.AppleSystemUIFont&quot;; 
+background-color: rgb(255, 255, 255);
+color:#323232</string>
+     </property>
+     <property name="text">
+      <string>Wrist Extension</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>10</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 24pt &quot;.AppleSystemUIFont&quot;; 
+background-color: rgb(255, 255, 255);
+color:#323232</string>
+    </property>
+    <property name="text">
+     <string>Session no. </string>
     </property>
    </widget>
-   <widget class="QTextBrowser" name="ClinicianSection_5">
+   <widget class="QFrame" name="WelcomeFrame_2">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>270</y>
+      <width>211</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>10</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 14pt &quot;.AppleSystemUIFont&quot;; 
+background-color: rgb(255, 255, 255);
+color: #7f7f7f</string>
+     </property>
+     <property name="text">
+      <string>MVC</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>40</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 24pt &quot;.AppleSystemUIFont&quot;; 
+background-color: rgb(255, 255, 255);
+color:#323232</string>
+     </property>
+     <property name="text">
+      <string>---.--mV</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="WelcomeFrame_3">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>270</y>
+      <width>211</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>10</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 14pt &quot;.AppleSystemUIFont&quot;; 
+background-color: rgb(255, 255, 255);
+color: #7f7f7f</string>
+     </property>
+     <property name="text">
+      <string>REP</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>40</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 24pt &quot;.AppleSystemUIFont&quot;; 
+background-color: rgb(255, 255, 255);
+color:#323232</string>
+     </property>
+     <property name="text">
+      <string>-/3</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="WelcomeFrame_4">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -276,18 +391,34 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255); color: white;
-</string>
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
-    <property name="html">
-     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;right&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; color:#7f7f7f;&quot;&gt; Patient: &lt;/span&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; color:#3c3d3d;&quot;&gt;Jone Swith&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
     </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>820</x>
+       <y>10</y>
+       <width>231</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 18pt &quot;.AppleSystemUIFont&quot;; 
+background-color: rgb(255, 255, 255);
+color: #7f7f7f</string>
+     </property>
+     <property name="text">
+      <string>Paitent: Jone Swith</string>
+     </property>
+    </widget>
    </widget>
-   <widget class="QTextBrowser" name="ClinicianSection_6">
+   <widget class="QFrame" name="WelcomeFrame_5">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -297,18 +428,65 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgba(106, 108, 108, 157); color: white;</string>
+     <string notr="true">background-color: rgba(106, 108, 108, 157); color: white;
+</string>
     </property>
-    <property name="html">
-     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#9a9d9d;&quot;&gt;Clinician&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:24pt; color:#dcdfdf;&quot;&gt;Pippa Pepo&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:24pt; color:#323232;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
     </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>10</y>
+       <width>51</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Clinician</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>40</y>
+       <width>71</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 13pt &quot;.AppleSystemUIFont&quot;;</string>
+     </property>
+     <property name="text">
+      <string>Pippa Pepo</string>
+     </property>
+    </widget>
    </widget>
+   <zorder>startButton</zorder>
+   <zorder>stopButton</zorder>
+   <zorder>changeExerciseButton</zorder>
+   <zorder>ExportDataButton</zorder>
+   <zorder>SideColum</zorder>
+   <zorder>overviewSide</zorder>
+   <zorder>historySide</zorder>
+   <zorder>goalSide</zorder>
+   <zorder>patientSetup</zorder>
+   <zorder>Logout</zorder>
+   <zorder>changePatient</zorder>
+   <zorder>WelcomeFrame</zorder>
+   <zorder>WelcomeFrame_2</zorder>
+   <zorder>WelcomeFrame_3</zorder>
+   <zorder>WelcomeFrame_4</zorder>
+   <zorder>label_5</zorder>
+   <zorder>WelcomeFrame_5</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -316,7 +494,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
