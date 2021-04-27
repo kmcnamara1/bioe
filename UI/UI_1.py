@@ -11,13 +11,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1280, 800)
-        MainWindow.setStyleSheet("background-color: rgb(255,252,241)\n"
+class Ui_LoginWindow(object):
+    def setupUi(self, LoginWindow):
+        LoginWindow.setObjectName("LoginWindow")
+        LoginWindow.resize(1280, 800)
+        LoginWindow.setStyleSheet("background-color: rgb(255,252,241)\n"
 "")
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget = QtWidgets.QWidget(LoginWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.SideColum_2 = QtWidgets.QColumnView(self.centralwidget)
         self.SideColum_2.setGeometry(QtCore.QRect(1261, 0, 20, 741))
@@ -108,17 +108,17 @@ class Ui_MainWindow(object):
         self.extButton.setObjectName("extButton")
         self.extButton.clicked.connect(self.exitUI)
 
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        LoginWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(LoginWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 22))
         self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        LoginWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(LoginWindow)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        LoginWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi(LoginWindow)
+        QtCore.QMetaObject.connectSlotsByName(LoginWindow)
 ##################################################################################
     def exitUI(self):
         sys.exit(app.exec_())
@@ -127,21 +127,21 @@ class Ui_MainWindow(object):
         text_input = self.lineEdit.text()
         print(text_input)
 ##################################################################################
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, LoginWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_3.setText(_translate("MainWindow", "WELCOME"))
-        self.startButton.setText(_translate("MainWindow", "ENTER"))
-        self.label.setText(_translate("MainWindow", "LOGIN: "))
-        self.label_2.setText(_translate("MainWindow", "NAME:"))
-        self.extButton.setText(_translate("MainWindow", "EXIT"))
+        LoginWindow.setWindowTitle(_translate("LoginWindow", "LoginWindow"))
+        self.label_3.setText(_translate("LoginWindow", "WELCOME"))
+        self.startButton.setText(_translate("LoginWindow", "ENTER"))
+        self.label.setText(_translate("LoginWindow", "LOGIN: "))
+        self.label_2.setText(_translate("LoginWindow", "NAME:"))
+        self.extButton.setText(_translate("LoginWindow", "EXIT"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+    LoginWindow = QtWidgets.QMainWindow()
+    ui = Ui_LoginWindow()
+    ui.setupUi(LoginWindow)
+    LoginWindow.show()
     sys.exit(app.exec_())
