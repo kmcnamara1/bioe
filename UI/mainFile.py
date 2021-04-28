@@ -45,7 +45,9 @@ class MainWindow(QMainWindow):
 
         startEnterMeasurementsPopup = UIinitMeasurePatientSetUp(self)
         # QMessageBox(startEnterMeasurementsPopup) 
-        # startEnterMeasurementsPopup.doneButton.clicked.connect(self.startSetUpPopup.self.test_exit)
+
+        startEnterMeasurementsPopup.backButton.clicked.connect(self.startSetUpPopup)
+
         startEnterMeasurementsPopup.show()
 
         

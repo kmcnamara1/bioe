@@ -541,6 +541,9 @@ class UIinitMeasurePatientSetUp(QDialog):
                 "selection-background-color: rgb(197, 201, 201);\n"
                 "")
         self.backButton.setObjectName("backButton")
+
+        self.backButton.clicked.connect(self.test_back)
+
         self.patientsnameFrame = QtWidgets.QFrame(self.centralwidget)
         self.patientsnameFrame.setGeometry(QtCore.QRect(90, 320, 271, 81))
         self.patientsnameFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
@@ -570,7 +573,11 @@ class UIinitMeasurePatientSetUp(QDialog):
         self.labelPatientsName.setText(_translate("MainWindow", "ENTER MEASUREMENT (cm)"))
 
     def test_done(self):
-        print("close popup!")
+        print("DIALOG DONE!")
         self.close()  
+
+    def test_back(self):
+        print("back!")
+        self.close()       
 
 
