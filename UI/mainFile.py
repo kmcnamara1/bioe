@@ -18,36 +18,25 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.ToolTab)
         self.ToolTab.lineEdit.returnPressed.connect(self.startUIWindow)
         self.ToolTab.startButton.clicked.connect(self.startUIWindow)
-
-        # self.ToolTab.CPSBTN.clicked.connect(self.startUIWindow)
         self.show()
 
     def startUIWindow(self):
         self.Window = UIWindow(self)
         self.setCentralWidget(self.Window)     
-        # self.Window.lineEdit.returnPressed.connect(self.startUIWindow)
         self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
         self.show()
 
     def startSetUpPopup(self):
-        
         setUpPatient = UIinitPatientSetUp(self)
         setUpPatient.setStyleSheet("background-color: rgb(255,252,241);");
         popup = QMessageBox(setUpPatient)
-
         setUpPatient.nextButton.clicked.connect(self.startEnterMeasurementsPopup)
-       
-        # setUpPatient.nextButton.clicked.connect(sys.exit(setUpPatient.exec_()))       
         setUpPatient.show()
         
-
     def startEnterMeasurementsPopup(self):
-
         startEnterMeasurementsPopup = UIinitMeasurePatientSetUp(self)
-        # QMessageBox(startEnterMeasurementsPopup) 
-
         startEnterMeasurementsPopup.backButton.clicked.connect(self.startSetUpPopup)
-
+        startEnterMeasurementsPopup.doneButton.clicked.connect(self.startUIWindow)
         startEnterMeasurementsPopup.show()
 
         
@@ -57,3 +46,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     w = MainWindow()
     sys.exit(app.exec_())
+    
+

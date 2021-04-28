@@ -2,6 +2,21 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QDialog, QLabel,QDialogButtonBox,QVBoxLayout,QHBoxLayout
 import sys
 
+def loadPatientName():
+        text_file = open("PatientName.txt", "r+")
+        data = text_file.read()
+        
+        if data == None:
+                text_file.truncate(0)
+                text_file.close()
+                return "-"
+        else:
+                text_file.truncate(0)
+                text_file.close()
+                return data
+        
+
+
 def loadClinicianName():
         text_file = open("ClinicanName.txt", "r")
         data = text_file.read()
@@ -9,11 +24,11 @@ def loadClinicianName():
         print(data)
         return data
 
+
 class UIWindow(QWidget):
     def __init__(self, parent=None):
         super(UIWindow, self).__init__(parent)
         # mainwindow.setWindowIcon(QtGui.QIcon('PhotoIcon.png'))
-
 
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
@@ -113,8 +128,8 @@ class UIWindow(QWidget):
         self.label_7 = QtWidgets.QLabel(self.WelcomeFrame_2)
         self.label_7.setGeometry(QtCore.QRect(50, 40, 101, 41))
         self.label_7.setStyleSheet("font: 24pt \".AppleSystemUIFont\"; \n"
-"background-color: rgb(255, 255, 255);\n"
-"color:#323232")
+                "background-color: rgb(255, 255, 255);\n"
+                "color:#323232")
         self.label_7.setObjectName("label_7")
         self.WelcomeFrame_3 = QtWidgets.QFrame(self.centralwidget)
         self.WelcomeFrame_3.setGeometry(QtCore.QRect(620, 270, 211, 91))
@@ -125,14 +140,14 @@ class UIWindow(QWidget):
         self.label_8 = QtWidgets.QLabel(self.WelcomeFrame_3)
         self.label_8.setGeometry(QtCore.QRect(90, 10, 31, 31))
         self.label_8.setStyleSheet("font: 14pt \".AppleSystemUIFont\"; \n"
-"background-color: rgb(255, 255, 255);\n"
-"color: #7f7f7f")
+                "background-color: rgb(255, 255, 255);\n"
+                "color: #7f7f7f")
         self.label_8.setObjectName("label_8")
         self.label_9 = QtWidgets.QLabel(self.WelcomeFrame_3)
         self.label_9.setGeometry(QtCore.QRect(90, 40, 51, 41))
         self.label_9.setStyleSheet("font: 24pt \".AppleSystemUIFont\"; \n"
-"background-color: rgb(255, 255, 255);\n"
-"color:#323232")
+                "background-color: rgb(255, 255, 255);\n"
+                "color:#323232")
         self.label_9.setObjectName("label_9")
         self.WelcomeFrame_4 = QtWidgets.QFrame(self.centralwidget)
         self.WelcomeFrame_4.setGeometry(QtCore.QRect(210, 0, 1061, 51))
@@ -143,13 +158,13 @@ class UIWindow(QWidget):
         self.label_10 = QtWidgets.QLabel(self.WelcomeFrame_4)
         self.label_10.setGeometry(QtCore.QRect(820, 10, 231, 31))
         self.label_10.setStyleSheet("font: 18pt \".AppleSystemUIFont\"; \n"
-"background-color: rgb(255, 255, 255);\n"
-"color: #7f7f7f")
+                "background-color: rgb(255, 255, 255);\n"
+                "color: #7f7f7f")
         self.label_10.setObjectName("label_10")
         self.WelcomeFrame_5 = QtWidgets.QFrame(self.centralwidget)
         self.WelcomeFrame_5.setGeometry(QtCore.QRect(10, 0, 201, 91))
         self.WelcomeFrame_5.setStyleSheet("background-color: rgba(106, 108, 108, 157); color: white;\n"
-"")
+                "")
         self.WelcomeFrame_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.WelcomeFrame_5.setFrameShadow(QtWidgets.QFrame.Raised)
         self.WelcomeFrame_5.setObjectName("WelcomeFrame_5")
@@ -207,7 +222,10 @@ class UIWindow(QWidget):
         self.label_7.setText(_translate("OverViewWindow", "---.--mV"))
         self.label_8.setText(_translate("OverViewWindow", "REP"))
         self.label_9.setText(_translate("OverViewWindow", "-/3"))
-        self.label_10.setText(_translate("OverViewWindow", "Paitent: - "))
+
+        patientName = loadPatientName()
+
+        self.label_10.setText(_translate("OverViewWindow", "Patient: {}".format(patientName) ))
         self.label_13.setText(_translate("OverViewWindow", "Clinician"))
 
         clinicianName = loadClinicianName()
@@ -390,8 +408,13 @@ class UIinitPatientSetUp(QDialog):
                         "border-color: rgb(156, 160, 159);\n"
                         "border-bottom-color: rgb(159, 163, 163);")
 
+        
 
         self.PatientsNameEnter.setObjectName("PatientsNameEnter")
+
+
+        self.PatientsNameEnter.returnPressed.connect(self.get_patient_name)
+
         self.MuscleDemo = QtWidgets.QFrame(self.centralwidget)
         self.MuscleDemo.setGeometry(QtCore.QRect(20, 120, 411, 301))
         self.MuscleDemo.setStyleSheet("background-color: rgb(255, 255, 255);")
@@ -469,6 +492,12 @@ class UIinitPatientSetUp(QDialog):
     def test_exit(self):
         print("close popup!")
         self.close()    
+
+    def get_patient_name(self):
+        text_input = self.PatientsNameEnter.text()
+        text_file = open("PatientName.txt", "w")
+        text_file.write("%s" % text_input)
+        text_file.close()  
 
 
 class UIinitMeasurePatientSetUp(QDialog):
