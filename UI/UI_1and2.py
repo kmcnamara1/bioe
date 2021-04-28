@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget
+from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QDialog, QLabel
 import sys
 
 def loadClinicianName():
@@ -13,8 +13,7 @@ class UIWindow(QWidget):
     def __init__(self, parent=None):
         super(UIWindow, self).__init__(parent)
         # mainwindow.setWindowIcon(QtGui.QIcon('PhotoIcon.png'))
-        self.ToolsBTN = QPushButton('text', self)
-        self.ToolsBTN.move(50, 350)
+
 
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
@@ -208,7 +207,7 @@ class UIWindow(QWidget):
         self.label_7.setText(_translate("OverViewWindow", "---.--mV"))
         self.label_8.setText(_translate("OverViewWindow", "REP"))
         self.label_9.setText(_translate("OverViewWindow", "-/3"))
-        self.label_10.setText(_translate("OverViewWindow", "Paitent: Jone Swith"))
+        self.label_10.setText(_translate("OverViewWindow", "Paitent: - "))
         self.label_13.setText(_translate("OverViewWindow", "Clinician"))
 
         clinicianName = loadClinicianName()
@@ -274,6 +273,7 @@ class UIToolTab(QWidget):
        
 
         self.lineEdit.returnPressed.connect(self.txtstate)
+        self.startButton.clicked.connect(self.txtstate)
 ###############################################################################################################
      
         self.label = QtWidgets.QLabel(self.LoginFrame)
@@ -333,8 +333,8 @@ class UIToolTab(QWidget):
         self.label_2.setText(_translate("LoginWindow", "NAME:"))
         self.extButton.setText(_translate("LoginWindow", "EXIT"))
 
-        self.CPSBTN = QPushButton("text2", self)
-        self.CPSBTN.move(100, 350)
+        # self.CPSBTN = QPushButton("text2", self)
+        # self.CPSBTN.move(100, 350)
 
 
     def txtstate(self):
@@ -346,35 +346,184 @@ class UIToolTab(QWidget):
         print(text_input)
 
     
+class UIinitPatientSetUp(QDialog):
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        setupWindow = QtWidgets.QWidget(self)
+
+        setupWindow.setObjectName("MainWindow")
+        setupWindow.resize(450, 493)
+        setupWindow.setMaximumSize(QtCore.QSize(1280, 16777215))
+        setupWindow.setStyleSheet("background-color: rgb(255,252,241)\n")
+
+        self.centralwidget = QtWidgets.QWidget(self)
+        self.centralwidget.setObjectName("centralwidget")
+        self.patientsnameFrame = QtWidgets.QFrame(self.centralwidget)
+        self.patientsnameFrame.setGeometry(QtCore.QRect(90, 10, 271, 81))
+        self.patientsnameFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.patientsnameFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.patientsnameFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.patientsnameFrame.setObjectName("patientsnameFrame")
+        self.labelPatientsName = QtWidgets.QLabel(self.patientsnameFrame)
+        self.labelPatientsName.setGeometry(QtCore.QRect(40, 10, 191, 31))
+        self.labelPatientsName.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                "background-color: rgb(255, 255, 255);\n"
+                "color: rgb(37,39,51);")
+        self.labelPatientsName.setObjectName("labelPatientsName")
+        self.PatientsNameEnter = QtWidgets.QLineEdit(self.patientsnameFrame)
+        self.PatientsNameEnter.setGeometry(QtCore.QRect(30, 40, 211, 21))
+        self.PatientsNameEnter.setStyleSheet("background-color: rgb(255,252,241);\n"
+                        "color: rgb(115, 116, 116);\n"
+                        "selection-color: rgb(207, 212, 212);\n"
+                        "border-color: rgb(156, 160, 159);\n"
+                        "border-bottom-color: rgb(159, 163, 163);")
+
+
+        self.PatientsNameEnter.setObjectName("PatientsNameEnter")
+        self.MuscleDemo = QtWidgets.QFrame(self.centralwidget)
+        self.MuscleDemo.setGeometry(QtCore.QRect(20, 120, 411, 301))
+        self.MuscleDemo.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.MuscleDemo.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.MuscleDemo.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.MuscleDemo.setObjectName("MuscleDemo")
+        self.findmuscleLabl = QtWidgets.QLabel(self.MuscleDemo)
+        self.findmuscleLabl.setGeometry(QtCore.QRect(110, 10, 201, 21))
+        self.findmuscleLabl.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                "color: rgb(37,39,51)")
+        self.findmuscleLabl.setObjectName("findmuscleLabl")
+        self.exampleLabel = QtWidgets.QLabel(self.MuscleDemo)
+        self.exampleLabel.setGeometry(QtCore.QRect(10, 30, 201, 21))
+        self.exampleLabel.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                "color: rgb(37,39,51)")
+        self.exampleLabel.setObjectName("exampleLabel")
+        self.RigthSide = QtWidgets.QColumnView(self.centralwidget)
+        self.RigthSide.setGeometry(QtCore.QRect(430, 0, 20, 441))
+        self.RigthSide.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.RigthSide.setObjectName("RigthSide")
+        self.leftSide = QtWidgets.QColumnView(self.centralwidget)
+        self.leftSide.setGeometry(QtCore.QRect(0, 0, 20, 441))
+        self.leftSide.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.leftSide.setObjectName("leftSide")
+        self.nextButton = QtWidgets.QPushButton(self.centralwidget)
+        self.nextButton.setGeometry(QtCore.QRect(330, 420, 101, 20))
+        self.nextButton.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(37,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+
+        self.nextButton.setObjectName("nextButton")
+        self.exitButton = QtWidgets.QPushButton(self.centralwidget)
+        self.exitButton.setGeometry(QtCore.QRect(20, 420, 101, 20))
+        self.exitButton.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(37,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+        self.exitButton.setObjectName("exitButton")
+        self.menubar = QtWidgets.QMenuBar(setupWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 450, 24))
+        self.menubar.setObjectName("menubar")
+        self.statusbar = QtWidgets.QStatusBar(setupWindow)
+        self.statusbar.setObjectName("statusbar")
+
+        _translate = QtCore.QCoreApplication.translate
+        self.labelPatientsName.setText(_translate("MainWindow", "Please Enter Patient\'s Name:"))
+        self.findmuscleLabl.setText(_translate("MainWindow", "Find the wrist muscle belly"))
+        self.exampleLabel.setText(_translate("MainWindow", "Example:"))
+        self.nextButton.setText(_translate("MainWindow", "Next "))
+        self.exitButton.setText(_translate("MainWindow", "Exit"))       
+
+
+
+class UIinitMeasurePatientSetUp(QDialog):
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        setupWindow = QtWidgets.QWidget(self)
+        setupWindow.setObjectName("MainWindow")
+        setupWindow.resize(450, 487)
+        setupWindow.setMaximumSize(QtCore.QSize(1280, 16777215))
+        setupWindow.setStyleSheet("background-color: rgb(255,252,241)\n")
+
+        self.centralwidget = QtWidgets.QWidget(self)
+        self.centralwidget.setObjectName("centralwidget")
+        self.MuscleDemo = QtWidgets.QFrame(self.centralwidget)
+        self.MuscleDemo.setGeometry(QtCore.QRect(20, 0, 411, 301))
+        self.MuscleDemo.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.MuscleDemo.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.MuscleDemo.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.MuscleDemo.setObjectName("MuscleDemo")
+        self.findmuscleLabl = QtWidgets.QLabel(self.MuscleDemo)
+        self.findmuscleLabl.setGeometry(QtCore.QRect(130, 10, 181, 21))
+        self.findmuscleLabl.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                "color: rgb(37,39,51)")
+        self.findmuscleLabl.setObjectName("findmuscleLabl")
+        self.exampleLabel = QtWidgets.QLabel(self.MuscleDemo)
+        self.exampleLabel.setGeometry(QtCore.QRect(10, 100, 61, 21))
+        self.exampleLabel.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                "color: rgb(37,39,51)")
         
 
+        self.exampleLabel.setObjectName("exampleLabel")
+        self.findmuscleLabl_2 = QtWidgets.QLabel(self.MuscleDemo)
+        self.findmuscleLabl_2.setGeometry(QtCore.QRect(20, 70, 371, 21))
+        self.findmuscleLabl_2.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                "color: rgb(37,39,51)")
+        self.findmuscleLabl_2.setObjectName("findmuscleLabl_2")
+        self.RigthSide = QtWidgets.QColumnView(self.centralwidget)
+        self.RigthSide.setGeometry(QtCore.QRect(430, 0, 20, 441))
+        self.RigthSide.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.RigthSide.setObjectName("RigthSide")
+        self.leftSide = QtWidgets.QColumnView(self.centralwidget)
+        self.leftSide.setGeometry(QtCore.QRect(0, 0, 20, 441))
+        self.leftSide.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.leftSide.setObjectName("leftSide")
+        self.nextButton = QtWidgets.QPushButton(self.centralwidget)
+        self.nextButton.setGeometry(QtCore.QRect(330, 420, 101, 20))
+        self.nextButton.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(37,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+        self.nextButton.setObjectName("nextButton")
+        self.exitButton = QtWidgets.QPushButton(self.centralwidget)
+        self.exitButton.setGeometry(QtCore.QRect(20, 420, 101, 20))
+        self.exitButton.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(37,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+        self.exitButton.setObjectName("exitButton")
+        self.patientsnameFrame = QtWidgets.QFrame(self.centralwidget)
+        self.patientsnameFrame.setGeometry(QtCore.QRect(90, 320, 271, 81))
+        self.patientsnameFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.patientsnameFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.patientsnameFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.patientsnameFrame.setObjectName("patientsnameFrame")
+        self.labelPatientsName = QtWidgets.QLabel(self.patientsnameFrame)
+        self.labelPatientsName.setGeometry(QtCore.QRect(40, 10, 191, 31))
+        self.labelPatientsName.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                "background-color: rgb(255, 255, 255);\n"
+                "color: rgb(37,39,51);")
+        self.labelPatientsName.setObjectName("labelPatientsName")
+        self.PatientsNameEnter = QtWidgets.QLineEdit(self.patientsnameFrame)
+        self.PatientsNameEnter.setGeometry(QtCore.QRect(30, 40, 211, 21))
+        self.PatientsNameEnter.setStyleSheet("background-color: rgb(255,252,241);\n"
+                "color: rgb(115, 116, 116);\n"
+                "selection-color: rgb(207, 212, 212);\n"
+                "border-color: rgb(156, 160, 159);\n"
+                "border-bottom-color: rgb(159, 163, 163);")
 
-
-# class MainWindow(QMainWindow):
-#     def __init__(self, parent=None):
-#         super(MainWindow, self).__init__(parent)
-#         self.setGeometry(50, 50, 400, 450)
-#         self.setFixedSize(1280, 800)
-#         self.setStyleSheet("background-color: rgb(255,252,241);");
-
-#         self.startUIToolTab()
-
-#     def startUIToolTab(self):
-#         self.ToolTab = UIToolTab(self)
-#         self.setCentralWidget(self.ToolTab)
-#         self.ToolTab.CPSBTN.clicked.connect(self.startUIWindow)
-#         self.show()
-
-#     def startUIWindow(self):
-#         self.Window = UIWindow(self)
-#         self.setCentralWidget(self.Window)
-#         self.Window.ToolsBTN.clicked.connect(self.startUIToolTab)
-#         self.show()
-
-
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     w = MainWindow()
-#     sys.exit(app.exec_())
+        _translate = QtCore.QCoreApplication.translate
+        self.findmuscleLabl.setText(_translate("MainWindow", "Place EMG on muscle belly"))
+        self.exampleLabel.setText(_translate("MainWindow", "Example:"))
+        self.findmuscleLabl_2.setText(_translate("MainWindow", "Find Measurement from wrist crease to EMG Placement"))
+        self.nextButton.setText(_translate("MainWindow", "Done"))
+        self.exitButton.setText(_translate("MainWindow", "Exit"))
+        self.labelPatientsName.setText(_translate("MainWindow", "ENTER MEASUREMENT (cm)"))
 
 
