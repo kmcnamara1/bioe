@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QDialog, QLabel,QDialogButtonBox,QVBoxLayout,QHBoxLayout
 import sys
 
@@ -23,6 +24,14 @@ def loadClinicianName():
         text_file.close()
         print(data)
         return data
+
+
+def savePatientData(self,data):
+        text_file = open("PatientData.txt", "w")
+        text_file.write("%s" % data)
+        text_file.close()
+
+        print(text_input)
 
 
 class UIWindow(QWidget):
@@ -429,6 +438,11 @@ class UIinitPatientSetUp(QDialog):
                 "color: rgb(37,39,51)")
         self.findmuscleLabl.setObjectName("findmuscleLabl")
 
+        self.examplemusclelabel = QtWidgets.QLabel(self.MuscleDemo)
+        pixmap = QPixmap('download.jpg')
+        self.examplemusclelabel.setPixmap(pixmap)
+        self.examplemusclelabel.resize(pixmap.width(), pixmap.height())
+        self.examplemusclelabel.move(100, self.height()/1.7 -self.examplemusclelabel.height())
 
         self.exampleLabel = QtWidgets.QLabel(self.MuscleDemo)
         self.exampleLabel.setGeometry(QtCore.QRect(10, 30, 201, 21))

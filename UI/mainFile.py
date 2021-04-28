@@ -4,6 +4,9 @@ from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, 
 import sys
 from UI_1and2 import UIWindow, UIToolTab, UIinitPatientSetUp,UIinitMeasurePatientSetUp
 
+def close_all():
+        sys.exit(0)
+
 class MainWindow(QMainWindow):
 
     def __init__(self, parent=None):
@@ -22,7 +25,8 @@ class MainWindow(QMainWindow):
 
     def startUIWindow(self):
         self.Window = UIWindow(self)
-        self.setCentralWidget(self.Window)     
+        self.setCentralWidget(self.Window)
+        self.Window.Logout.clicked.connect(self.startUIToolTab)     
         self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
         self.show()
 
