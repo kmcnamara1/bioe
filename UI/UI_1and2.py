@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QDialog, QLabel
+from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QDialog, QLabel,QDialogButtonBox,QVBoxLayout,QHBoxLayout
 import sys
 
 def loadClinicianName():
@@ -351,27 +351,37 @@ class UIinitPatientSetUp(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        setupWindow = QtWidgets.QWidget(self)
-
-        setupWindow.setObjectName("MainWindow")
-        setupWindow.resize(450, 493)
-        setupWindow.setMaximumSize(QtCore.QSize(1280, 16777215))
-        setupWindow.setStyleSheet("background-color: rgb(255,252,241)\n")
+        Dialog = QtWidgets.QDialog(self)
+        Dialog.setObjectName("Dialog")
+        self.resize(450, 487)
 
         self.centralwidget = QtWidgets.QWidget(self)
-        self.centralwidget.setObjectName("centralwidget")
+        self.centralwidget.setObjectName("centralwidget")  
+
+
+        Dialog.setStyleSheet("background-color: rgb(255,252,241)\n")
+
+        self.layout = QVBoxLayout()
+
+
         self.patientsnameFrame = QtWidgets.QFrame(self.centralwidget)
         self.patientsnameFrame.setGeometry(QtCore.QRect(90, 10, 271, 81))
         self.patientsnameFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.patientsnameFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.patientsnameFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.patientsnameFrame.setObjectName("patientsnameFrame")
+
+        # self.layout.addWidget(self.patientsnameFrame)
+
         self.labelPatientsName = QtWidgets.QLabel(self.patientsnameFrame)
         self.labelPatientsName.setGeometry(QtCore.QRect(40, 10, 191, 31))
         self.labelPatientsName.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
                 "background-color: rgb(255, 255, 255);\n"
                 "color: rgb(37,39,51);")
+
         self.labelPatientsName.setObjectName("labelPatientsName")
+
+
         self.PatientsNameEnter = QtWidgets.QLineEdit(self.patientsnameFrame)
         self.PatientsNameEnter.setGeometry(QtCore.QRect(30, 40, 211, 21))
         self.PatientsNameEnter.setStyleSheet("background-color: rgb(255,252,241);\n"
@@ -388,24 +398,34 @@ class UIinitPatientSetUp(QDialog):
         self.MuscleDemo.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.MuscleDemo.setFrameShadow(QtWidgets.QFrame.Raised)
         self.MuscleDemo.setObjectName("MuscleDemo")
+
+
         self.findmuscleLabl = QtWidgets.QLabel(self.MuscleDemo)
         self.findmuscleLabl.setGeometry(QtCore.QRect(110, 10, 201, 21))
         self.findmuscleLabl.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
                 "color: rgb(37,39,51)")
         self.findmuscleLabl.setObjectName("findmuscleLabl")
+
+
         self.exampleLabel = QtWidgets.QLabel(self.MuscleDemo)
         self.exampleLabel.setGeometry(QtCore.QRect(10, 30, 201, 21))
         self.exampleLabel.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
                 "color: rgb(37,39,51)")
         self.exampleLabel.setObjectName("exampleLabel")
+
+
         self.RigthSide = QtWidgets.QColumnView(self.centralwidget)
         self.RigthSide.setGeometry(QtCore.QRect(430, 0, 20, 441))
         self.RigthSide.setStyleSheet("background-color: rgb(78, 78, 78)")
         self.RigthSide.setObjectName("RigthSide")
+
+   
+
         self.leftSide = QtWidgets.QColumnView(self.centralwidget)
         self.leftSide.setGeometry(QtCore.QRect(0, 0, 20, 441))
         self.leftSide.setStyleSheet("background-color: rgb(78, 78, 78)")
         self.leftSide.setObjectName("leftSide")
+        
         self.nextButton = QtWidgets.QPushButton(self.centralwidget)
         self.nextButton.setGeometry(QtCore.QRect(330, 420, 101, 20))
         self.nextButton.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
@@ -415,6 +435,9 @@ class UIinitPatientSetUp(QDialog):
                 "")
 
         self.nextButton.setObjectName("nextButton")
+        self.nextButton.clicked.connect(self.test_exit)
+
+
         self.exitButton = QtWidgets.QPushButton(self.centralwidget)
         self.exitButton.setGeometry(QtCore.QRect(20, 420, 101, 20))
         self.exitButton.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
@@ -423,25 +446,39 @@ class UIinitPatientSetUp(QDialog):
                 "selection-background-color: rgb(197, 201, 201);\n"
                 "")
         self.exitButton.setObjectName("exitButton")
-        self.menubar = QtWidgets.QMenuBar(setupWindow)
+        self.exitButton.clicked.connect(self.test_exit)
+
+        self.menubar = QtWidgets.QMenuBar(Dialog)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 450, 24))
         self.menubar.setObjectName("menubar")
-        self.statusbar = QtWidgets.QStatusBar(setupWindow)
+        self.statusbar = QtWidgets.QStatusBar(Dialog)
         self.statusbar.setObjectName("statusbar")
 
-        _translate = QtCore.QCoreApplication.translate
-        self.labelPatientsName.setText(_translate("MainWindow", "Please Enter Patient\'s Name:"))
-        self.findmuscleLabl.setText(_translate("MainWindow", "Find the wrist muscle belly"))
-        self.exampleLabel.setText(_translate("MainWindow", "Example:"))
-        self.nextButton.setText(_translate("MainWindow", "Next "))
-        self.exitButton.setText(_translate("MainWindow", "Exit"))       
 
+        _translate = QtCore.QCoreApplication.translate
+        self.labelPatientsName.setText(_translate("Dialog", "Please Enter Patient\'s Name:"))
+        self.findmuscleLabl.setText(_translate("Dialog", "Find the wrist muscle belly"))
+        self.exampleLabel.setText(_translate("Dialog", "Example:"))
+        self.exitButton.setText(_translate("Dialog", "Exit")) 
+        self.nextButton.setText(_translate("Dialog", "Next")) 
+        
+
+        # self.setLayout(self.layout)
+
+
+    def test_exit(self):
+        print("close popup!")
+        self.close()    
 
 
 class UIinitMeasurePatientSetUp(QDialog):
     
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        # Dialog = QtWidgets.QDialog(self)
+        # Dialog.setObjectName("Dialog")
+        # self.resize(450, 493)
 
         setupWindow = QtWidgets.QWidget(self)
         setupWindow.setObjectName("MainWindow")
@@ -482,22 +519,28 @@ class UIinitMeasurePatientSetUp(QDialog):
         self.leftSide.setGeometry(QtCore.QRect(0, 0, 20, 441))
         self.leftSide.setStyleSheet("background-color: rgb(78, 78, 78)")
         self.leftSide.setObjectName("leftSide")
-        self.nextButton = QtWidgets.QPushButton(self.centralwidget)
-        self.nextButton.setGeometry(QtCore.QRect(330, 420, 101, 20))
-        self.nextButton.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+
+
+
+        self.doneButton = QtWidgets.QPushButton(self.centralwidget)
+        self.doneButton.setGeometry(QtCore.QRect(330, 420, 101, 20))
+        self.doneButton.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
                 "color: rgb(37,39,51);\n"
                 "border-top-color: rgb(85, 86, 86);\n"
                 "selection-background-color: rgb(197, 201, 201);\n"
                 "")
-        self.nextButton.setObjectName("nextButton")
-        self.exitButton = QtWidgets.QPushButton(self.centralwidget)
-        self.exitButton.setGeometry(QtCore.QRect(20, 420, 101, 20))
-        self.exitButton.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+        self.doneButton.setObjectName("doneButton")
+        self.doneButton.clicked.connect(self.test_done)
+
+
+        self.backButton = QtWidgets.QPushButton(self.centralwidget)
+        self.backButton.setGeometry(QtCore.QRect(20, 420, 101, 20))
+        self.backButton.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
                 "color: rgb(37,39,51);\n"
                 "border-top-color: rgb(85, 86, 86);\n"
                 "selection-background-color: rgb(197, 201, 201);\n"
                 "")
-        self.exitButton.setObjectName("exitButton")
+        self.backButton.setObjectName("backButton")
         self.patientsnameFrame = QtWidgets.QFrame(self.centralwidget)
         self.patientsnameFrame.setGeometry(QtCore.QRect(90, 320, 271, 81))
         self.patientsnameFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
@@ -522,8 +565,12 @@ class UIinitMeasurePatientSetUp(QDialog):
         self.findmuscleLabl.setText(_translate("MainWindow", "Place EMG on muscle belly"))
         self.exampleLabel.setText(_translate("MainWindow", "Example:"))
         self.findmuscleLabl_2.setText(_translate("MainWindow", "Find Measurement from wrist crease to EMG Placement"))
-        self.nextButton.setText(_translate("MainWindow", "Done"))
-        self.exitButton.setText(_translate("MainWindow", "Exit"))
+        self.doneButton.setText(_translate("MainWindow", "Done"))
+        self.backButton.setText(_translate("MainWindow", "Back"))
         self.labelPatientsName.setText(_translate("MainWindow", "ENTER MEASUREMENT (cm)"))
+
+    def test_done(self):
+        print("close popup!")
+        self.close()  
 
 

@@ -1,6 +1,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QMessageBox, QDialog
+from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QMessageBox, QDialog,QDialogButtonBox,QVBoxLayout
 import sys
 from UI_1and2 import UIWindow, UIToolTab, UIinitPatientSetUp,UIinitMeasurePatientSetUp
 
@@ -32,24 +32,20 @@ class MainWindow(QMainWindow):
     def startSetUpPopup(self):
         
         setUpPatient = UIinitPatientSetUp(self)
-
-        # popupSetup = setUpPatient.exec_()
-
         setUpPatient.setStyleSheet("background-color: rgb(255,252,241);");
-        self.popup = QMessageBox(setUpPatient)
-        
+        popup = QMessageBox(setUpPatient)
+
         setUpPatient.nextButton.clicked.connect(self.startEnterMeasurementsPopup)
-        # setUpPatient.nextButton.clicked.connect(sys.exit(setUpPatient.exec_()))       
        
+        # setUpPatient.nextButton.clicked.connect(sys.exit(setUpPatient.exec_()))       
         setUpPatient.show()
         
 
     def startEnterMeasurementsPopup(self):
- 
-        self.popup.close()
+
         startEnterMeasurementsPopup = UIinitMeasurePatientSetUp(self)
-        QMessageBox(startEnterMeasurementsPopup) 
-        startEnterMeasurementsPopup.nextButton.clicked.connect(self.startUIWindow)
+        # QMessageBox(startEnterMeasurementsPopup) 
+        # startEnterMeasurementsPopup.doneButton.clicked.connect(self.startSetUpPopup.self.test_exit)
         startEnterMeasurementsPopup.show()
 
         
