@@ -5,4 +5,24 @@ To generate .py from .ui
 2) pyuic5 -o UI_2.py UI_2.ui   
 3) pyuic5 -x UI_2.ui -o UI_2.py
 This will have generate the .py
-4) to run python3 UI_2.py
+4) to run python3 UI_2.py
+
+
+
+Icons for the gui are in icons folder
+
+Current patients details will be in the Patient details folder. Each name will be stored with initials as ID.
+
+Patient details Text Layout as Follows:
+
+PatientID:
+Date:
+Clinician:
+sessionNum:
+setupMeasWrist:
+setupMeasFinger:
+setupMeasShoulder:
+wristMVC:
+fingerMVC:
+shoulderMVC:
+Need to still consider case for saving multiple sessions

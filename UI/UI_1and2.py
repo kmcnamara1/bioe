@@ -60,39 +60,39 @@ class UIWindow(QWidget):
         self.ExportDataButton.setStyleSheet("background-color: rgb(242,153,74)")
         self.ExportDataButton.setObjectName("ExportDataButton")
         self.SideColum = QtWidgets.QColumnView(self.centralwidget)
-        self.SideColum.setGeometry(QtCore.QRect(10, 0, 201, 741))
+        self.SideColum.setGeometry(QtCore.QRect(0, 0, 201, 741))
         self.SideColum.setStyleSheet("background-color: rgb(78, 78, 78)")
         self.SideColum.setObjectName("SideColum")
         self.overviewSide = QtWidgets.QPushButton(self.centralwidget)
-        self.overviewSide.setGeometry(QtCore.QRect(10, 90, 201, 41))
+        self.overviewSide.setGeometry(QtCore.QRect(0, 90, 201, 41))
         self.overviewSide.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
                 ";")
         self.overviewSide.setObjectName("overviewSide")
         self.historySide = QtWidgets.QPushButton(self.centralwidget)
-        self.historySide.setGeometry(QtCore.QRect(10, 130, 201, 41))
+        self.historySide.setGeometry(QtCore.QRect(0, 130, 201, 41))
         self.historySide.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
                 ";")
 
         
         self.historySide.setObjectName("historySide")
         self.goalSide = QtWidgets.QPushButton(self.centralwidget)
-        self.goalSide.setGeometry(QtCore.QRect(10, 170, 201, 41))
+        self.goalSide.setGeometry(QtCore.QRect(0, 170, 201, 41))
         self.goalSide.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
                 ";")
         self.goalSide.setObjectName("goalSide")
         self.patientSetup = QtWidgets.QPushButton(self.centralwidget)
-        self.patientSetup.setGeometry(QtCore.QRect(10, 210, 201, 41))
+        self.patientSetup.setGeometry(QtCore.QRect(0, 210, 201, 41))
         self.patientSetup.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
                 ";")
         self.patientSetup.setObjectName("patientSetup")
         self.Logout = QtWidgets.QPushButton(self.centralwidget)
-        self.Logout.setGeometry(QtCore.QRect(10, 680, 201, 41))
+        self.Logout.setGeometry(QtCore.QRect(0, 680, 201, 41))
         self.Logout.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
                 ";\n"
                 "border-color: rgb(34, 34, 34);")
         self.Logout.setObjectName("Logout")
         self.changePatient = QtWidgets.QPushButton(self.centralwidget)
-        self.changePatient.setGeometry(QtCore.QRect(10, 630, 201, 41))
+        self.changePatient.setGeometry(QtCore.QRect(0, 630, 201, 41))
         self.changePatient.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
                 ";")
         
@@ -172,7 +172,7 @@ class UIWindow(QWidget):
                 "color: #7f7f7f")
         self.label_10.setObjectName("label_10")
         self.WelcomeFrame_5 = QtWidgets.QFrame(self.centralwidget)
-        self.WelcomeFrame_5.setGeometry(QtCore.QRect(10, 0, 201, 91))
+        self.WelcomeFrame_5.setGeometry(QtCore.QRect(0, 0, 201, 91))
         self.WelcomeFrame_5.setStyleSheet("background-color: rgba(106, 108, 108, 157); color: white;\n"
                 "")
         self.WelcomeFrame_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -183,7 +183,7 @@ class UIWindow(QWidget):
         self.label_13.setStyleSheet("")
         self.label_13.setObjectName("label_13")
         self.label_14 = QtWidgets.QLabel(self.WelcomeFrame_5)
-        self.label_14.setGeometry(QtCore.QRect(60, 40, 71, 31))
+        self.label_14.setGeometry(QtCore.QRect(50, 40, 71, 31))
         self.label_14.setStyleSheet("font: 13pt \".AppleSystemUIFont\";")
         self.label_14.setObjectName("label_14")
         self.startButton.raise_()
@@ -239,9 +239,9 @@ class UIWindow(QWidget):
         self.label_8.setText(self._translate("OverViewWindow", "REP"))
         self.label_9.setText(self._translate("OverViewWindow", "-/3"))
 
-        patientName = loadPatientName()
+        self.patientName = loadPatientName()
 
-        self.label_10.setText(self._translate("OverViewWindow", "Patient: {}".format(patientName) ))
+        self.label_10.setText(self._translate("OverViewWindow", "Patient: {}".format(self.patientName) ))
         self.label_13.setText(self._translate("OverViewWindow", "Clinician"))
 
         clinicianName = loadClinicianName()
