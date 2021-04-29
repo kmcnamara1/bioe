@@ -1,10 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap,QIcon
+# from PyQt5.QtCore import 
 from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QDialog, QLabel,QDialogButtonBox,QVBoxLayout,QHBoxLayout
 import sys
 
 def loadPatientName():
-        text_file = open("PatientName.txt", "r+")
+        text_file = open("Patient Details/PatientName.txt", "r+")
         data = text_file.read()
         
         if data == None:
@@ -38,7 +39,7 @@ class UIWindow(QWidget):
     def __init__(self, parent=None):
         super(UIWindow, self).__init__(parent)
         # mainwindow.setWindowIcon(QtGui.QIcon('PhotoIcon.png'))
-
+        self.currentExerciseSelection = None;
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
         self.startButton = QtWidgets.QPushButton(self.centralwidget)
@@ -211,35 +212,41 @@ class UIWindow(QWidget):
         self.statusbar.setObjectName("statusbar")
 
 
-        _translate = QtCore.QCoreApplication.translate
+        self._translate = QtCore.QCoreApplication.translate
 
         # OverViewWindow.setWindowTitle(_translate("OverViewWindow", "OverViewWindow"))
-        self.startButton.setText(_translate("OverViewWindow", "Start"))
-        self.stopButton.setText(_translate("OverViewWindow", "Stop"))
-        self.changeExerciseButton.setText(_translate("OverViewWindow", "Change Exercise"))
-        self.ExportDataButton.setText(_translate("OverViewWindow", "Export Data"))
-        self.overviewSide.setText(_translate("OverViewWindow", "Overview"))
-        self.historySide.setText(_translate("OverViewWindow", "History"))
-        self.goalSide.setText(_translate("OverViewWindow", "Goal"))
-        self.patientSetup.setText(_translate("OverViewWindow", "Patient Setup"))
-        self.Logout.setText(_translate("OverViewWindow", "Logout"))
-        self.changePatient.setText(_translate("OverViewWindow", "Change Patient"))
-        self.label_3.setText(_translate("OverViewWindow", "ACTIVITY"))
-        self.label_4.setText(_translate("OverViewWindow", "Wrist Extension"))
-        self.label_5.setText(_translate("OverViewWindow", "Session no. "))
-        self.label_6.setText(_translate("OverViewWindow", "MVC"))
-        self.label_7.setText(_translate("OverViewWindow", "---.--mV"))
-        self.label_8.setText(_translate("OverViewWindow", "REP"))
-        self.label_9.setText(_translate("OverViewWindow", "-/3"))
+        self.startButton.setText(self._translate("OverViewWindow", "Start"))
+        self.stopButton.setText(self._translate("OverViewWindow", "Stop"))
+        self.changeExerciseButton.setText(self._translate("OverViewWindow", "Change Exercise"))
+        self.ExportDataButton.setText(self._translate("OverViewWindow", "Export Data"))
+        self.overviewSide.setText(self._translate("OverViewWindow", "Overview"))
+        self.historySide.setText(self._translate("OverViewWindow", "History"))
+        self.goalSide.setText(self._translate("OverViewWindow", "Goal"))
+        self.patientSetup.setText(self._translate("OverViewWindow", "Patient Setup"))
+        self.Logout.setText(self._translate("OverViewWindow", "Logout"))
+        self.changePatient.setText(self._translate("OverViewWindow", "Change Patient"))
+        self.label_3.setText(self._translate("OverViewWindow", "ACTIVITY"))
+
+        # self.currentExerciseSelection 
+        if self.currentExerciseSelection == None:
+                self.label_4.setText(self._translate("OverViewWindow", "Select Exercise"))
+        else:
+                self.label_4.setText(self._translate("OverViewWindow", self.currentExerciseSelection))
+
+        self.label_5.setText(self._translate("OverViewWindow", "Session no. "))
+        self.label_6.setText(self._translate("OverViewWindow", "MVC"))
+        self.label_7.setText(self._translate("OverViewWindow", "---.--mV"))
+        self.label_8.setText(self._translate("OverViewWindow", "REP"))
+        self.label_9.setText(self._translate("OverViewWindow", "-/3"))
 
         patientName = loadPatientName()
 
-        self.label_10.setText(_translate("OverViewWindow", "Patient: {}".format(patientName) ))
-        self.label_13.setText(_translate("OverViewWindow", "Clinician"))
+        self.label_10.setText(self._translate("OverViewWindow", "Patient: {}".format(patientName) ))
+        self.label_13.setText(self._translate("OverViewWindow", "Clinician"))
 
         clinicianName = loadClinicianName()
 
-        self.label_14.setText(_translate("OverViewWindow", clinicianName ))
+        self.label_14.setText(self._translate("OverViewWindow", clinicianName ))
 
 
 
@@ -301,6 +308,8 @@ class UIToolTab(QWidget):
 
         self.lineEdit.returnPressed.connect(self.txtstate)
         self.startButton.clicked.connect(self.txtstate)
+
+        self.startButton.setIcon(QIcon('icons/ENTER.png'))
 ###############################################################################################################
      
         self.label = QtWidgets.QLabel(self.LoginFrame)
@@ -439,7 +448,7 @@ class UIinitPatientSetUp(QDialog):
         self.findmuscleLabl.setObjectName("findmuscleLabl")
 
         self.examplemusclelabel = QtWidgets.QLabel(self.MuscleDemo)
-        pixmap = QPixmap('download.jpg')
+        pixmap = QPixmap('icons/download.jpg')
         self.examplemusclelabel.setPixmap(pixmap)
         self.examplemusclelabel.resize(pixmap.width(), pixmap.height())
         self.examplemusclelabel.move(100, self.height()/1.7 -self.examplemusclelabel.height())
@@ -509,7 +518,7 @@ class UIinitPatientSetUp(QDialog):
 
     def get_patient_name(self):
         text_input = self.PatientsNameEnter.text()
-        text_file = open("PatientName.txt", "w")
+        text_file = open("Patient Details/PatientName.txt", "w")
         text_file.write("%s" % text_input)
         text_file.close()  
 
@@ -624,3 +633,93 @@ class UIinitMeasurePatientSetUp(QDialog):
         self.close()       
 
 
+class UIchangeExercisePopUp(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        setupWindow = QtWidgets.QWidget(self)
+        setupWindow.setObjectName("MainWindow")
+        setupWindow.resize(240, 259)
+        setupWindow.setMaximumSize(QtCore.QSize(1280, 16777215))
+        setupWindow.setStyleSheet("background-color: rgb(255,252,241)\n")
+
+        self.centralwidget = QtWidgets.QWidget(self)
+        self.centralwidget.setObjectName("centralwidget")
+        self.RightSide = QtWidgets.QColumnView(self.centralwidget)
+        self.RightSide.setGeometry(QtCore.QRect(220, 0, 20, 211))
+        self.RightSide.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.RightSide.setObjectName("RightSide")
+        self.leftSide = QtWidgets.QColumnView(self.centralwidget)
+        self.leftSide.setGeometry(QtCore.QRect(0, 0, 20, 211))
+        self.leftSide.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.leftSide.setObjectName("leftSide")
+        self.windowFrame = QtWidgets.QFrame(self.centralwidget)
+        self.windowFrame.setGeometry(QtCore.QRect(20, 0, 201, 211))
+        self.windowFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.windowFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.windowFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.windowFrame.setObjectName("windowFrame")
+        self.chooseExercise = QtWidgets.QLabel(self.windowFrame)
+        self.chooseExercise.setGeometry(QtCore.QRect(50, 10, 111, 21))
+        self.chooseExercise.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                "background-color: rgb(255, 255, 255);\n"
+                "color: rgb(37,39,51);")     
+
+        self.chooseExercise.setObjectName("chooseExercise")
+        self.WristExtension = QtWidgets.QPushButton(self.windowFrame)
+        self.WristExtension.setGeometry(QtCore.QRect(0, 40, 201, 31))
+        self.WristExtension.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(37,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+        self.WristExtension.setObjectName("WristExtension")
+        self.FingerFlexion = QtWidgets.QPushButton(self.windowFrame)
+        self.FingerFlexion.setGeometry(QtCore.QRect(0, 80, 201, 31))
+        self.FingerFlexion.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(37,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+        self.FingerFlexion.setObjectName("FingerFlexion")
+        self.Deltoid = QtWidgets.QPushButton(self.windowFrame)
+        self.Deltoid.setGeometry(QtCore.QRect(0, 120, 201, 31))
+        self.Deltoid.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(37,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+        self.Deltoid.setObjectName("Deltoid")
+
+
+#####################################BUTTON SIGNALS######################################
+
+        self.WristExtension.clicked.connect(self.test_exit)
+        self.FingerFlexion.clicked.connect(self.test_exit)
+        self.Deltoid.clicked.connect(self.test_exit)
+#########################################################################################
+
+        # MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(self)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 240, 24))
+        self.menubar.setObjectName("menubar")
+        # MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(self)
+        self.statusbar.setObjectName("statusbar")
+        # MainWindow.setStatusBar(self.statusbar)
+
+        _translate = QtCore.QCoreApplication.translate
+        self.chooseExercise.setText(_translate("MainWindow", "Choose Exercise:"))
+        self.WristExtension.setText(_translate("MainWindow", "Wrist Extension"))
+        self.FingerFlexion.setText(_translate("MainWindow", "Finger Flexion"))
+        self.Deltoid.setText(_translate("MainWindow", "Deltoid ----"))
+        # self.exitexerciseButton.setText(_translate("MainWindow", "EXIT"))
+        # self.doneButton2.setText(_translate("MainWindow", "DONE"))
+
+    def test_exit(self):
+        print("close exercise change popup!")
+        self.close()    
+
+#     def wrist_button(self):
+#         print("close exercise change popup!")
+#         self.close()  
