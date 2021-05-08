@@ -28,7 +28,7 @@ class patientDetails:
     date = None
     patientID = None
     patientName = None
-    sessionNum = None
+    sessionNum = 0
     setupMeas = None
     wristMVC = None
     fingerMVC = None
@@ -78,7 +78,7 @@ def checkPatientDetails(name):
 # IF: can open --> previous patient must exist
 # ELSE: must be a new patient 
 def checkReturningPatient(initials):
-    file_path = ("Patient Details/{}1.txt".format(initials))
+    file_path = ("Patient Details/{}/{}1.txt".format(initials,initials))
 
     if not os.path.exists(file_path):
         return 0
@@ -100,6 +100,7 @@ class MainWindow(QMainWindow):
         self.setFixedSize(1280, 800)
         self.setStyleSheet("background-color: rgb(255,252,241);");
         loadClinicianName()
+        self.currentDetails = patientDetails()
         self.startUIToolTab()
         self.patientDetail = patientDetails() #start instance of patient details
 
@@ -115,10 +116,13 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.Window)
         self.Window.Logout.clicked.connect(self.startUIToolTab)  
 
+
         #set up patient details run next class
         self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
 
-        # clinicianName = loadClinicianName()
+        if (self.currentDetails.sessionNum!=0):
+            self.Window.label_5.setText(self.Window._translate("OverViewWindow", "Session no.{} ".format(self.currentDetails.sessionNum)))       
+
         #Checks the name once patient set up is done
         if (self.patientDetail.patientName == None):
             self.Window.label_10.setText(self.Window._translate("OverViewWindow", "Patient: - "))
@@ -181,6 +185,7 @@ class MainWindow(QMainWindow):
         self.previousData.fingerMVC = getPreviousFinger(self.previousData.sessionNum,ID)
         self.previousData.setupMeas = getSetupMeasurement(self.previousData.sessionNum,ID)
 
+        self.Window.SessionNum = self.currentDetails.sessionNum
     
 
     # Run after patients name is entered 
@@ -191,11 +196,12 @@ class MainWindow(QMainWindow):
 
         # Setting up the current details for the patient
         name=setUpPatient.patientSetup.text()
-        self.patientDetail.patientName = name
         print(name)
+        self.patientDetail.patientName = name
+ 
  
         # set up current details class
-        self.currentDetails = patientDetails()
+       
         temp = loadClinicianName()
         self.currentDetails.clinicanName = temp
         self.currentDetails.date = datetime.today().strftime('%Y-%m-%d')
@@ -212,6 +218,9 @@ class MainWindow(QMainWindow):
         else:
             print("NEW PATIENT")
             self.currentDetails.sessionNum = 1
+            # self.Window.SessionNum = 1
+            # self.Window.label_5.setText(self.Window._translate("OverViewWindow", "{}".format(self.currentDetails.sessionNum)))
+    
 
         # Start next pop-up for window
         self.startEnterMeasurementsPopup()
