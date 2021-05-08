@@ -7,5 +7,4 @@ setupMeasFinger:0
 setupMeasShoulder:0
 wristMVC:70
 fingerMVC:0
-shoulderMVC:0
-
+shoulderMVC:0 
