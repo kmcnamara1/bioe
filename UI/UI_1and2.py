@@ -46,10 +46,17 @@ class UIWindow(QWidget):
         self.startButton.setGeometry(QtCore.QRect(890, 170, 141, 71))
         self.startButton.setStyleSheet("background-color: rgb(111, 207, 151);border-color: rgb(34, 34, 34);")
         self.startButton.setObjectName("startButton")
+
+        #icon!
+        self.startButton.setIcon(QIcon('icons/play-button.png')) 
+
         self.stopButton = QtWidgets.QPushButton(self.centralwidget)
         self.stopButton.setGeometry(QtCore.QRect(1050, 170, 141, 71))
         self.stopButton.setStyleSheet("background-color: rgb(235,87,87)")
         self.stopButton.setObjectName("stopButton")
+
+        #icon!
+        self.stopButton.setIcon(QIcon('icons/square.png'))     
 
         self.changeExerciseButton = QtWidgets.QPushButton(self.centralwidget)
         self.changeExerciseButton.setGeometry(QtCore.QRect(890, 280, 141, 71))
@@ -59,6 +66,13 @@ class UIWindow(QWidget):
         self.ExportDataButton.setGeometry(QtCore.QRect(1050, 280, 141, 71))
         self.ExportDataButton.setStyleSheet("background-color: rgb(242,153,74)")
         self.ExportDataButton.setObjectName("ExportDataButton")
+
+
+        #icon!
+        self.ExportDataButton.setIcon(QIcon('icons/export.png'))
+
+
+
         self.SideColum = QtWidgets.QColumnView(self.centralwidget)
         self.SideColum.setGeometry(QtCore.QRect(0, 0, 201, 741))
         self.SideColum.setStyleSheet("background-color: rgb(78, 78, 78)")
@@ -183,7 +197,7 @@ class UIWindow(QWidget):
         self.label_13.setStyleSheet("")
         self.label_13.setObjectName("label_13")
         self.label_14 = QtWidgets.QLabel(self.WelcomeFrame_5)
-        self.label_14.setGeometry(QtCore.QRect(50, 40, 71, 31))
+        self.label_14.setGeometry(QtCore.QRect(50, 40, 100, 31))
         self.label_14.setStyleSheet("font: 13pt \".AppleSystemUIFont\";")
         self.label_14.setObjectName("label_14")
         self.startButton.raise_()
@@ -418,9 +432,10 @@ class UIinitPatientSetUp(QDialog):
         self.labelPatientsName.setObjectName("labelPatientsName")
 
 
-        self.PatientsNameEnter = QtWidgets.QLineEdit(self.patientsnameFrame)
-        self.PatientsNameEnter.setGeometry(QtCore.QRect(30, 40, 211, 21))
-        self.PatientsNameEnter.setStyleSheet("background-color: rgb(255,252,241);\n"
+        self.patientSetup = QtWidgets.QLineEdit(self.patientsnameFrame)
+        self.patientSetup.setGeometry(QtCore.QRect(30, 40, 211, 21))
+
+        self.patientSetup.setStyleSheet("background-color: rgb(255,252,241);\n"
                         "color: rgb(115, 116, 116);\n"
                         "selection-color: rgb(207, 212, 212);\n"
                         "border-color: rgb(156, 160, 159);\n"
@@ -428,10 +443,13 @@ class UIinitPatientSetUp(QDialog):
 
         
 
-        self.PatientsNameEnter.setObjectName("PatientsNameEnter")
+        self.patientSetup.setObjectName("PatientsNameEnter")
 
 
-        self.PatientsNameEnter.returnPressed.connect(self.get_patient_name)
+        self.patientSetup.returnPressed.connect(self.get_patient_name)
+
+
+
 
         self.MuscleDemo = QtWidgets.QFrame(self.centralwidget)
         self.MuscleDemo.setGeometry(QtCore.QRect(20, 120, 411, 301))
@@ -448,10 +466,10 @@ class UIinitPatientSetUp(QDialog):
         self.findmuscleLabl.setObjectName("findmuscleLabl")
 
         self.examplemusclelabel = QtWidgets.QLabel(self.MuscleDemo)
-        pixmap = QPixmap('icons/download.jpg')
+        pixmap = QPixmap('icons/placeholder.jpg')
         self.examplemusclelabel.setPixmap(pixmap)
-        self.examplemusclelabel.resize(pixmap.width(), pixmap.height())
-        self.examplemusclelabel.move(100, self.height()/1.7 -self.examplemusclelabel.height())
+        self.examplemusclelabel.resize(pixmap.width()/2, pixmap.height()/2)
+        # self.examplemusclelabel.move(100, self.height()/1.7 -self.examplemusclelabel.height())
 
         self.exampleLabel = QtWidgets.QLabel(self.MuscleDemo)
         self.exampleLabel.setGeometry(QtCore.QRect(10, 30, 201, 21))
@@ -517,7 +535,7 @@ class UIinitPatientSetUp(QDialog):
         self.close()    
 
     def get_patient_name(self):
-        text_input = self.PatientsNameEnter.text()
+        text_input = self.patientSetup.text()
         text_file = open("Patient Details/PatientName.txt", "w")
         text_file.write("%s" % text_input)
         text_file.close()  

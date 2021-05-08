@@ -2,8 +2,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QMessageBox, QDialog,QDialogButtonBox,QVBoxLayout
 import sys
-from UI_1and2 import UIWindow, UIToolTab, UIinitPatientSetUp,UIinitMeasurePatientSetUp,UIchangeExercisePopUp
+from UI_1and2 import *
 
+LOAD_PREVIOUS = 1;
+NEW_PATIENT = 0;
 
 
 class patientDetails:
@@ -74,17 +76,11 @@ def checkPatientDetails(patientDetail,name):
         patientDetail.clinicanName = loadClinicianName()
         patientDetail.date = 1
         patientDetail.patientID = initials
-        print(patientDetail.patientName)
+        return NEW_PATIENT
+
     else:
-        pass
+        return LOAD_PREVIOUS
 
-    print(patientDetail.clinicanName)
-    print("\n")
-    print(patientDetail.patientID)
-
-
-    # print(checkReturningPatient(initials))
-    # else:
 
 
 def checkReturningPatient(initials):
@@ -96,6 +92,13 @@ def checkReturningPatient(initials):
     except IOError:
         return 0
 
+
+
+
+
+########################################################################################################################################
+                                                        # MAIN SECTION #
+########################################################################################################################################
 
 
 class MainWindow(QMainWindow):
@@ -150,7 +153,6 @@ class MainWindow(QMainWindow):
         # setUpPatient.nextButton.clicked.connect(self.startEnterMeasurementsPopup)
         setUpPatient.nextButton.clicked.connect(lambda: self.checkDetail(setUpPatient))
 
-
         setUpPatient.show()
         
     def startEnterMeasurementsPopup(self):
@@ -187,9 +189,17 @@ class MainWindow(QMainWindow):
     # IF a current file is there --> load in the data as the patients details
     # ELSE continue on new patient files
     def checkDetail(self,setUpPatient):
-        name=setUpPatient.PatientsNameEnter.text()
-        checkPatientDetails(self.patientDetail,name)
+        name=setUpPatient.patientSetup.text()
+
         self.startEnterMeasurementsPopup()
+
+            #if returns 1, then there is  previous data history to import, such as the set up
+        if checkPatientDetails(self.patientDetail,name):
+            self.previousPatientDetail = patientDetails()
+            
+
+        
+        
 
 
         
