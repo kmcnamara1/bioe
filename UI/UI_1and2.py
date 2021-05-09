@@ -89,6 +89,8 @@ class UIWindow(QWidget):
 
         
         self.historySide.setObjectName("historySide")
+
+
         self.goalSide = QtWidgets.QPushButton(self.centralwidget)
         self.goalSide.setGeometry(QtCore.QRect(0, 170, 201, 41))
         self.goalSide.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
@@ -247,7 +249,7 @@ class UIWindow(QWidget):
         else:
                 self.label_4.setText(self._translate("OverViewWindow", self.currentExerciseSelection))
 
-                
+
         self.SessionNum = ''
         self.label_5.setText(self._translate("OverViewWindow", "Session no.{} ".format(self.SessionNum)))
         self.label_6.setText(self._translate("OverViewWindow", "MVC"))

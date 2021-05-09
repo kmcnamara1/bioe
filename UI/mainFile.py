@@ -30,6 +30,9 @@ class patientDetails:
     patientName = None
     sessionNum = 0
     setupMeas = None
+    setupMeasWrist = None
+    setupMeasFinger = None
+    setupMeasShoulder = None
     wristMVC = None
     fingerMVC = None
     shoulderMVC = None
@@ -42,49 +45,11 @@ class patientDetails:
 def close_all():
         sys.exit(0)
 
-def clearPatientFile():
-    text_file = open("Patient Details/PatientName.txt", "w")
-    data = text_file.write()
-    text_file.truncate(0)
-    text_file.close()
-
 def loadClinicianName():
         text_file = open("ClinicanName.txt", "r+")
         data = text_file.read()
         text_file.close()
         return data
-
-
-def getPatientID(name):
-    name_list = name.split() 
-
-    initials = ""
-
-    for split_name in name_list:  # go through each name
-        initials += split_name[0].upper()  # append the initial    
-
-    return initials
-
-
-# We assume the patient name is split with a space 
-def checkPatientDetails(name):
-    
-    patientID = getPatientID(name)
-    return(checkReturningPatient(patientID)) # return 1 if is reoccuring
-                                             # return 0 if new
-
-
-#trys to open a file with the users ID
-# IF: can open --> previous patient must exist
-# ELSE: must be a new patient 
-def checkReturningPatient(initials):
-    file_path = ("Patient Details/{}/{}1.txt".format(initials,initials))
-
-    if not os.path.exists(file_path):
-        return 0
-    else: 
-        return 1
-
 
 
 ########################################################################################################################################
@@ -132,6 +97,10 @@ class MainWindow(QMainWindow):
 
         #change the exercise
         self.Window.changeExerciseButton.clicked.connect(self.changeExercisePopUp)
+        #export data button
+        self.Window.ExportDataButton.clicked.connect(self.exportData)
+        #view all past patient history
+        self.Window.historySide.clicked.connect()
         self.show()
 
     def startSetUpPopup(self):
@@ -161,6 +130,9 @@ class MainWindow(QMainWindow):
         changeExercisePopUp.Deltoid.clicked.connect(lambda: self.passCurrentExercise(3))
         changeExercisePopUp.show()   
 
+########################################################################################################################################
+                                            # Class functions #
+########################################################################################################################################
 
     def passCurrentExercise(self,n):
         if n==1:
@@ -225,6 +197,34 @@ class MainWindow(QMainWindow):
         # Start next pop-up for window
         self.startEnterMeasurementsPopup()
 
+########################################################################################################################################
+                                            # Export Function #
+########################################################################################################################################
+   
+    def exportData(self):
+
+        # If patients first session must make a new directory for it
+        PATH = './Patient Details/{}'.format(self.currentDetails.patientID)
+        if (self.currentDetails.sessionNum == 1):
+            os.mkdir(PATH)
+        
+        file = open("{}/{}{}.txt".format(PATH,self.currentDetails.patientID,self.currentDetails.sessionNum), "w") 
+        file.writelines('PatientID:{}\n'.format(self.currentDetails.patientID))
+        file.writelines('PatientName:{}\n'.format(self.currentDetails.patientName))
+        file.writelines('Date:{}\n'.format(self.currentDetails.date))
+        file.writelines('Clinician:{}\n'.format(self.currentDetails.clinicanName))
+        file.writelines('sessionNum:{}\n'.format(self.currentDetails.sessionNum))
+        file.writelines('setupMeasWrist:{}\n'.format(self.currentDetails.setupMeasWrist))
+        file.writelines('setupMeasFinger:{}\n'.format(self.currentDetails.setupMeasFinger))
+        file.writelines('setupMeasShoulder:{}\n'.format(self.currentDetails.setupMeasShoulder))
+        file.writelines('wristMVC:{}\n'.format(self.currentDetails.wristMVC))
+        file.writelines('fingerMVC:{}\n'.format(self.currentDetails.fingerMVC))
+        file.writelines('shoulderMVC:{}\n'.format(self.currentDetails.shoulderMVC))
+
+
+########################################################################################################################################
+                                            # Start Application #
+########################################################################################################################################
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
