@@ -35,13 +35,10 @@ def getPreviousWrist(sessionNum,ID):
             line = "".join(line)
             val = "".join(re.findall('\d*\.?\d+',line))
 
-            # val = ''.join(char for char in line if char.isdigit())
             text_file.close()
 
             values.append("{}".format(val))
 
-        
-        print(values)     
         return(values)    
 
 
@@ -66,9 +63,7 @@ def getPreviousShoulder(sessionNum,ID):
             text_file.close()
 
             values.append("{}".format(val))
-
-        
-        print(values)     
+    
         return(values)   
 
 
@@ -92,9 +87,7 @@ def getPreviousFinger(sessionNum,ID):
             text_file.close()
 
             values.append("{}".format(val))
-
-        
-        print(values)     
+   
         return(values)  
 
 def getPatientID(name):
