@@ -171,6 +171,7 @@ class MainWindow(QMainWindow):
         setUpPatient = UIinitPatientSetUp(self)
         setUpPatient.setStyleSheet("background-color: rgb(255,252,241);");
         popup = QMessageBox(setUpPatient)
+        
         #Assume that when next is pressed the full name is entered
         # Run function that will see if a text file of the patients id exists in "patients details/id.txt"
         # setUpPatient.patientSetup.returnPressed.connect(lambda: self.checkDetail(setUpPatient))

@@ -2,6 +2,9 @@ import sys
 import re
 import os
 
+WRIST_LINE = 8
+FINGER_LINE = 9 
+SHOULDER_LINE = 10
 
 def getNumSessions(ID):
     #get list of all files in inital directory
@@ -17,23 +20,82 @@ def getSetupMeasurement(sessionNum,ID):
 
 def getPreviousWrist(sessionNum,ID):
     #row 8 if counting from 1
-    text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,sessionNum), "r+")
-    content = text_file.readlines()
-    line = content[8]
-    return(''.join(char for char in line if char.isdigit()))
+
+    if (sessionNum ==1):
+        text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,sessionNum), "r+")
+        content = text_file.readlines()
+        line = content[WRIST_LINE]
+        return(''.join(char for char in line if char.isdigit()))
+    else:
+        values = []
+        for session in range(1,sessionNum+1):
+            text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,session), "r+")
+            content = text_file.readlines()
+            line = content[WRIST_LINE]   
+            line = "".join(line)
+            val = "".join(re.findall('\d*\.?\d+',line))
+
+            # val = ''.join(char for char in line if char.isdigit())
+            text_file.close()
+
+            values.append("{}".format(val))
+
+        
+        print(values)     
+        return(values)    
+
 
     
 def getPreviousShoulder(sessionNum,ID):
-    text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,sessionNum), "r+")
-    content = text_file.readlines()
-    line = content[10]
-    return(''.join(char for char in line if char.isdigit()))    
+
+    if (sessionNum ==1):
+        text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,sessionNum), "r+")
+        content = text_file.readlines()
+        line = content[SHOULDER_LINE]
+        return(''.join(char for char in line if char.isdigit()))
+    else:
+        values = []
+        for session in range(1,sessionNum+1):
+            text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,session), "r+")
+            content = text_file.readlines()
+            line = content[SHOULDER_LINE]   
+            line = "".join(line)
+            val = "".join(re.findall('\d*\.?\d+',line))
+
+            # val = ''.join(char for char in line if char.isdigit())
+            text_file.close()
+
+            values.append("{}".format(val))
+
+        
+        print(values)     
+        return(values)   
+
 
 def getPreviousFinger(sessionNum,ID):
-    text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,sessionNum), "r+")
-    content = text_file.readlines()
-    line = content[8]
-    return(''.join(char for char in line if char.isdigit()))   
+
+    if (sessionNum ==1):
+        text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,sessionNum), "r+")
+        content = text_file.readlines()
+        line = content[FINGER_LINE]
+        return(''.join(char for char in line if char.isdigit()))
+    else:
+        values = []
+        for session in range(1,sessionNum+1):
+            text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,session), "r+")
+            content = text_file.readlines()
+            line = content[FINGER_LINE]   
+            line = "".join(line)
+            val = "".join(re.findall('\d*\.?\d+',line))
+
+            # val = ''.join(char for char in line if char.isdigit())
+            text_file.close()
+
+            values.append("{}".format(val))
+
+        
+        print(values)     
+        return(values)  
 
 def getPatientID(name):
     name_list = name.split() 

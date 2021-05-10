@@ -3,9 +3,9 @@ PatientName:Anna Catherine Scolaro
 Date:03/04/2021
 Clinician:Pippa Scol
 sessionNum:2
-setupMeasWrist:5.5
+setupMeasWrist:5.6
 setupMeasFinger:0
 setupMeasShoulder:0
-wristMVC:70
+wristMVC:40
 fingerMVC:0
 shoulderMVC:0 
