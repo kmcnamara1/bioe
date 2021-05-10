@@ -10,6 +10,7 @@ from UI_1and2 import *
 
 LOAD_PREVIOUS = 1;
 NEW_PATIENT = 0;
+YES = 1;
 
 ########################################################################################################################################
                                          # CLASSES #
@@ -36,11 +37,52 @@ class patientDetails:
     wristMVC = None
     fingerMVC = None
     shoulderMVC = None
+    beenExported = None
+
+########################################################################################################################################
+                                         # SCROLL #
+########################################################################################################################################
+
+
+class ScrollLabel(QScrollArea):
+      
+    # contructor
+    def __init__(self, parent=None):
+        super(ScrollLabel,self).__init__(parent)
+  
+        # making widget resizable
+        self.setWidgetResizable(True)
+        # making qwidget object
+        content = QWidget(self)
+        self.setWidget(content)
+        # vertical box layout
+        lay = QVBoxLayout(content)
+        # creating label
+        self.label = QLabel(content)
+        # setting alignment to the text
+        self.label.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+        # making label multi-line
+        self.label.setWordWrap(True)
+        # adding label to the layout
+        lay.addWidget(self.label)  
+
+    def UiComponents(self,text):
+        # creating scroll label
+        label = ScrollLabel(self)
+  
+        # setting text to the label
+        # label.setText(text)
+        label.label.setText(text)
+        label.label.setStyleSheet("font: 13pt \".AppleSystemUIFont\"; \n"
+        "background-color: rgb(255, 255, 255);\n"
+        "color: #000000")     
+        # setting geometry
+        label.setGeometry(QtCore.QRect(450, 150, 621, 581))
+
 
 ########################################################################################################################################
                                         # Generic Functions #
 ########################################################################################################################################
-
 
 def close_all():
         sys.exit(0)
@@ -51,9 +93,8 @@ def loadClinicianName():
         text_file.close()
         return data
 
-
 ########################################################################################################################################
-                                                        # MAIN SECTION #
+                                            # MAIN SECTION #
 ########################################################################################################################################
 
 
@@ -100,7 +141,21 @@ class MainWindow(QMainWindow):
         #export data button
         self.Window.ExportDataButton.clicked.connect(self.exportData)
         #view all past patient history
-        self.Window.historySide.clicked.connect()
+        self.Window.historySide.clicked.connect(self.startUIpatietnHistory)
+        self.show()
+
+    def startUIpatietnHistory(self):
+        self.historyWindow = Ui_PatientHistoryWindow(self)
+        self.setCentralWidget(self.historyWindow)
+
+        self.scroll = QtWidgets.QScrollBar(self.historyWindow.PastSessions)
+
+        historyList = displayPatientHistory(self.currentDetails.patientID,self.currentDetails.sessionNum, self.currentDetails.beenExported)
+        if (historyList == 0):
+            ScrollLabel.UiComponents(self.historyWindow,"no previous sessions")
+        else:
+            ScrollLabel.UiComponents(self.historyWindow,historyList)
+
         self.show()
 
     def startSetUpPopup(self):
@@ -111,7 +166,7 @@ class MainWindow(QMainWindow):
         popup = QMessageBox(setUpPatient)
         #Assume that when next is pressed the full name is entered
         # Run function that will see if a text file of the patients id exists in "patients details/id.txt"
-        setUpPatient.patientSetup.returnPressed.connect(lambda: self.checkDetail(setUpPatient))
+        # setUpPatient.patientSetup.returnPressed.connect(lambda: self.checkDetail(setUpPatient))
         setUpPatient.nextButton.clicked.connect(lambda: self.checkDetail(setUpPatient))
 
         setUpPatient.show()
@@ -152,11 +207,12 @@ class MainWindow(QMainWindow):
         # find how many sessions they have had
         self.previousData.sessionNum = getNumSessions(ID)
         self.currentDetails.sessionNum = (self.previousData.sessionNum + 1)
+        self.currentDetails.beenExported = YES
         self.previousData.wristMVC = getPreviousWrist(self.previousData.sessionNum,ID)
         self.previousData.shoulderMVC = getPreviousShoulder(self.previousData.sessionNum,ID)
         self.previousData.fingerMVC = getPreviousFinger(self.previousData.sessionNum,ID)
         self.previousData.setupMeas = getSetupMeasurement(self.previousData.sessionNum,ID)
-
+        
         self.Window.SessionNum = self.currentDetails.sessionNum
     
 
@@ -168,12 +224,8 @@ class MainWindow(QMainWindow):
 
         # Setting up the current details for the patient
         name=setUpPatient.patientSetup.text()
-        print(name)
         self.patientDetail.patientName = name
- 
- 
         # set up current details class
-       
         temp = loadClinicianName()
         self.currentDetails.clinicanName = temp
         self.currentDetails.date = datetime.today().strftime('%Y-%m-%d')
@@ -203,6 +255,7 @@ class MainWindow(QMainWindow):
    
     def exportData(self):
 
+        self.currentDetails.beenExported = YES
         # If patients first session must make a new directory for it
         PATH = './Patient Details/{}'.format(self.currentDetails.patientID)
         if (self.currentDetails.sessionNum == 1):

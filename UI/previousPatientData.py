@@ -64,3 +64,33 @@ def checkReturningPatient(initials):
         return 1
 
 
+# returns a string that can be used as a label for the patient history
+def displayPatientHistory(PatientID,sessionNum, exported):
+
+    #we are assuming that the we haven't exported the current data
+    if (exported == None):
+        print('nothing to view')
+        return 0
+    else:
+        if (sessionNum > 1):
+            sessionNum = (sessionNum - 1)
+ 
+    # numLines = 11*sessionNum
+    contents = []
+
+    if (sessionNum == 1):
+        text_file = open('./Patient Details/{}/{}{}.txt'.format(PatientID,PatientID,sessionNum), "r+")
+        content = text_file.readlines()
+        line = content[:10]
+        contents = " ".join(line)
+        return(contents)    
+        # print(contents) 
+    else:
+        for session in range(1, sessionNum):
+            text_file = open('./Patient Details/{}/{}{}.txt'.format(PatientID,PatientID,sessionNum), "r+")
+            content = text_file.readlines()
+            line = content[:10]      
+            contents = " ".join(line)  
+            print(contents)
+            return(contents)   
+            

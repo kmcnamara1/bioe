@@ -1,8 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap,QIcon
 # from PyQt5.QtCore import 
-from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QDialog, QLabel,QDialogButtonBox,QVBoxLayout,QHBoxLayout
+from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QDialog, QLabel,QDialogButtonBox,QVBoxLayout,QHBoxLayout,QScrollArea
 import sys
+from PyQt5.QtCore import * 
 
 def loadPatientName():
         text_file = open("Patient Details/PatientName.txt", "r+")
@@ -23,7 +24,7 @@ def loadClinicianName():
         text_file = open("ClinicanName.txt", "r")
         data = text_file.read()
         text_file.close()
-        print(data)
+        # print(data)
         return data
 
 
@@ -32,7 +33,7 @@ def savePatientData(self,data):
         text_file.write("%s" % data)
         text_file.close()
 
-        print(text_input)
+        # print(text_input)
 
 
 class UIWindow(QWidget):
@@ -266,7 +267,31 @@ class UIWindow(QWidget):
 
         self.label_14.setText(self._translate("OverViewWindow", clinicianName ))
 
+###############################################################################################################
 
+# class for scrollable label
+class ScrollLabel(QScrollArea):
+    # contructor
+    def __init__(self, parent=None):   
+        super(ScrollLabel, self).__init__(parent)
+  
+        # making widget resizable
+        self.setWidgetResizable(True)
+        # making qwidget object
+        content = QWidget(self)
+        self.setWidget(content)
+        # vertical box layout
+        lay = QVBoxLayout(content)
+        # creating label
+        self.label = QLabel(content)
+        # setting alignment to the text
+        self.label.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+        # making label multi-line
+        self.label.setWordWrap(True)  
+        # adding label to the layout
+        lay.addWidget(self.label)
+
+###############################################################################################################
 
 class UIToolTab(QWidget):
     def __init__(self, parent=None):
@@ -387,19 +412,162 @@ class UIToolTab(QWidget):
         self.label_2.setText(_translate("LoginWindow", "NAME:"))
         self.extButton.setText(_translate("LoginWindow", "EXIT"))
 
-        # self.CPSBTN = QPushButton("text2", self)
-        # self.CPSBTN.move(100, 350)
-
-
     def txtstate(self):
         text_input = self.lineEdit.text()
         text_file = open("ClinicanName.txt", "w")
         text_file.write("%s" % text_input)
         text_file.close()
 
-        print(text_input)
+        # print(text_input)
 
-    
+###############################################################################################################
+
+class Ui_PatientHistoryWindow(QWidget):
+    def __init__(self, parent=None):
+        super(Ui_PatientHistoryWindow, self).__init__(parent)
+        # self.scroll = QScrollArea()   
+
+        self.centralwidget = QtWidgets.QWidget(self)
+        self.centralwidget.setObjectName("centralwidget")
+        self.SideColum = QtWidgets.QColumnView(self.centralwidget)
+        self.SideColum.setGeometry(QtCore.QRect(0, 0, 201, 741))
+        self.SideColum.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.SideColum.setObjectName("SideColum")
+        self.overviewSide = QtWidgets.QPushButton(self.centralwidget)
+        self.overviewSide.setGeometry(QtCore.QRect(0, 90, 201, 41))
+        self.overviewSide.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
+                ";")
+        self.overviewSide.setObjectName("overviewSide")
+        self.historySide = QtWidgets.QPushButton(self.centralwidget)
+        self.historySide.setGeometry(QtCore.QRect(0, 130, 201, 41))
+        self.historySide.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
+                ";")
+        self.historySide.setObjectName("historySide")
+        self.patientSetup = QtWidgets.QPushButton(self.centralwidget)
+        self.patientSetup.setGeometry(QtCore.QRect(0, 170, 201, 41))
+        self.patientSetup.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
+                ";")
+        self.patientSetup.setObjectName("patientSetup")
+        self.Logout = QtWidgets.QPushButton(self.centralwidget)
+        self.Logout.setGeometry(QtCore.QRect(0, 680, 201, 41))
+        self.Logout.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
+                ";\n"
+                "border-color: rgb(34, 34, 34);")
+        self.Logout.setObjectName("Logout")
+        self.changePatient = QtWidgets.QPushButton(self.centralwidget)
+        self.changePatient.setGeometry(QtCore.QRect(0, 630, 201, 41))
+        self.changePatient.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
+                ";")
+        self.changePatient.setObjectName("changePatient")
+        self.pastSesholder = QtWidgets.QFrame(self.centralwidget)
+        self.pastSesholder.setGeometry(QtCore.QRect(550, 70, 431, 61))
+        self.pastSesholder.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.pastSesholder.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.pastSesholder.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.pastSesholder.setObjectName("pastSesholder")
+        self.pastSesTitle = QtWidgets.QLabel(self.pastSesholder)
+        self.pastSesTitle.setGeometry(QtCore.QRect(130, 10, 181, 41))
+        self.pastSesTitle.setStyleSheet("font: 24pt \".AppleSystemUIFont\"; \n"
+                "background-color: rgb(255, 255, 255);\n"
+                "color: #7f7f7f")
+        self.pastSesTitle.setObjectName("pastSesTitle")
+        self.label_5 = QtWidgets.QLabel(self.centralwidget)
+        self.label_5.setGeometry(QtCore.QRect(220, 10, 171, 31))
+        self.label_5.setStyleSheet("font: 24pt \".AppleSystemUIFont\"; \n"
+                "background-color: rgb(255, 255, 255);\n"
+                "color:#323232")
+        self.label_5.setObjectName("label_5")
+        self.WelcomeFrame_4 = QtWidgets.QFrame(self.centralwidget)
+        self.WelcomeFrame_4.setGeometry(QtCore.QRect(210, 0, 1061, 51))
+        self.WelcomeFrame_4.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.WelcomeFrame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.WelcomeFrame_4.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.WelcomeFrame_4.setObjectName("WelcomeFrame_4")
+        self.label_10 = QtWidgets.QLabel(self.WelcomeFrame_4)
+        self.label_10.setGeometry(QtCore.QRect(820, 10, 231, 31))
+        self.label_10.setStyleSheet("font: 18pt \".AppleSystemUIFont\"; \n"
+                "background-color: rgb(255, 255, 255);\n"
+                "color: #7f7f7f")
+        self.label_10.setObjectName("label_10")
+        self.WelcomeFrame_5 = QtWidgets.QFrame(self.centralwidget)
+        self.WelcomeFrame_5.setGeometry(QtCore.QRect(0, 0, 201, 91))
+        self.WelcomeFrame_5.setStyleSheet("background-color: rgba(106, 108, 108, 157); color: white;\n"
+                "")
+        self.WelcomeFrame_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.WelcomeFrame_5.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.WelcomeFrame_5.setObjectName("WelcomeFrame_5")
+        self.label_13 = QtWidgets.QLabel(self.WelcomeFrame_5)
+        self.label_13.setGeometry(QtCore.QRect(70, 10, 51, 31))
+        self.label_13.setStyleSheet("")
+        self.label_13.setObjectName("label_13")
+        self.label_14 = QtWidgets.QLabel(self.WelcomeFrame_5)
+        self.label_14.setGeometry(QtCore.QRect(40, 40, 121, 31))
+        self.label_14.setStyleSheet("font: 13pt \".AppleSystemUIFont\";")
+        self.label_14.setObjectName("label_14")
+
+        self.PastSessions = QtWidgets.QFrame(self.centralwidget)
+        self.PastSessions.setGeometry(QtCore.QRect(450, 150, 621, 581))
+        self.PastSessions.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.PastSessions.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.PastSessions.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.PastSessions.setObjectName("PastSessions")
+
+        # self.verticalScrollBar = QtWidgets.QScrollBar(self.PastSessions)
+        # self.verticalScrollBar.setGeometry(QtCore.QRect(600, 10, 20, 561))
+        # self.verticalScrollBar.setOrientation(QtCore.Qt.Vertical)
+        # self.verticalScrollBar.setObjectName("verticalScrollBar")
+
+        # self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        # self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        # self.scroll.setWidgetResizable(True)
+        # self.scroll.setStyleSheet("background-color: rgb(255, 255, 255);")
+
+        # # self.scroll.setWidget(self.centralwidget)
+        # self.scroll.setGeometry(QtCore.QRect(450, 150, 621, 581))
+        # # # creating label
+        # self.label = QtWidgets.QLabel(self.scroll)
+        # self.label.setWordWrap(True) 
+        # self.label.setGeometry(QtCore.QRect(450, 150, 621, 581))   
+        # self.label.setStyleSheet("font: 13pt \".AppleSystemUIFont\"; \n"
+        #         "background-color: rgb(255, 255, 255);\n"
+        #         "color: #000000")           
+        # # # adding label to the layout
+        # self.label.setText('BBEBEBEBEBEB\nbebebece\nebec\nececac\necsve\nevwevs\nevvettt\nttt\nwdxws')
+
+        self.SideColum.raise_()
+        self.overviewSide.raise_()
+        self.historySide.raise_()
+        self.patientSetup.raise_()
+        self.Logout.raise_()
+        self.changePatient.raise_()
+        self.pastSesholder.raise_()
+        self.WelcomeFrame_4.raise_()
+        self.label_5.raise_()
+        self.WelcomeFrame_5.raise_()
+        self.PastSessions.raise_()
+
+        self.menubar = QtWidgets.QMenuBar(self)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 22))
+        self.menubar.setObjectName("menubar")
+        self.statusbar = QtWidgets.QStatusBar(self)
+        self.statusbar.setObjectName("statusbar")
+
+        self._translate = QtCore.QCoreApplication.translate
+        self.setWindowTitle(self._translate("MainWindow", "MainWindow"))
+        self.overviewSide.setText(self._translate("MainWindow", "Overview"))
+        self.historySide.setText(self._translate("MainWindow", "History"))
+        self.patientSetup.setText(self._translate("MainWindow", "Patient Setup"))
+        self.Logout.setText(self._translate("MainWindow", "Logout"))
+        self.changePatient.setText(self._translate("MainWindow", "Change Patient"))
+        self.pastSesTitle.setText(self._translate("MainWindow", "Past Sessions"))
+        self.label_5.setText(self._translate("MainWindow", "Session no. "))
+        self.label_10.setText(self._translate("MainWindow", "Paitent: Jone Swith"))
+        self.label_13.setText(self._translate("MainWindow", "Clinician"))
+        self.label_14.setText(self._translate("MainWindow", "Pippa Pepo"))
+        # self.ses1.setText(self._translate("MainWindow", "Hello"))
+        # self.label.setText(self._translate("MainWindow", "Paitent: Jone Swith"))
+
+###############################################################################################################
 class UIinitPatientSetUp(QDialog):
     
     def __init__(self, parent=None):
@@ -412,11 +580,9 @@ class UIinitPatientSetUp(QDialog):
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")  
 
-
         Dialog.setStyleSheet("background-color: rgb(255,252,241)\n")
 
         self.layout = QVBoxLayout()
-
 
         self.patientsnameFrame = QtWidgets.QFrame(self.centralwidget)
         self.patientsnameFrame.setGeometry(QtCore.QRect(90, 10, 271, 81))
@@ -424,8 +590,6 @@ class UIinitPatientSetUp(QDialog):
         self.patientsnameFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.patientsnameFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.patientsnameFrame.setObjectName("patientsnameFrame")
-
-        # self.layout.addWidget(self.patientsnameFrame)
 
         self.labelPatientsName = QtWidgets.QLabel(self.patientsnameFrame)
         self.labelPatientsName.setGeometry(QtCore.QRect(40, 10, 191, 31))
@@ -452,16 +616,12 @@ class UIinitPatientSetUp(QDialog):
 
         self.patientSetup.returnPressed.connect(self.get_patient_name)
 
-
-
-
         self.MuscleDemo = QtWidgets.QFrame(self.centralwidget)
         self.MuscleDemo.setGeometry(QtCore.QRect(20, 120, 411, 301))
         self.MuscleDemo.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.MuscleDemo.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.MuscleDemo.setFrameShadow(QtWidgets.QFrame.Raised)
         self.MuscleDemo.setObjectName("MuscleDemo")
-
 
         self.findmuscleLabl = QtWidgets.QLabel(self.MuscleDemo)
         self.findmuscleLabl.setGeometry(QtCore.QRect(110, 10, 201, 21))
@@ -503,6 +663,7 @@ class UIinitPatientSetUp(QDialog):
                 "")
 
         self.nextButton.setObjectName("nextButton")
+
         self.nextButton.clicked.connect(self.test_exit)
 
 
@@ -529,10 +690,6 @@ class UIinitPatientSetUp(QDialog):
         self.exampleLabel.setText(_translate("Dialog", "Example:"))
         self.exitButton.setText(_translate("Dialog", "Exit")) 
         self.nextButton.setText(_translate("Dialog", "Next")) 
-        
-
-        # self.setLayout(self.layout)
-
 
     def test_exit(self):
         print("close popup!")
@@ -542,10 +699,10 @@ class UIinitPatientSetUp(QDialog):
         text_input = self.patientSetup.text()
         text_file = open("Patient Details/PatientName.txt", "w")
         text_file.write("%s" % text_input)
-        print(text_input)
+        # print(text_input)
         text_file.close()  
 
-
+###############################################################################################################
 class UIinitMeasurePatientSetUp(QDialog):
     
     def __init__(self, parent=None):
@@ -601,8 +758,8 @@ class UIinitMeasurePatientSetUp(QDialog):
                 "selection-background-color: rgb(197, 201, 201);\n"
                 "")
         self.doneButton.setObjectName("doneButton")
-        self.doneButton.clicked.connect(self.test_done)
 
+        self.doneButton.clicked.connect(self.test_done)
 
         self.backButton = QtWidgets.QPushButton(self.centralwidget)
         self.backButton.setGeometry(QtCore.QRect(20, 420, 101, 20))
@@ -651,7 +808,7 @@ class UIinitMeasurePatientSetUp(QDialog):
         print("back!")
         self.close()       
 
-
+###############################################################################################################
 class UIchangeExercisePopUp(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -739,6 +896,3 @@ class UIchangeExercisePopUp(QDialog):
         print("close exercise change popup!")
         self.close()    
 
-#     def wrist_button(self):
-#         print("close exercise change popup!")
-#         self.close()  
