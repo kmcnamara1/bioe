@@ -76,21 +76,31 @@ def displayPatientHistory(PatientID,sessionNum, exported):
             sessionNum = (sessionNum - 1)
  
     # numLines = 11*sessionNum
-    contents = []
+    contents = ""
 
     if (sessionNum == 1):
         text_file = open('./Patient Details/{}/{}{}.txt'.format(PatientID,PatientID,sessionNum), "r+")
         content = text_file.readlines()
-        line = content[:10]
+        line = content[:11]
         contents = " ".join(line)
         return(contents)    
-        # print(contents) 
+
     else:
-        for session in range(1, sessionNum):
-            text_file = open('./Patient Details/{}/{}{}.txt'.format(PatientID,PatientID,sessionNum), "r+")
+        for session in range(1,sessionNum+1):
+            print(session)
+            text_file = open('./Patient Details/{}/{}{}.txt'.format(PatientID,PatientID,session), "r+")
             content = text_file.readlines()
-            line = content[:10]      
-            contents = " ".join(line)  
+            line = content[:11]   
+            line = "".join(line)
+            line = (line + "-----------------------------------------------------------------------------------------\n")
+
+            text_file.close()
+            contents += line
             print(contents)
-            return(contents)   
+
+            # contents = contents.join("\n") 
+
+        # print(contents)   
+        return(contents)   
+
             

@@ -1,4 +1,3 @@
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from datetime import datetime
 from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QMessageBox, QDialog,QDialogButtonBox,QVBoxLayout
@@ -155,6 +154,14 @@ class MainWindow(QMainWindow):
             ScrollLabel.UiComponents(self.historyWindow,"no previous sessions")
         else:
             ScrollLabel.UiComponents(self.historyWindow,historyList)
+
+        #Checks the name once patient set up is done
+        if (self.patientDetail.patientName == None):
+            self.historyWindow.label_10.setText(self.historyWindow._translate("OverViewWindow", "Patient: - "))
+        else:
+            self.historyWindow.label_10.setText(self.historyWindow._translate("OverViewWindow", "Patient: {}".format(self.patientDetail.patientName) ))
+        
+        self.historyWindow.overviewSide.clicked.connect(self.startUIWindow)
 
         self.show()
 

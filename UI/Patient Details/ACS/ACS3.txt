@@ -1,0 +1,11 @@
+PatientID:ACS
+PatientName:Anna Catherine Scolaro
+Date:03/04/2021
+Clinician:Pippa Scol
+sessionNum:3
+setupMeasWrist:5.5
+setupMeasFinger:0
+setupMeasShoulder:0
+wristMVC:70
+fingerMVC:0
+shoulderMVC:0 

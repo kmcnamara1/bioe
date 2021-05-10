@@ -92,13 +92,13 @@ class UIWindow(QWidget):
         self.historySide.setObjectName("historySide")
 
 
-        self.goalSide = QtWidgets.QPushButton(self.centralwidget)
-        self.goalSide.setGeometry(QtCore.QRect(0, 170, 201, 41))
-        self.goalSide.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
-                ";")
-        self.goalSide.setObjectName("goalSide")
+        # self.goalSide = QtWidgets.QPushButton(self.centralwidget)
+        # self.goalSide.setGeometry(QtCore.QRect(0, 170, 201, 41))
+        # self.goalSide.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
+        #         ";")
+        # self.goalSide.setObjectName("goalSide")
         self.patientSetup = QtWidgets.QPushButton(self.centralwidget)
-        self.patientSetup.setGeometry(QtCore.QRect(0, 210, 201, 41))
+        self.patientSetup.setGeometry(QtCore.QRect(0, 170, 201, 41))
         self.patientSetup.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
                 ";")
         self.patientSetup.setObjectName("patientSetup")
@@ -210,7 +210,6 @@ class UIWindow(QWidget):
         self.SideColum.raise_()
         self.overviewSide.raise_()
         self.historySide.raise_()
-        self.goalSide.raise_()
         self.patientSetup.raise_()
         self.Logout.raise_()
         self.changePatient.raise_()
@@ -220,25 +219,19 @@ class UIWindow(QWidget):
         self.WelcomeFrame_4.raise_()
         self.label_5.raise_()
         self.WelcomeFrame_5.raise_()
-        # OverViewWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 22))
         self.menubar.setObjectName("menubar")
-        # # OverViewWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(self)
         self.statusbar.setObjectName("statusbar")
-
-
         self._translate = QtCore.QCoreApplication.translate
 
-        # OverViewWindow.setWindowTitle(_translate("OverViewWindow", "OverViewWindow"))
         self.startButton.setText(self._translate("OverViewWindow", "Start"))
         self.stopButton.setText(self._translate("OverViewWindow", "Stop"))
         self.changeExerciseButton.setText(self._translate("OverViewWindow", "Change Exercise"))
         self.ExportDataButton.setText(self._translate("OverViewWindow", "Export Data"))
         self.overviewSide.setText(self._translate("OverViewWindow", "Overview"))
         self.historySide.setText(self._translate("OverViewWindow", "History"))
-        self.goalSide.setText(self._translate("OverViewWindow", "Goal"))
         self.patientSetup.setText(self._translate("OverViewWindow", "Patient Setup"))
         self.Logout.setText(self._translate("OverViewWindow", "Logout"))
         self.changePatient.setText(self._translate("OverViewWindow", "Change Patient"))
@@ -266,30 +259,6 @@ class UIWindow(QWidget):
         clinicianName = loadClinicianName()
 
         self.label_14.setText(self._translate("OverViewWindow", clinicianName ))
-
-###############################################################################################################
-
-# class for scrollable label
-class ScrollLabel(QScrollArea):
-    # contructor
-    def __init__(self, parent=None):   
-        super(ScrollLabel, self).__init__(parent)
-  
-        # making widget resizable
-        self.setWidgetResizable(True)
-        # making qwidget object
-        content = QWidget(self)
-        self.setWidget(content)
-        # vertical box layout
-        lay = QVBoxLayout(content)
-        # creating label
-        self.label = QLabel(content)
-        # setting alignment to the text
-        self.label.setAlignment(Qt.AlignLeft | Qt.AlignTop)
-        # making label multi-line
-        self.label.setWordWrap(True)  
-        # adding label to the layout
-        lay.addWidget(self.label)
 
 ###############################################################################################################
 
@@ -512,28 +481,6 @@ class Ui_PatientHistoryWindow(QWidget):
         self.PastSessions.setFrameShadow(QtWidgets.QFrame.Raised)
         self.PastSessions.setObjectName("PastSessions")
 
-        # self.verticalScrollBar = QtWidgets.QScrollBar(self.PastSessions)
-        # self.verticalScrollBar.setGeometry(QtCore.QRect(600, 10, 20, 561))
-        # self.verticalScrollBar.setOrientation(QtCore.Qt.Vertical)
-        # self.verticalScrollBar.setObjectName("verticalScrollBar")
-
-        # self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        # self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        # self.scroll.setWidgetResizable(True)
-        # self.scroll.setStyleSheet("background-color: rgb(255, 255, 255);")
-
-        # # self.scroll.setWidget(self.centralwidget)
-        # self.scroll.setGeometry(QtCore.QRect(450, 150, 621, 581))
-        # # # creating label
-        # self.label = QtWidgets.QLabel(self.scroll)
-        # self.label.setWordWrap(True) 
-        # self.label.setGeometry(QtCore.QRect(450, 150, 621, 581))   
-        # self.label.setStyleSheet("font: 13pt \".AppleSystemUIFont\"; \n"
-        #         "background-color: rgb(255, 255, 255);\n"
-        #         "color: #000000")           
-        # # # adding label to the layout
-        # self.label.setText('BBEBEBEBEBEB\nbebebece\nebec\nececac\necsve\nevwevs\nevvettt\nttt\nwdxws')
-
         self.SideColum.raise_()
         self.overviewSide.raise_()
         self.historySide.raise_()
@@ -562,10 +509,10 @@ class Ui_PatientHistoryWindow(QWidget):
         self.pastSesTitle.setText(self._translate("MainWindow", "Past Sessions"))
         self.label_5.setText(self._translate("MainWindow", "Session no. "))
         self.label_10.setText(self._translate("MainWindow", "Paitent: Jone Swith"))
+        clinicianName = loadClinicianName()
+        self.label_14.setText(self._translate("OverViewWindow", clinicianName ))
         self.label_13.setText(self._translate("MainWindow", "Clinician"))
-        self.label_14.setText(self._translate("MainWindow", "Pippa Pepo"))
-        # self.ses1.setText(self._translate("MainWindow", "Hello"))
-        # self.label.setText(self._translate("MainWindow", "Paitent: Jone Swith"))
+
 
 ###############################################################################################################
 class UIinitPatientSetUp(QDialog):
