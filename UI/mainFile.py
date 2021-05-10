@@ -188,8 +188,14 @@ class MainWindow(QMainWindow):
     def startEnterMeasurementsPopup(self):
         startEnterMeasurementsPopup = UIinitMeasurePatientSetUp(self)
         startEnterMeasurementsPopup.backButton.clicked.connect(self.startSetUpPopup)
-        startEnterMeasurementsPopup.doneButton.clicked.connect(self.startUIWindow)
+        startEnterMeasurementsPopup.doneButton.clicked.connect(self.sampleEMGPopup)
         startEnterMeasurementsPopup.show()
+
+    def sampleEMGPopup(self):
+        popup = Ui_SampleEMG(self)
+        popup.nextButton.clicked.connect(self.startUIWindow)
+        popup.backBB.clicked.connect(self.startEnterMeasurementsPopup)
+        popup.show()       
 
     def changeExercisePopUp(self):
         changeExercisePopUp = UIchangeExercisePopUp(self)

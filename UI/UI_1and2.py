@@ -1,9 +1,22 @@
+
+from __future__ import annotations
+from typing import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap,QIcon
-# from PyQt5.QtCore import 
-from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QDialog, QLabel,QDialogButtonBox,QVBoxLayout,QHBoxLayout,QScrollArea
+from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QDialog, QLabel,QDialogButtonBox,QVBoxLayout,QHBoxLayout,QScrollArea,QVBoxLayout
 import sys
+import os
 from PyQt5.QtCore import * 
+
+from matplotlib.backends.qt_compat import QtCore, QtWidgets
+from matplotlib.backends.backend_qt5agg import FigureCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+import matplotlib as mpl
+import matplotlib.figure as mpl_fig
+import matplotlib.animation as anim
+import numpy as np
+
+
 
 def loadPatientName():
         text_file = open("Patient Details/PatientName.txt", "r+")
@@ -24,16 +37,7 @@ def loadClinicianName():
         text_file = open("ClinicanName.txt", "r")
         data = text_file.read()
         text_file.close()
-        # print(data)
         return data
-
-
-def savePatientData(self,data):
-        text_file = open("PatientData.txt", "w")
-        text_file.write("%s" % data)
-        text_file.close()
-
-        # print(text_input)
 
 
 class UIWindow(QWidget):
@@ -743,17 +747,168 @@ class UIinitMeasurePatientSetUp(QDialog):
         self.findmuscleLabl.setText(_translate("MainWindow", "Place EMG on muscle belly"))
         self.exampleLabel.setText(_translate("MainWindow", "Example:"))
         self.findmuscleLabl_2.setText(_translate("MainWindow", "Find Measurement from wrist crease to EMG Placement"))
-        self.doneButton.setText(_translate("MainWindow", "Done"))
+        self.doneButton.setText(_translate("MainWindow", "Next"))
         self.backButton.setText(_translate("MainWindow", "Back"))
         self.labelPatientsName.setText(_translate("MainWindow", "ENTER MEASUREMENT (cm)"))
 
     def test_done(self):
-        print("DIALOG DONE!")
+        print("Next to EMG data!")
         self.close()  
 
     def test_back(self):
-        print("back!")
+        print("back to name page!")
         self.close()       
+###############################################################################################################
+
+class Ui_SampleEMG(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.setObjectName("MainWindow")
+        self.resize(450, 493)
+        self.setMaximumSize(QtCore.QSize(1280, 16777215))
+        self.setStyleSheet("background-color: rgb(255,252,241)\n"
+                "")
+        self.centralwidget = QtWidgets.QWidget(self)
+        self.centralwidget.setObjectName("centralwidget")
+        self.MuscleDemo = QtWidgets.QFrame(self.centralwidget)
+        self.MuscleDemo.setGeometry(QtCore.QRect(20, 0, 411, 341))
+        self.MuscleDemo.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.MuscleDemo.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.MuscleDemo.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.MuscleDemo.setObjectName("MuscleDemo")
+
+##########################################################################################
+
+        self.lyt = QtWidgets.QVBoxLayout()
+        self.MuscleDemo.setLayout(self.lyt)
+        # self.setCentralWidget(self.MuscleDemo)
+
+        # 2. Place the matplotlib figure
+        self.myFig = MyFigureCanvas(x_len=200, y_range=[0, 100], interval=20)
+        self.lyt.addWidget(self.myFig)
+
+##########################################################################################
+
+        self.exampleLabel = QtWidgets.QLabel(self.MuscleDemo)
+        self.exampleLabel.setGeometry(QtCore.QRect(160, 10, 81, 21))
+        self.exampleLabel.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                "color: rgb(37,39,51)")
+        self.exampleLabel.setObjectName("exampleLabel")
+        self.RigthSide = QtWidgets.QColumnView(self.centralwidget)
+        self.RigthSide.setGeometry(QtCore.QRect(430, 0, 20, 441))
+        self.RigthSide.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.RigthSide.setObjectName("RigthSide")
+        self.leftSide = QtWidgets.QColumnView(self.centralwidget)
+        self.leftSide.setGeometry(QtCore.QRect(0, 0, 20, 441))
+        self.leftSide.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.leftSide.setObjectName("leftSide")
+        self.nextButton = QtWidgets.QPushButton(self.centralwidget)
+        self.nextButton.setGeometry(QtCore.QRect(330, 420, 101, 20))
+        self.nextButton.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(37,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+        self.nextButton.setObjectName("nextButton")
+        self.backBB = QtWidgets.QPushButton(self.centralwidget)
+        self.backBB.setGeometry(QtCore.QRect(20, 420, 101, 20))
+        self.backBB.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(37,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+        self.backBB.setObjectName("backBB")
+        self.patientsnameFrame = QtWidgets.QFrame(self.centralwidget)
+        self.patientsnameFrame.setGeometry(QtCore.QRect(90, 350, 271, 61))
+        self.patientsnameFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.patientsnameFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.patientsnameFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.patientsnameFrame.setObjectName("patientsnameFrame")
+        self.labelPatientsName = QtWidgets.QLabel(self.patientsnameFrame)
+        self.labelPatientsName.setGeometry(QtCore.QRect(60, 10, 151, 31))
+        self.labelPatientsName.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                "background-color: rgb(255, 255, 255);\n"
+                "color: rgb(37,39,51);")
+        self.labelPatientsName.setObjectName("labelPatientsName")
+        self.menubar = QtWidgets.QMenuBar(self)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 450, 24))
+        self.menubar.setObjectName("menubar")
+        self.statusbar = QtWidgets.QStatusBar(self)
+        self.statusbar.setObjectName("statusbar")
+
+        self.nextButton.clicked.connect(self.test_done)
+        self.backBB.clicked.connect(self.test_back)
+
+        _translate = QtCore.QCoreApplication.translate
+        self.exampleLabel.setText(_translate("MainWindow", "EMG DATA:"))
+        self.nextButton.setText(_translate("MainWindow", "Done"))
+        self.backBB.setText(_translate("MainWindow", "Back"))
+        self.labelPatientsName.setText(_translate("MainWindow", "Sample of EMG signal"))
+
+
+    def test_done(self):
+        print("FINISHED!")
+        self.close()  
+
+    def test_back(self):
+        print("back to measurement page!")
+        self.close()  
+
+
+
+class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
+    '''
+    This is the FigureCanvas in which the live plot is drawn.
+
+    '''
+    def __init__(self, x_len:int, y_range:List, interval:int) -> None:
+        '''
+        :param x_len:       The nr of data points shown in one plot.
+        :param y_range:     Range on y-axis.
+        :param interval:    Get a new datapoint every .. milliseconds.
+
+        '''
+        FigureCanvas.__init__(self, mpl_fig.Figure())
+        # Range settings
+        self._x_len_ = x_len
+        self._y_range_ = y_range
+
+        # Store two lists _x_ and _y_
+        x = list(range(0, x_len))
+        y = [0] * x_len
+
+        # Store a figure and ax
+        self._ax_  = self.figure.subplots()
+        self._ax_.set_ylim(ymin=self._y_range_[0], ymax=self._y_range_[1])
+        self._line_, = self._ax_.plot(x, y)
+
+        # Call superclass constructors
+        anim.FuncAnimation.__init__(self, self.figure, self._update_canvas_, fargs=(y,), interval=interval, blit=True)
+        return
+
+    def _update_canvas_(self, i, y) -> None:
+        '''
+        This function gets called regularly by the timer.
+
+        '''
+        y.append(round(get_next_datapoint(), 2))     # Add new datapoint
+        y = y[-self._x_len_:]                        # Truncate list _y_
+        self._line_.set_ydata(y)
+        return self._line_,
+
+# Data source
+# ------------
+n = np.linspace(0, 499, 500)
+d = 50 + 25 * (np.sin(n / 8.3)) + 10 * (np.sin(n / 7.5)) - 5 * (np.sin(n / 1.5))
+i = 0
+
+def get_next_datapoint():
+    global i
+    i += 1
+    if i > 499:
+        i = 0
+    return d[i]
 
 ###############################################################################################################
 class UIchangeExercisePopUp(QDialog):
