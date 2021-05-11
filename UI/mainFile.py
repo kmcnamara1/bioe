@@ -5,7 +5,7 @@ import sys
 import re
 import os
 from previousPatientData import *
-from UI_1and2 import *
+from mainWindows import *
 from dialogs import *
 
 LOAD_PREVIOUS = 1;
@@ -143,7 +143,7 @@ class MainWindow(QMainWindow):
         self.Window.changePatient.clicked.connect(self.patientChangeCheckPopUp)
 
         self.Window.historySide.clicked.connect(self.startUIpatietnHistory)
-        if ((self.currentDetails.patientID) == None):
+        if ((self.patientDetail.patientName) == None):
             self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
         else:
             self.Window.patientSetup.clicked.connect(self.patientCheckPopUp)
