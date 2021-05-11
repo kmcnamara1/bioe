@@ -6,6 +6,7 @@ import re
 import os
 from previousPatientData import *
 from UI_1and2 import *
+from dialogs import *
 
 LOAD_PREVIOUS = 1;
 NEW_PATIENT = 0;
@@ -73,8 +74,8 @@ class ScrollLabel(QScrollArea):
         # label.setText(text)
         label.label.setText(text)
         label.label.setStyleSheet("font: 13pt \".AppleSystemUIFont\"; \n"
-        "background-color: rgb(255, 255, 255);\n"
-        "color: #000000")     
+                                  "background-color: rgb(255, 255, 255);\n"
+                                  "color: #000000")     
         # setting geometry
         label.setGeometry(QtCore.QRect(450, 150, 621, 581))
 
@@ -139,6 +140,7 @@ class MainWindow(QMainWindow):
         #view all past patient history
 
         # print(self.currentDetails.patientName)
+        self.Window.changePatient.clicked.connect(self.patientChangeCheckPopUp)
 
         self.Window.historySide.clicked.connect(self.startUIpatietnHistory)
         if ((self.currentDetails.patientID) == None):
@@ -170,7 +172,6 @@ class MainWindow(QMainWindow):
         self.show()
 
     def startSetUpPopup(self):
-
         #init the patient setup
         setUpPatient = UIinitPatientSetUp(self)
         setUpPatient.setStyleSheet("background-color: rgb(255,252,241);");
@@ -186,7 +187,6 @@ class MainWindow(QMainWindow):
         # Run function that will see if a text file of the patients id exists in "patients details/id.txt"
         # setUpPatient.patientSetup.returnPressed.connect(lambda: self.checkDetail(setUpPatient))
         setUpPatient.nextButton.clicked.connect(lambda: self.checkDetail(setUpPatient))
-
         setUpPatient.show()
         
     def startEnterMeasurementsPopup(self):
@@ -216,9 +216,47 @@ class MainWindow(QMainWindow):
         ui_patientCheckPopUp.BACK.clicked.connect(self.startUIWindow)
         ui_patientCheckPopUp.show()
 
+    def patientChangeCheckPopUp(self):
+        ui_patientChangeCheckPopUp = Ui_changePatientPopUp(self)
+        popup = QMessageBox(ui_patientChangeCheckPopUp)
+        ui_patientChangeCheckPopUp.DONE.clicked.connect(self.changePatientButton)
+        ui_patientChangeCheckPopUp.BACK.clicked.connect(self.startUIWindow)
+        ui_patientChangeCheckPopUp.show()        
+
+
 ########################################################################################################################################
                                             # Class functions #
 ########################################################################################################################################
+    def changePatientButton(self):     
+        self.currentDetails.clinicanName = None
+        self.currentDetails.date = None
+        self.currentDetails.patientID = None
+        self.currentDetails.patientName = None
+        self.currentDetails.sessionNum = 0
+        self.currentDetails.setupMeas = None
+        self.currentDetails.setupMeasWrist = None
+        self.currentDetails.setupMeasFinger = None
+        self.currentDetails.setupMeasShoulder = None
+        self.currentDetails.wristMVC = None
+        self.currentDetails.fingerMVC = None
+        self.currentDetails.shoulderMVC = None
+        self.currentDetails.beenExported = None  
+
+        self.patientDetail.patientName = None
+        self.patientDetail.patientID = None
+        self.patientDetail.date = None
+        self.patientDetail.sessionNum = 0
+        self.patientDetail.setupMeas = None
+        self.patientDetail.setupMeasWrist = None
+        self.patientDetail.setupMeasFinger = None
+        self.patientDetail.setupMeasShoulder = None
+        self.patientDetail.wristMVC = None
+        self.patientDetail.fingerMVC = None
+        self.patientDetail.shoulderMVC = None
+        self.patientDetail.beenExported = None 
+
+        self.Window.label_5.setText(self.Window._translate("OverViewWindow", "Session no.  ")) 
+        self.Window.label_10.setText(self.Window._translate("OverViewWindow", "Patient: - "))   
 
     def passCurrentExercise(self,n):
         if n==1:
