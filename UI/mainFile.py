@@ -121,10 +121,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.Window)
         self.Window.Logout.clicked.connect(self.startUIToolTab)  
 
-
         #set up patient details run next class
-        self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
-
         if (self.currentDetails.sessionNum!=0):
             self.Window.label_5.setText(self.Window._translate("OverViewWindow", "Session no.{} ".format(self.currentDetails.sessionNum)))       
 
@@ -140,7 +137,14 @@ class MainWindow(QMainWindow):
         #export data button
         self.Window.ExportDataButton.clicked.connect(self.exportData)
         #view all past patient history
+
+        # print(self.currentDetails.patientName)
+
         self.Window.historySide.clicked.connect(self.startUIpatietnHistory)
+        if ((self.currentDetails.patientID) == None):
+            self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
+        else:
+            self.Window.patientSetup.clicked.connect(self.patientCheckPopUp)
         self.show()
 
     def startUIpatietnHistory(self):
@@ -204,6 +208,13 @@ class MainWindow(QMainWindow):
         changeExercisePopUp.FingerFlexion.clicked.connect(lambda: self.passCurrentExercise(2))
         changeExercisePopUp.Deltoid.clicked.connect(lambda: self.passCurrentExercise(3))
         changeExercisePopUp.show()   
+
+    def patientCheckPopUp(self):
+        ui_patientCheckPopUp = Ui_patientPopUp(self)
+        popup = QMessageBox(ui_patientCheckPopUp)
+        ui_patientCheckPopUp.DONE.clicked.connect(self.startSetUpPopup)
+        ui_patientCheckPopUp.BACK.clicked.connect(self.startUIWindow)
+        ui_patientCheckPopUp.show()
 
 ########################################################################################################################################
                                             # Class functions #

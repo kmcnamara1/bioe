@@ -29,6 +29,7 @@ def getPreviousWrist(sessionNum,ID):
     else:
         values = []
         for session in range(1,sessionNum+1):
+            print(session)
             text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,session), "r+")
             content = text_file.readlines()
             line = content[WRIST_LINE]   
