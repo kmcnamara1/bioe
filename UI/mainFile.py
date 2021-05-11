@@ -138,7 +138,8 @@ class MainWindow(QMainWindow):
         #export data button
         self.Window.ExportDataButton.clicked.connect(self.exportData)
         #view all past patient history
-
+        self.Window.startButton.clicked.connect(self.startButtonFun)
+    
         # print(self.currentDetails.patientName)
         self.Window.changePatient.clicked.connect(self.patientChangeCheckPopUp)
 
@@ -227,6 +228,10 @@ class MainWindow(QMainWindow):
 ########################################################################################################################################
                                             # Class functions #
 ########################################################################################################################################
+    def startButtonFun(self):
+        self.Window.label_7.setText(self.Window._translate("OverViewWindow", "41.322mV"))
+
+
     def changePatientButton(self):     
         self.currentDetails.clinicanName = None
         self.currentDetails.date = None

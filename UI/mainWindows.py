@@ -95,12 +95,6 @@ class UIWindow(QWidget):
         
         self.historySide.setObjectName("historySide")
 
-
-        # self.goalSide = QtWidgets.QPushButton(self.centralwidget)
-        # self.goalSide.setGeometry(QtCore.QRect(0, 170, 201, 41))
-        # self.goalSide.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
-        #         ";")
-        # self.goalSide.setObjectName("goalSide")
         self.patientSetup = QtWidgets.QPushButton(self.centralwidget)
         self.patientSetup.setGeometry(QtCore.QRect(0, 170, 201, 41))
         self.patientSetup.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
@@ -157,7 +151,7 @@ class UIWindow(QWidget):
 
         self.label_6.setObjectName("label_6")
         self.label_7 = QtWidgets.QLabel(self.WelcomeFrame_2)
-        self.label_7.setGeometry(QtCore.QRect(50, 40, 101, 41))
+        self.label_7.setGeometry(QtCore.QRect(50, 40, 110, 41))
         self.label_7.setStyleSheet("font: 24pt \".AppleSystemUIFont\"; \n"
                 "background-color: rgb(255, 255, 255);\n"
                 "color:#323232")
