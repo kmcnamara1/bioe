@@ -54,7 +54,6 @@ class UIWindow(QWidget):
 
         #icon!
         self.startButton.setIcon(QIcon('icons/play-button.png')) 
-
         self.stopButton = QtWidgets.QPushButton(self.centralwidget)
         self.stopButton.setGeometry(QtCore.QRect(1050, 170, 141, 71))
         self.stopButton.setStyleSheet("background-color: rgb(235,87,87)")
