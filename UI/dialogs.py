@@ -80,28 +80,28 @@ class UIchangeExercisePopUp(QDialog):
 
         setupWindow = QtWidgets.QWidget(self)
         setupWindow.setObjectName("MainWindow")
-        setupWindow.resize(240, 259)
-        setupWindow.setMaximumSize(QtCore.QSize(1280, 16777215))
+        setupWindow.resize(240, 150)
+        setupWindow.setMaximumSize(QtCore.QSize(240, 150))
         setupWindow.setStyleSheet("background-color: rgb(255,252,241)\n")
 
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
         self.RightSide = QtWidgets.QColumnView(self.centralwidget)
-        self.RightSide.setGeometry(QtCore.QRect(220, 0, 20, 211))
+        self.RightSide.setGeometry(QtCore.QRect(220, 0, 20, 150))
         self.RightSide.setStyleSheet("background-color: rgb(78, 78, 78)")
         self.RightSide.setObjectName("RightSide")
         self.leftSide = QtWidgets.QColumnView(self.centralwidget)
-        self.leftSide.setGeometry(QtCore.QRect(0, 0, 20, 211))
+        self.leftSide.setGeometry(QtCore.QRect(0, 0, 20, 150))
         self.leftSide.setStyleSheet("background-color: rgb(78, 78, 78)")
         self.leftSide.setObjectName("leftSide")
         self.windowFrame = QtWidgets.QFrame(self.centralwidget)
-        self.windowFrame.setGeometry(QtCore.QRect(20, 0, 201, 211))
+        self.windowFrame.setGeometry(QtCore.QRect(20, 0, 201, 150))
         self.windowFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.windowFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.windowFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.windowFrame.setObjectName("windowFrame")
         self.chooseExercise = QtWidgets.QLabel(self.windowFrame)
-        self.chooseExercise.setGeometry(QtCore.QRect(50, 10, 111, 21))
+        self.chooseExercise.setGeometry(QtCore.QRect(40, 20, 111, 21))
         self.chooseExercise.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
                 "background-color: rgb(255, 255, 255);\n"
                 "color: rgb(37,39,51);")     
@@ -153,8 +153,10 @@ class UIchangeExercisePopUp(QDialog):
         self.WristExtension.setText(_translate("MainWindow", "Wrist Extension"))
         self.FingerFlexion.setText(_translate("MainWindow", "Finger Flexion"))
         self.Deltoid.setText(_translate("MainWindow", "Deltoid ----"))
-        # self.exitexerciseButton.setText(_translate("MainWindow", "EXIT"))
-        # self.doneButton2.setText(_translate("MainWindow", "DONE"))
+
+        self.chooseExercise.setAlignment(Qt.AlignCenter)
+        self.chooseExercise.adjustSize()
+
 
     def test_exit(self):
         print("close exercise change popup!")

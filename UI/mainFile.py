@@ -118,6 +118,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.ToolTab)
         self.ToolTab.lineEdit.returnPressed.connect(self.startUIWindow)
         self.ToolTab.startButton.clicked.connect(self.startUIWindow)
+        
         self.show()
 
     def startUIWindow(self):
@@ -242,6 +243,7 @@ class MainWindow(QMainWindow):
 ########################################################################################################################################
     def startButtonFun(self):
         self.Window.label_7.setText(self.Window._translate("OverViewWindow", "41.322mV"))
+        self.Window.label_7.adjustSize()
 
 
     def changePatientButton(self):     
@@ -368,6 +370,7 @@ class MainWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+
     w = MainWindow()
     sys.exit(app.exec_())
     
