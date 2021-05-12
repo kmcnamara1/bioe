@@ -8,9 +8,11 @@ from previousPatientData import *
 from mainWindows import *
 from dialogs import *
 
-LOAD_PREVIOUS = 1;
-NEW_PATIENT = 0;
-YES = 1;
+LOAD_PREVIOUS = 1
+NEW_PATIENT = 0
+YES = 1
+
+
 
 ########################################################################################################################################
                                          # CLASSES #
@@ -108,6 +110,7 @@ class MainWindow(QMainWindow):
         loadClinicianName()
         self.currentDetails = patientDetails()
         self.startUIToolTab()
+        self.EXERCISE_SET = 0
         self.patientDetail = patientDetails() #start instance of patient details
 
     def startUIToolTab(self):
@@ -138,10 +141,15 @@ class MainWindow(QMainWindow):
         #export data button
         self.Window.ExportDataButton.clicked.connect(self.exportData)
         #view all past patient history
-        self.Window.startButton.clicked.connect(self.startButtonFun)
-    
-        # print(self.currentDetails.patientName)
         self.Window.changePatient.clicked.connect(self.patientChangeCheckPopUp)
+
+
+        # if (self.EXERCISE_SET==0):
+        #     self.Window.startButton.clicked.connect(self.checkPatientSetup)
+        # else:
+        #     self.Window.startButton.clicked.connect(self.startButtonFun)
+
+        self.Window.startButton.clicked.connect(self.startButtonFun)
 
         self.Window.historySide.clicked.connect(self.startUIpatietnHistory)
         if ((self.patientDetail.patientName) == None):
@@ -204,6 +212,7 @@ class MainWindow(QMainWindow):
 
     def changeExercisePopUp(self):
         changeExercisePopUp = UIchangeExercisePopUp(self)
+        self.EXERCISE_SET = 1
         popup = QMessageBox(changeExercisePopUp)
         changeExercisePopUp.WristExtension.clicked.connect(lambda: self.passCurrentExercise(1))
         changeExercisePopUp.FingerFlexion.clicked.connect(lambda: self.passCurrentExercise(2))
@@ -224,7 +233,10 @@ class MainWindow(QMainWindow):
         ui_patientChangeCheckPopUp.BACK.clicked.connect(self.startUIWindow)
         ui_patientChangeCheckPopUp.show()        
 
-
+    def checkPatientSetup(self):
+        dialogPatientSetup = Ui_needPatientSetup(self)
+        popup = QMessageBox(dialogPatientSetup)
+        dialogPatientSetup.show()
 ########################################################################################################################################
                                             # Class functions #
 ########################################################################################################################################
@@ -264,6 +276,7 @@ class MainWindow(QMainWindow):
         self.Window.label_10.setText(self.Window._translate("OverViewWindow", "Patient: - "))   
 
     def passCurrentExercise(self,n):
+        self.EXERCISE_SET = 1
         if n==1:
             self.Window.currentExerciseSelection = "Wrist Extension"
                   
