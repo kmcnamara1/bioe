@@ -79,7 +79,7 @@ class UIWindow(QWidget):
 
 
         self.SideColum = QtWidgets.QColumnView(self.centralwidget)
-        self.SideColum.setGeometry(QtCore.QRect(0, 0, 201*RES_SCALING, 741*RES_SCALING))
+        self.SideColum.setGeometry(QtCore.QRect(0, 0, 201, 741))
         self.SideColum.setStyleSheet("background-color: rgb(78, 78, 78)")
         self.SideColum.setObjectName("SideColum")
         self.overviewSide = QtWidgets.QPushButton(self.centralwidget)

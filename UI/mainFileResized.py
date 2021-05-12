@@ -5,7 +5,7 @@ import sys
 import re
 import os
 from previousPatientData import *
-from mainWindows import *
+from mainWindowsResized import *
 from dialogs import *
 
 LOAD_PREVIOUS = 1;
