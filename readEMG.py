@@ -11,7 +11,8 @@ class Main():
         
         
         self.master = master
-
+        self.maxContract = 0
+        
         initTrignoConnection(self)
 
 
@@ -19,7 +20,7 @@ class Main():
 
         self.streamEMGData()
 
-        self.maxContract = 0
+        
         
 
 
