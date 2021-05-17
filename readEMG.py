@@ -54,6 +54,9 @@ if __name__ == "__main__":
 
 
 
+# ###############
+# frame is a 1x17 array. First 16 elements represent EMG channels, 17th is the sample no
+# only one of the first 16 elements will be useful (as only one channel at a time)
 
 
 

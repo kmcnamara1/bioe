@@ -93,8 +93,8 @@ class DelsysSensors():
 
                 self.emg_data = self.emg_data.reshape(int(len(self.emg_data)/(self.EMG_DATA_PORT_LENGTH+1)),(self.EMG_DATA_PORT_LENGTH+1))
                 # print(self.emg_data)
-                if samples > 0 and abs(frame[1:16]).max() > self.maxContract:
-                    self.maxContract = abs(frame[1:16]).max()
+                if samples > 0 and abs(frame[0:16]).max() > self.maxContract:
+                    self.maxContract = abs(frame[0:16]).max()
                     print("MAX CONTRACTION VALUE {}".format(self.maxContract) )
 
 
