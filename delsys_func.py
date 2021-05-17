@@ -92,10 +92,10 @@ class DelsysSensors():
                     break
 
                 self.emg_data = self.emg_data.reshape(int(len(self.emg_data)/(self.EMG_DATA_PORT_LENGTH+1)),(self.EMG_DATA_PORT_LENGTH+1))
-                print(self.emg_data)
-                if self.emg_data == True and max(self.emg_data) > self.maxContract:
-                    self.maxContract = self.emg_data
-                    print("MAX CONTRACTION VALUE %0000d", self.maxContract )
+                # print(self.emg_data)
+                if samples == True and max(max(self.emg_data)) > self.maxContract:
+                    self.maxContract = max(max(self.emg_data))
+                    print("MAX CONTRACTION VALUE {}", self.maxContract )
 
 
     def getSensorsActive(self):
@@ -113,8 +113,8 @@ class DelsysSensors():
 
     ### Delsys Commands
     def initTriggers(self):
-        self.send_delsys_cmd("TRIGGER START ON")
-        self.send_delsys_cmd("TRIGGER STOP ON")
+        self.send_delsys_cmd("TRIGGER START OFF")
+        self.send_delsys_cmd("TRIGGER STOP OFF")
 
     def sendSTART(self):
         # checks if trigger is activated, sends start
