@@ -9,19 +9,29 @@ from tkinter import messagebox
 class Main():
     def __init__(self,master):
         
+        print('hello?')
+        print("hELLO??")
+        self.sensors = DelsysSensors(self)
+
+        # self.master = master
+        # self.maxContract = 0
         
-        self.master = master
-        self.maxContract = 0
-        
-        initTrignoConnection(self)
+        # initTrignoConnection(self)
 
 
-        self.getSensorsActive()
+        # getSensorsActive(self)
 
-        self.streamEMGData()
+        # streamEMGData(self)
 
         
-        
+# def main():
+#     print("main")
+#     sensors = DelsysSensors()
+#     while(True):
+#         #sleep
+#         # Not Reached
+#          continue
+
 
 
         
@@ -35,9 +45,11 @@ class Main():
 
 
 if __name__ == "__main__":
+    print("readEMG.py\n")
     root = Tk()
     app = Main(root)
     root.mainloop()
+    # main()
 
 
 
