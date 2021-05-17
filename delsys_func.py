@@ -74,9 +74,9 @@ class DelsysSensors():
             triggered = False
             samples = 0
             while True:
-                if samples > 100:
+                # if samples > 100:
                     # stop after 100 samples
-                    self.sendSTOP
+                    # self.sendSTOP
 
                 # Try and get the next frame
                 frame = self.read_EMG(t0, triggered)
@@ -93,9 +93,9 @@ class DelsysSensors():
 
                 self.emg_data = self.emg_data.reshape(int(len(self.emg_data)/(self.EMG_DATA_PORT_LENGTH+1)),(self.EMG_DATA_PORT_LENGTH+1))
                 # print(self.emg_data)
-                if samples == True and max(max(self.emg_data)) > self.maxContract:
-                    self.maxContract = max(max(self.emg_data))
-                    print("MAX CONTRACTION VALUE {}", self.maxContract )
+                if samples > 0 and abs(frame[1:16]).max() > self.maxContract:
+                    self.maxContract = abs(frame[1:16]).max()
+                    print("MAX CONTRACTION VALUE {}".format(self.maxContract) )
 
 
     def getSensorsActive(self):
