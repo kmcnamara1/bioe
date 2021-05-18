@@ -11,18 +11,18 @@ def getNumSessions(ID):
     list_of_files = os.listdir('./Patient Details/{}/'.format(ID))
     return len(list_of_files)
 
-def getSetupMeasurement(sessionNum,ID):
+def getSetupMeasurement(sessionNum,ID,ur):
     #row 5 if counting from 1
-    text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,sessionNum), "r+")
+    text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
     content = text_file.readlines()
     line = content[5]
     return(''.join(char for char in line if char.isdigit()))
 
-def getPreviousWrist(sessionNum,ID):
+def getPreviousWrist(sessionNum,ID,ur):
     #row 8 if counting from 1
 
     if (sessionNum ==1):
-        text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,sessionNum), "r+")
+        text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
         content = text_file.readlines()
         line = content[WRIST_LINE]
         return(''.join(char for char in line if char.isdigit()))
@@ -30,7 +30,7 @@ def getPreviousWrist(sessionNum,ID):
         values = []
         for session in range(1,sessionNum+1):
             print(session)
-            text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,session), "r+")
+            text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,session), "r+")
             content = text_file.readlines()
             line = content[WRIST_LINE]   
             line = "".join(line)
@@ -44,17 +44,17 @@ def getPreviousWrist(sessionNum,ID):
 
 
     
-def getPreviousShoulder(sessionNum,ID):
+def getPreviousShoulder(sessionNum,ID,ur):
 
     if (sessionNum ==1):
-        text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,sessionNum), "r+")
+        text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
         content = text_file.readlines()
         line = content[SHOULDER_LINE]
         return(''.join(char for char in line if char.isdigit()))
     else:
         values = []
         for session in range(1,sessionNum+1):
-            text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,session), "r+")
+            text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,session), "r+")
             content = text_file.readlines()
             line = content[SHOULDER_LINE]   
             line = "".join(line)
@@ -68,17 +68,17 @@ def getPreviousShoulder(sessionNum,ID):
         return(values)   
 
 
-def getPreviousFinger(sessionNum,ID):
+def getPreviousFinger(sessionNum,ID,ur):
 
     if (sessionNum ==1):
-        text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,sessionNum), "r+")
+        text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
         content = text_file.readlines()
         line = content[FINGER_LINE]
         return(''.join(char for char in line if char.isdigit()))
     else:
         values = []
         for session in range(1,sessionNum+1):
-            text_file = open('./Patient Details/{}/{}{}.txt'.format(ID,ID,session), "r+")
+            text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,session), "r+")
             content = text_file.readlines()
             line = content[FINGER_LINE]   
             line = "".join(line)
@@ -102,17 +102,18 @@ def getPatientID(name):
     return initials
 
 # We assume the patient name is split with a space 
-def checkPatientDetails(name):
+def checkPatientDetails(name,ur):
     
     patientID = getPatientID(name)
-    return(checkReturningPatient(patientID)) # return 1 if is reoccuring
+    
+    return(checkReturningPatient((patientID+ur),patientID)) # return 1 if is reoccuring
                                              # return 0 if new
 
 #trys to open a file with the users ID
 # IF: can open --> previous patient must exist
 # ELSE: must be a new patient 
-def checkReturningPatient(initials):
-    file_path = ("Patient Details/{}/{}1.txt".format(initials,initials))
+def checkReturningPatient(urInits, initials):
+    file_path = ("Patient Details/{}/{}1.txt".format(urInits,initials))
 
     if not os.path.exists(file_path):
         return 0
@@ -121,7 +122,7 @@ def checkReturningPatient(initials):
 
 
 # returns a string that can be used as a label for the patient history
-def displayPatientHistory(PatientID,sessionNum, exported):
+def displayPatientHistory(PatientID,ur,sessionNum, exported):
 
     #we are assuming that the we haven't exported the current data
     if (exported == None):
@@ -135,7 +136,7 @@ def displayPatientHistory(PatientID,sessionNum, exported):
     contents = ""
 
     if (sessionNum == 1):
-        text_file = open('./Patient Details/{}/{}{}.txt'.format(PatientID,PatientID,sessionNum), "r+")
+        text_file = open('./Patient Details/{}/{}{}.txt'.format((PatientID+ur),PatientID,sessionNum), "r+")
         content = text_file.readlines()
         line = content[:11]
         contents = " ".join(line)
@@ -144,7 +145,7 @@ def displayPatientHistory(PatientID,sessionNum, exported):
     else:
         for session in range(1,sessionNum+1):
             print(session)
-            text_file = open('./Patient Details/{}/{}{}.txt'.format(PatientID,PatientID,session), "r+")
+            text_file = open('./Patient Details/{}/{}{}.txt'.format((PatientID+ur),PatientID,session), "r+")
             content = text_file.readlines()
             line = content[:11]   
             line = "".join(line)

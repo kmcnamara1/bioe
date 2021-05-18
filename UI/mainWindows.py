@@ -534,7 +534,7 @@ class Ui_PatientHistoryWindow(QWidget):
 
         self._translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(self._translate("MainWindow", "MainWindow"))
-        self.overviewSide.setText(self._translate("MainWindow", "Overview"))
+        self.overviewSide.setText(self._translate("MainWindow", "Home"))
         self.historySide.setText(self._translate("MainWindow", "History"))
         self.patientSetup.setText(self._translate("MainWindow", "Patient Setup"))
         self.Logout.setText(self._translate("MainWindow", "Logout"))
@@ -567,64 +567,6 @@ class UIinitPatientSetUp(QDialog):
         Dialog.setStyleSheet("background-color: rgb(255,252,241)\n")
 
         self.layout = QVBoxLayout()
-
-        # self.patientsnameFrame = QtWidgets.QFrame(self.centralwidget)
-        # self.patientsnameFrame.setGeometry(QtCore.QRect(90, 0, 271, 81))
-        # self.patientsnameFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
-        # self.patientsnameFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        # self.patientsnameFrame.setFrameShadow(QtWidgets.QFrame.Raised)
-        # self.patientsnameFrame.setObjectName("patientsnameFrame")
-
-        # self.labelPatientsName = QtWidgets.QLabel(self.patientsnameFrame)
-        # self.labelPatientsName.setGeometry(QtCore.QRect(20, 10, 191, 31))
-        # self.labelPatientsName.setStyleSheet("font: 12pt \".AppleSystemUIFont\";\n"
-        #         "background-color: rgb(255, 255, 255);\n"
-        #         "color: rgb(37,39,51);")
-
-        # self.labelPatientsName.setObjectName("labelPatientsName")
-
-        # self.patientSetup = QtWidgets.QLineEdit(self.patientsnameFrame)
-        # self.patientSetup.setGeometry(QtCore.QRect(30, 40, 211, 20))
-
-        # self.patientSetup.setStyleSheet("background-color: rgb(255,252,241);\n"
-        #                 "color: rgb(115, 116, 116);\n"
-        #                 "selection-color: rgb(207, 212, 212);\n"
-        #                 "border-color: rgb(156, 160, 159);\n"
-        #                 "border-bottom-color: rgb(159, 163, 163);")
-
-        # self.patientSetup.setObjectName("PatientsNameEnter")
-        # self.patientSetup.returnPressed.connect(self.get_patient_name)
-
-
-        # self.patientURFrame = QtWidgets.QFrame(self.centralwidget)
-        # self.patientURFrame.setGeometry(QtCore.QRect(90, 60, 271, 81))
-        # self.patientURFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
-        # self.patientURFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        # self.patientURFrame.setFrameShadow(QtWidgets.QFrame.Raised)
-        # self.patientURFrame.setObjectName("patientURFrame")
-        # self.labelPatientUR = QtWidgets.QLabel(self.patientURFrame)
-        # self.labelPatientUR.setGeometry(QtCore.QRect(20, 10, 191, 31))
-        # self.labelPatientUR.setStyleSheet("font: 12pt \".AppleSystemUIFont\";\n"
-        #         "background-color: rgb(255, 255, 255);\n"
-        #         "color: rgb(37,39,51);")
-
-        # self.labelPatientUR.setObjectName("labelPatientsName")
-
-        # self.patientURSetup = QtWidgets.QLineEdit(self.patientURFrame)
-        # self.patientURSetup.setGeometry(QtCore.QRect(170, 10, 70, 20))
-
-        # self.patientURSetup.setStyleSheet("background-color: rgb(255,252,241);\n"
-        #                 "color: rgb(115, 116, 116);\n"
-        #                 "selection-color: rgb(207, 212, 212);\n"
-        #                 "border-color: rgb(156, 160, 159);\n"
-        #                 "border-bottom-color: rgb(159, 163, 163);")
-
-        
-
-        # self.patientURSetup.setObjectName("PatientUREnter")
-
-
-        # self.patientURSetup.returnPressed.connect(self.get_patient_UR)
 
         self.MuscleDemo = QtWidgets.QFrame(self.centralwidget)
         self.MuscleDemo.setGeometry(QtCore.QRect(20, 30, 411, 320))

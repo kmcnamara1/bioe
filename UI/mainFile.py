@@ -31,6 +31,7 @@ class patientDetails:
     date = None
     patientID = None
     patientName = None
+    ur = None
     sessionNum = 0
     setupMeas = None
     setupMeasWrist = None
@@ -181,7 +182,7 @@ class MainWindow(QMainWindow):
 
         self.scroll = QtWidgets.QScrollBar(self.historyWindow.PastSessions)
 
-        historyList = displayPatientHistory(self.currentDetails.patientID,self.currentDetails.sessionNum, self.currentDetails.beenExported)
+        historyList = displayPatientHistory(self.currentDetails.patientID,self.currentDetails.ur,self.currentDetails.sessionNum, self.currentDetails.beenExported)
         if (historyList == 0):
             ScrollLabel.UiComponents(self.historyWindow,"no previous sessions")
         else:
@@ -286,6 +287,7 @@ class MainWindow(QMainWindow):
         self.currentDetails.fingerMVC = None
         self.currentDetails.shoulderMVC = None
         self.currentDetails.beenExported = None  
+        self.currentDetails.ur = None
 
         self.patientDetail.patientName = None
         self.patientDetail.patientID = None
@@ -322,13 +324,13 @@ class MainWindow(QMainWindow):
 
     def loadPreviousSessionData(self,ID):
         # find how many sessions they have had
-        self.previousData.sessionNum = getNumSessions(ID)
+        self.previousData.sessionNum = getNumSessions(ID+self.currentDetails.ur)
         self.currentDetails.sessionNum = (self.previousData.sessionNum + 1)
         self.currentDetails.beenExported = YES
-        self.previousData.wristMVC = getPreviousWrist(self.previousData.sessionNum,ID)
-        self.previousData.shoulderMVC = getPreviousShoulder(self.previousData.sessionNum,ID)
-        self.previousData.fingerMVC = getPreviousFinger(self.previousData.sessionNum,ID)
-        self.previousData.setupMeas = getSetupMeasurement(self.previousData.sessionNum,ID)
+        self.previousData.wristMVC = getPreviousWrist(self.previousData.sessionNum,ID,self.currentDetails.ur)
+        self.previousData.shoulderMVC = getPreviousShoulder(self.previousData.sessionNum,ID,self.currentDetails.ur)
+        self.previousData.fingerMVC = getPreviousFinger(self.previousData.sessionNum,ID,self.currentDetails.ur)
+        self.previousData.setupMeas = getSetupMeasurement(self.previousData.sessionNum,ID,self.currentDetails.ur)
         
         self.Window.SessionNum = self.currentDetails.sessionNum
     
@@ -342,19 +344,21 @@ class MainWindow(QMainWindow):
         # Setting up the current details for the patient
         name=ui_patientReg.PnameLine.text()
         ur=ui_patientReg.URnumLine.text()
-        print(name)
+
         self.patientDetail.patientName = name
         # set up current details class
         temp = loadClinicianName()
         self.currentDetails.clinicanName = temp
         self.currentDetails.date = datetime.today().strftime('%Y-%m-%d')
         self.currentDetails.patientID = getPatientID(name)
+        self.currentDetails.ur = ur
         self.currentDetails.patientName = name
 
         #Check if patient has previous history
         # if new checkPatientDetails returns 0
         # if has previous sessions checkPatientDetails returns 1
-        if(checkPatientDetails(name)==1):
+
+        if(checkPatientDetails(name,ur)==1):
             print("PREVIOUS PATIENT")
             self.previousData = previousPatientData()
             self.loadPreviousSessionData(self.currentDetails.patientID)
@@ -364,7 +368,7 @@ class MainWindow(QMainWindow):
     
 
         # Start next pop-up for window
-        # self.startEnterMeasurementsPopup()
+        self.show() 
 
 ########################################################################################################################################
                                             # Export Function #
@@ -374,7 +378,7 @@ class MainWindow(QMainWindow):
 
         self.currentDetails.beenExported = YES
         # If patients first session must make a new directory for it
-        PATH = './Patient Details/{}'.format(self.currentDetails.patientID)
+        PATH = './Patient Details/{}'.format((self.currentDetails.patientID+self.currentDetails.ur))
         if (self.currentDetails.sessionNum == 1):
             os.mkdir(PATH)
         
