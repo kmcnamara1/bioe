@@ -20,8 +20,8 @@ from delsys_func import *
 
 
 def loadPatientName():
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        text_file = open(dir_path + "\Patient Details/PatientName.txt", "r+")
+        # dir_path = os.path.dirname(os.path.realpath(__file__))
+        text_file = open("./Patient Details/PatientName.txt", "r+")
         data = text_file.read()
         
         if data == None:
@@ -46,6 +46,7 @@ class UIWindow(QWidget):
     def __init__(self, parent=None):
         super(UIWindow, self).__init__(parent)
         # mainwindow.setWindowIcon(QtGui.QIcon('PhotoIcon.png'))
+
         self.currentExerciseSelection = None
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
@@ -236,7 +237,7 @@ class UIWindow(QWidget):
         self.stopButton.setText(self._translate("OverViewWindow", "Stop"))
         self.changeExerciseButton.setText(self._translate("OverViewWindow", "Change Exercise"))
         self.ExportDataButton.setText(self._translate("OverViewWindow", "Save Data"))
-        self.overviewSide.setText(self._translate("OverViewWindow", "Overview"))
+        self.overviewSide.setText(self._translate("OverViewWindow", "Home"))
         self.historySide.setText(self._translate("OverViewWindow", "History"))
         self.patientSetup.setText(self._translate("OverViewWindow", "Patient Setup"))
         self.Logout.setText(self._translate("OverViewWindow", "Logout"))
@@ -551,8 +552,10 @@ class Ui_PatientHistoryWindow(QWidget):
 ###############################################################################################################
 class UIinitPatientSetUp(QDialog):
     
-    def __init__(self, parent=None):
+    def __init__(self,listInfo,parent=None):
         super().__init__(parent)
+
+        self.listInfo = listInfo
 
         Dialog = QtWidgets.QDialog(self)
         Dialog.setObjectName("Dialog")
@@ -566,7 +569,7 @@ class UIinitPatientSetUp(QDialog):
         self.layout = QVBoxLayout()
 
         self.patientsnameFrame = QtWidgets.QFrame(self.centralwidget)
-        self.patientsnameFrame.setGeometry(QtCore.QRect(90, 10, 271, 81))
+        self.patientsnameFrame.setGeometry(QtCore.QRect(90, 0, 271, 81))
         self.patientsnameFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.patientsnameFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.patientsnameFrame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -574,15 +577,14 @@ class UIinitPatientSetUp(QDialog):
 
         self.labelPatientsName = QtWidgets.QLabel(self.patientsnameFrame)
         self.labelPatientsName.setGeometry(QtCore.QRect(20, 10, 191, 31))
-        self.labelPatientsName.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+        self.labelPatientsName.setStyleSheet("font: 12pt \".AppleSystemUIFont\";\n"
                 "background-color: rgb(255, 255, 255);\n"
                 "color: rgb(37,39,51);")
 
         self.labelPatientsName.setObjectName("labelPatientsName")
 
-
         self.patientSetup = QtWidgets.QLineEdit(self.patientsnameFrame)
-        self.patientSetup.setGeometry(QtCore.QRect(30, 40, 211, 21))
+        self.patientSetup.setGeometry(QtCore.QRect(30, 40, 211, 20))
 
         self.patientSetup.setStyleSheet("background-color: rgb(255,252,241);\n"
                         "color: rgb(115, 116, 116);\n"
@@ -590,15 +592,42 @@ class UIinitPatientSetUp(QDialog):
                         "border-color: rgb(156, 160, 159);\n"
                         "border-bottom-color: rgb(159, 163, 163);")
 
-        
-
         self.patientSetup.setObjectName("PatientsNameEnter")
-
-
         self.patientSetup.returnPressed.connect(self.get_patient_name)
 
+
+        self.patientURFrame = QtWidgets.QFrame(self.centralwidget)
+        self.patientURFrame.setGeometry(QtCore.QRect(90, 60, 271, 81))
+        self.patientURFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.patientURFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.patientURFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.patientURFrame.setObjectName("patientURFrame")
+        self.labelPatientUR = QtWidgets.QLabel(self.patientURFrame)
+        self.labelPatientUR.setGeometry(QtCore.QRect(20, 10, 191, 31))
+        self.labelPatientUR.setStyleSheet("font: 12pt \".AppleSystemUIFont\";\n"
+                "background-color: rgb(255, 255, 255);\n"
+                "color: rgb(37,39,51);")
+
+        self.labelPatientUR.setObjectName("labelPatientsName")
+
+        self.patientURSetup = QtWidgets.QLineEdit(self.patientURFrame)
+        self.patientURSetup.setGeometry(QtCore.QRect(170, 10, 70, 20))
+
+        self.patientURSetup.setStyleSheet("background-color: rgb(255,252,241);\n"
+                        "color: rgb(115, 116, 116);\n"
+                        "selection-color: rgb(207, 212, 212);\n"
+                        "border-color: rgb(156, 160, 159);\n"
+                        "border-bottom-color: rgb(159, 163, 163);")
+
+        
+
+        self.patientURSetup.setObjectName("PatientUREnter")
+
+
+        # self.patientURSetup.returnPressed.connect(self.get_patient_UR)
+
         self.MuscleDemo = QtWidgets.QFrame(self.centralwidget)
-        self.MuscleDemo.setGeometry(QtCore.QRect(20, 120, 411, 301))
+        self.MuscleDemo.setGeometry(QtCore.QRect(20, 100, 411, 320))
         self.MuscleDemo.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.MuscleDemo.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.MuscleDemo.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -611,13 +640,25 @@ class UIinitPatientSetUp(QDialog):
         self.findmuscleLabl.setObjectName("findmuscleLabl")
 
         self.examplemusclelabel = QtWidgets.QLabel(self.MuscleDemo)
-        pixmap = QPixmap('icons/placeholder.jpg')
-        self.examplemusclelabel.setPixmap(pixmap)
-        self.examplemusclelabel.resize(pixmap.width()/2, pixmap.height()/2)
-        # self.examplemusclelabel.move(100, self.height()/1.7 -self.examplemusclelabel.height())
+        if (listInfo == 1):
+                pixmap = QPixmap('icons/wrist1.jpg')
+                self.examplemusclelabel.setPixmap(pixmap)
+                self.examplemusclelabel.resize(pixmap.width()*1.8, pixmap.height()*1.8)
+                self.examplemusclelabel.move(30,-20)
+        elif (listInfo == 2):
+                pixmap = QPixmap('icons/finger1.jpg')
+                self.examplemusclelabel.setPixmap(pixmap)
+                # self.examplemusclelabel.resize(pixmap.width()*1.5, pixmap.height()*1.8)
+                self.examplemusclelabel.move(40,50)                
+        else:
+                pixmap = QPixmap('icons/shoulder1.jpg')
+                self.examplemusclelabel.setPixmap(pixmap)
+                self.examplemusclelabel.resize(pixmap.width()*1.8, pixmap.height()*1.8)
+                self.examplemusclelabel.move(40,-120)
+
 
         self.exampleLabel = QtWidgets.QLabel(self.MuscleDemo)
-        self.exampleLabel.setGeometry(QtCore.QRect(10, 30, 201, 21))
+        self.exampleLabel.setGeometry(QtCore.QRect(10, 10, 201, 21))
         self.exampleLabel.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
                 "color: rgb(37,39,51)")
         self.exampleLabel.setObjectName("exampleLabel")
@@ -629,7 +670,7 @@ class UIinitPatientSetUp(QDialog):
         self.RigthSide.setObjectName("RigthSide")
 
    
-
+        self.findmuscleLabl.raise_()
         self.leftSide = QtWidgets.QColumnView(self.centralwidget)
         self.leftSide.setGeometry(QtCore.QRect(0, 0, 20, 441))
         self.leftSide.setStyleSheet("background-color: rgb(78, 78, 78)")
@@ -667,11 +708,15 @@ class UIinitPatientSetUp(QDialog):
 
         _translate = QtCore.QCoreApplication.translate
         self.labelPatientsName.setText(_translate("Dialog", "Please Enter Patient\'s Name:"))
+
+        self.labelPatientUR.setText(_translate("Dialog", "Patient UR Number:"))
+
         self.findmuscleLabl.setText(_translate("Dialog", "Find the wrist muscle belly"))
         self.exampleLabel.setText(_translate("Dialog", "Example:"))
         self.exitButton.setText(_translate("Dialog", "Exit")) 
         self.nextButton.setText(_translate("Dialog", "Next")) 
 
+        self.labelPatientUR.adjustSize()
         self.labelPatientsName.adjustSize()
         self.findmuscleLabl.adjustSize()
         self.exampleLabel.adjustSize()    
@@ -682,17 +727,28 @@ class UIinitPatientSetUp(QDialog):
 
     def get_patient_name(self):
         text_input = self.patientSetup.text()
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        text_file = open(dir_path + "\Patient Details\PatientName.txt", "w")
+        print(text_input)
+        # dir_path = os.path.dirname(os.path.realpath(__file__))
+        text_file = open(".\Patient Details\PatientName.txt", "w")
         text_file.write("%s" % text_input)
         # print(text_input)
         text_file.close()  
 
+#     def get_patient_UR(self):
+#         text_input = self.patientSetup.text()
+#         dir_path = os.path.dirname(os.path.realpath(__file__))
+#         text_file = open(dir_path + "\Patient Details\PatientName.txt", "a")
+#         text_file.write("\n%s" % text_input)
+#         # print(text_input)
+#         text_file.close()  
+
 ###############################################################################################################
 class UIinitMeasurePatientSetUp(QDialog):
     
-    def __init__(self, parent=None):
+    def __init__(self,listInfo,parent=None):
         super().__init__(parent)
+
+        self.listInfo = listInfo
 
         setupWindow = QtWidgets.QWidget(self)
         setupWindow.setObjectName("MainWindow")
@@ -709,6 +765,7 @@ class UIinitMeasurePatientSetUp(QDialog):
         self.MuscleDemo.setFrameShadow(QtWidgets.QFrame.Raised)
         self.MuscleDemo.setObjectName("MuscleDemo")
         self.findmuscleLabl = QtWidgets.QLabel(self.MuscleDemo)
+
         self.findmuscleLabl.setGeometry(QtCore.QRect(110, 10, 181, 21))
         self.findmuscleLabl.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
                 "color: rgb(37,39,51)")
@@ -717,6 +774,23 @@ class UIinitMeasurePatientSetUp(QDialog):
         self.exampleLabel.setGeometry(QtCore.QRect(10, 100, 61, 21))
         self.exampleLabel.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
                 "color: rgb(37,39,51)")
+
+        self.examplemusclelabel = QtWidgets.QLabel(self.MuscleDemo)
+
+        if (listInfo == 1):
+                pixmap = QPixmap('icons/measWrist.png')
+                self.examplemusclelabel.setPixmap(pixmap)
+                self.examplemusclelabel.resize(pixmap.width()*1.8, pixmap.height()*1.8)
+                self.examplemusclelabel.move(70,100)
+        elif (listInfo == 2):
+                pixmap = QPixmap('icons/measFinger.png')
+                self.examplemusclelabel.setPixmap(pixmap)
+                self.examplemusclelabel.move(70,130)                
+        else:
+                pixmap = QPixmap('icons/measShoulder.png')
+                self.examplemusclelabel.setPixmap(pixmap)
+                # self.examplemusclelabel.resize(pixmap.width()*2, pixmap.height()*3)
+                self.examplemusclelabel.move(90,130)   
         
 
         self.exampleLabel.setObjectName("exampleLabel")
@@ -778,7 +852,7 @@ class UIinitMeasurePatientSetUp(QDialog):
                 "selection-color: rgb(207, 212, 212);\n"
                 "border-color: rgb(156, 160, 159);\n"
                 "border-bottom-color: rgb(159, 163, 163);")
-
+        self.examplemusclelabel.raise_()
         _translate = QtCore.QCoreApplication.translate
         self.findmuscleLabl.setText(_translate("MainWindow", "Place EMG on muscle belly"))
         self.exampleLabel.setText(_translate("MainWindow", "Example:"))
@@ -945,17 +1019,17 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         self._line_.set_ydata(y)
         return self._line_,
 
-# Data source
-# ------------
-n = np.linspace(0, 499, 500)
-d = 50 + 25 * (np.sin(n / 8.3)) + 10 * (np.sin(n / 7.5)) - 5 * (np.sin(n / 1.5))
-i = 0
+# # Data source
+# # ------------
+# n = np.linspace(0, 499, 500)
+# d = 50 + 25 * (np.sin(n / 8.3)) + 10 * (np.sin(n / 7.5)) - 5 * (np.sin(n / 1.5))
+# i = 0
 
-def get_next_datapoint():
-    global i
-    i += 1
-    if i > 499:
-        i = 0
-    return d[i]
+# def get_next_datapoint():
+#     global i
+#     i += 1
+#     if i > 499:
+#         i = 0
+#     return d[i]
 
 ###############################################################################################################

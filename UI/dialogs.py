@@ -48,7 +48,7 @@ class Ui_changePatientPopUp(QDialog):
         self.MAIN.setFrameShadow(QtWidgets.QFrame.Raised)
         self.MAIN.setObjectName("MAIN")
         self.labelPatientsName = QtWidgets.QLabel(self.MAIN)
-        self.labelPatientsName.setGeometry(QtCore.QRect(0, 20, 271, 31))
+        self.labelPatientsName.setGeometry(QtCore.QRect(0, 35, 271, 31))
         self.labelPatientsName.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
                 "background-color: rgb(255, 255, 255);\n"
                 "color: rgb(37,39,51);")
@@ -68,8 +68,11 @@ class Ui_changePatientPopUp(QDialog):
         self.BACK.setText(_translate("MainWindow", "Back"))
         self.labelPatientsName.setText(_translate("MainWindow", "This will clear current data"))       
 
+
+        self.labelPatientsName.adjustSize()
+
     def dialog_exit(self):
-        print("close exercise change popup!")
+        print("close exercise change patient!")
         self.close()   
 
 ######################################################################################################
@@ -152,7 +155,7 @@ class UIchangeExercisePopUp(QDialog):
         self.chooseExercise.setText(_translate("MainWindow", "Choose Exercise:"))
         self.WristExtension.setText(_translate("MainWindow", "Wrist Extension"))
         self.FingerFlexion.setText(_translate("MainWindow", "Finger Flexion"))
-        self.Deltoid.setText(_translate("MainWindow", "Deltoid ----"))
+        self.Deltoid.setText(_translate("MainWindow", "Shoulder Extension"))
 
         self.chooseExercise.setAlignment(Qt.AlignCenter)
         self.chooseExercise.adjustSize()
@@ -206,7 +209,7 @@ class Ui_patientPopUp(QDialog):
         self.MAIN.setFrameShadow(QtWidgets.QFrame.Raised)
         self.MAIN.setObjectName("MAIN")
         self.labelPatientsName = QtWidgets.QLabel(self.MAIN)
-        self.labelPatientsName.setGeometry(QtCore.QRect(0, 20, 271, 31))
+        self.labelPatientsName.setGeometry(QtCore.QRect(0 , 20, 271, 31))
         self.labelPatientsName.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
                 "background-color: rgb(255, 255, 255);\n"
                 "color: rgb(37,39,51);")
@@ -286,4 +289,65 @@ class Ui_needPatientSetup(QDialog):
 
     def dialog_exit(self):
         print("close exercise change popup!")
+        self.close()   
+
+
+class Ui_checkExercise(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.setObjectName("MainWindow")
+        self.resize(313, 90)
+        self.setMaximumSize(QtCore.QSize(313, 90))
+        self.setStyleSheet("background-color: rgb(255,252,241)\n"
+                "")
+        self.centralwidget = QtWidgets.QWidget(self)
+        self.centralwidget.setObjectName("centralwidget")
+        self.right = QtWidgets.QColumnView(self.centralwidget)
+        self.right.setGeometry(QtCore.QRect(293, 0, 20, 81))
+        self.right.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.right.setObjectName("right")
+        self.left = QtWidgets.QColumnView(self.centralwidget)
+        self.left.setGeometry(QtCore.QRect(0, 0, 20, 81))
+        self.left.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.left.setObjectName("left")
+
+        self.BACK = QtWidgets.QPushButton(self.centralwidget)
+        self.BACK.setGeometry(QtCore.QRect(110, 50, 101, 20))
+        self.BACK.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(45,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+        self.BACK.setObjectName("BACK")
+        self.MAIN = QtWidgets.QFrame(self.centralwidget)
+        self.MAIN.setGeometry(QtCore.QRect(20, -10, 271, 61))
+        self.MAIN.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.MAIN.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.MAIN.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.MAIN.setObjectName("MAIN")
+        self.labelPatientsName = QtWidgets.QLabel(self.MAIN)
+        self.labelPatientsName.setGeometry(QtCore.QRect(0, 35, 271, 31))
+        self.labelPatientsName.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                "background-color: rgb(255, 255, 255);\n"
+                "color: rgb(37,39,51);")
+
+        self.BACK.clicked.connect(self.dialog_exit)   
+          
+        self.labelPatientsName.setObjectName("labelPatientsName")
+        self.menubar = QtWidgets.QMenuBar(self)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 313, 24))
+        self.menubar.setObjectName("menubar")
+        self.statusbar = QtWidgets.QStatusBar(self)
+        self.statusbar.setObjectName("statusbar")
+
+        _translate = QtCore.QCoreApplication.translate
+        self.BACK.setText(_translate("MainWindow", "Back"))
+        self.labelPatientsName.setText(_translate("MainWindow", "You need to select Activity"))       
+
+
+        self.labelPatientsName.adjustSize()
+
+    def dialog_exit(self):
+        print("Please Select Exercise First")
         self.close()   

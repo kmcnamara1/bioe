@@ -4,9 +4,9 @@ from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, 
 import sys
 import re
 import os
-from UI.previousPatientData import *
-from UI.mainWindows import *
-from UI.dialogs import *
+from previousPatientData import *
+from mainWindows import *
+from dialogs import *
 
 LOAD_PREVIOUS = 1
 NEW_PATIENT = 0
@@ -90,8 +90,8 @@ def close_all():
         sys.exit(0)
 
 def loadClinicianName():
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    text_file = open(dir_path + '\ClinicianName.txt' , "r+")
+    # dir_path = os.path.dirname(os.path.realpath(__file__))
+    text_file = open('ClinicianName.txt' , "r+")
     data = text_file.read()
     text_file.close()
     return data
@@ -111,7 +111,7 @@ class MainWindow(QMainWindow):
         loadClinicianName()
         self.currentDetails = patientDetails()
         self.startUIToolTab()
-        self.EXERCISE_SET = 0
+        self.EXERCISE_SET = None
         self.patientDetail = patientDetails() #start instance of patient details
 
     def startUIToolTab(self):
@@ -146,19 +146,35 @@ class MainWindow(QMainWindow):
         self.Window.changePatient.clicked.connect(self.patientChangeCheckPopUp)
 
 
-        # if (self.EXERCISE_SET==0):
-        #     self.Window.startButton.clicked.connect(self.checkPatientSetup)
-        # else:
-        #     self.Window.startButton.clicked.connect(self.startButtonFun)
-
         self.Window.startButton.clicked.connect(self.startButtonFun)
 
         self.Window.historySide.clicked.connect(self.startUIpatietnHistory)
-        if ((self.patientDetail.patientName) == None):
-            self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
+        
+        print(self.EXERCISE_SET)
+        if (self.EXERCISE_SET == None):
+            #We must select an exercise to know imgs to display
+
+            self.Window.patientSetup.clicked.connect(self.patientCheckExercisePopUp)         
         else:
-            self.Window.patientSetup.clicked.connect(self.patientCheckPopUp)
-        self.show()
+            # This will check if a name is in the database and then re check if they want to overwrite this
+            if ((self.patientDetail.patientName) == None):
+                self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
+            else:
+                self.Window.patientSetup.clicked.connect(self.patientCheckPopUp)
+            self.show()       
+
+        # # This will check if a name is in the database and then re check if they want to overwrite this
+        # if ((self.patientDetail.patientName) == None):
+        #     self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
+        # else:
+        #     self.Window.patientSetup.clicked.connect(self.patientCheckPopUp)
+        # self.show()
+
+    def patientCheckExercisePopUp(self):
+        ui_patientCheckPopUp = Ui_checkExercise(self)
+        popup = QMessageBox(ui_patientCheckPopUp)
+        ui_patientCheckPopUp.BACK.clicked.connect(self.startUIWindow)
+        ui_patientCheckPopUp.show()
 
     def startUIpatietnHistory(self):
         self.historyWindow = Ui_PatientHistoryWindow(self)
@@ -184,7 +200,8 @@ class MainWindow(QMainWindow):
 
     def startSetUpPopup(self):
         #init the patient setup
-        setUpPatient = UIinitPatientSetUp(self)
+        listInfo = self.EXERCISE_SET
+        setUpPatient = UIinitPatientSetUp(parent=self, listInfo=listInfo)
         setUpPatient.setStyleSheet("background-color: rgb(255,252,241);");
         popup = QMessageBox(setUpPatient)
 
@@ -201,7 +218,8 @@ class MainWindow(QMainWindow):
         setUpPatient.show()
         
     def startEnterMeasurementsPopup(self):
-        startEnterMeasurementsPopup = UIinitMeasurePatientSetUp(self)
+        listInfo = self.EXERCISE_SET
+        startEnterMeasurementsPopup = UIinitMeasurePatientSetUp(parent=self,listInfo=listInfo)
         startEnterMeasurementsPopup.backButton.clicked.connect(self.startSetUpPopup)
         startEnterMeasurementsPopup.doneButton.clicked.connect(self.sampleEMGPopup)
         startEnterMeasurementsPopup.show()
@@ -215,10 +233,14 @@ class MainWindow(QMainWindow):
     def changeExercisePopUp(self):
         changeExercisePopUp = UIchangeExercisePopUp(self)
         self.EXERCISE_SET = 1
+
         popup = QMessageBox(changeExercisePopUp)
         changeExercisePopUp.WristExtension.clicked.connect(lambda: self.passCurrentExercise(1))
         changeExercisePopUp.FingerFlexion.clicked.connect(lambda: self.passCurrentExercise(2))
         changeExercisePopUp.Deltoid.clicked.connect(lambda: self.passCurrentExercise(3))
+
+        # changeExercisePopUp.WristExtension.clicked.connect(self.startUIWindow)
+
         changeExercisePopUp.show()   
 
     def patientCheckPopUp(self):
@@ -279,7 +301,8 @@ class MainWindow(QMainWindow):
         self.Window.label_10.setText(self.Window._translate("OverViewWindow", "Patient: - "))   
 
     def passCurrentExercise(self,n):
-        self.EXERCISE_SET = 1
+        self.EXERCISE_SET = n
+        self.startUIWindow()
         if n==1:
             self.Window.currentExerciseSelection = "Wrist Extension"
                   
@@ -290,7 +313,8 @@ class MainWindow(QMainWindow):
             self.Window.currentExerciseSelection = "Shoulder Flexion"
         
         self.Window.label_4.setText(self.Window._translate("OverViewWindow", self.Window.currentExerciseSelection))
-        self.Window.show()   
+        
+        self.Window.show()  
 
 
     def loadPreviousSessionData(self,ID):
@@ -332,8 +356,6 @@ class MainWindow(QMainWindow):
         else:
             print("NEW PATIENT")
             self.currentDetails.sessionNum = 1
-            # self.Window.SessionNum = 1
-            # self.Window.label_5.setText(self.Window._translate("OverViewWindow", "{}".format(self.currentDetails.sessionNum)))
     
 
         # Start next pop-up for window
