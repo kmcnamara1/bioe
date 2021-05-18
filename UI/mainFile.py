@@ -117,8 +117,8 @@ class MainWindow(QMainWindow):
     def startUIToolTab(self):
         self.ToolTab = UIToolTab(self)
         self.setCentralWidget(self.ToolTab)
-        self.ToolTab.lineEdit.returnPressed.connect(self.startUIWindow)
-        self.ToolTab.startButton.clicked.connect(self.startUIWindow)
+        self.ToolTab.lineEdit.returnPressed.connect(self.patientRegister)
+        self.ToolTab.startButton.clicked.connect(self.patientRegister)
         
         self.show()
 
@@ -150,7 +150,6 @@ class MainWindow(QMainWindow):
 
         self.Window.historySide.clicked.connect(self.startUIpatietnHistory)
         
-        print(self.EXERCISE_SET)
         if (self.EXERCISE_SET == None):
             #We must select an exercise to know imgs to display
 
@@ -163,12 +162,13 @@ class MainWindow(QMainWindow):
                 self.Window.patientSetup.clicked.connect(self.patientCheckPopUp)
             self.show()       
 
-        # # This will check if a name is in the database and then re check if they want to overwrite this
-        # if ((self.patientDetail.patientName) == None):
-        #     self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
-        # else:
-        #     self.Window.patientSetup.clicked.connect(self.patientCheckPopUp)
-        # self.show()
+    def patientRegister(self):
+        self.startUIWindow()
+        ui_patientReg = Ui_Register(self)
+        popup = QMessageBox(ui_patientReg)
+        ui_patientReg.OK.clicked.connect(self.startUIWindow)
+        ui_patientReg.URnumLine.returnPressed.connect(self.startUIWindow)
+        ui_patientReg.show()
 
     def patientCheckExercisePopUp(self):
         ui_patientCheckPopUp = Ui_checkExercise(self)
@@ -218,6 +218,7 @@ class MainWindow(QMainWindow):
         setUpPatient.show()
         
     def startEnterMeasurementsPopup(self):
+        
         listInfo = self.EXERCISE_SET
         startEnterMeasurementsPopup = UIinitMeasurePatientSetUp(parent=self,listInfo=listInfo)
         startEnterMeasurementsPopup.backButton.clicked.connect(self.startSetUpPopup)
@@ -338,6 +339,7 @@ class MainWindow(QMainWindow):
 
         # Setting up the current details for the patient
         name=setUpPatient.patientSetup.text()
+        print(name)
         self.patientDetail.patientName = name
         # set up current details class
         temp = loadClinicianName()

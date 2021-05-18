@@ -6,6 +6,105 @@ import sys
 import os
 from PyQt5.QtCore import * 
 
+
+
+
+class Ui_Register(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setObjectName("MainWindow")
+        self.resize(330, 138)
+        self.setMaximumSize(QtCore.QSize(330, 138))
+        self.setStyleSheet("background-color: rgb(255,252,241)")
+        self.centralwidget = QtWidgets.QWidget(self)
+        self.centralwidget.setObjectName("centralwidget")
+        self.right = QtWidgets.QColumnView(self.centralwidget)
+        self.right.setGeometry(QtCore.QRect(310, -10, 20, 101))
+        self.right.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.right.setObjectName("right")
+        self.left = QtWidgets.QColumnView(self.centralwidget)
+        self.left.setGeometry(QtCore.QRect(0, -10, 20, 101))
+        self.left.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.left.setObjectName("left")
+        self.MAIN = QtWidgets.QFrame(self.centralwidget)
+        self.MAIN.setGeometry(QtCore.QRect(20, -10, 291, 101))
+        self.MAIN.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.MAIN.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.MAIN.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.MAIN.setObjectName("MAIN")
+        self.labelPatientsName = QtWidgets.QLabel(self.MAIN)
+        self.labelPatientsName.setGeometry(QtCore.QRect(0, 10, 131, 21))
+        self.labelPatientsName.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+"background-color: rgb(255, 255, 255);\n"
+"color: rgb(37,39,51);")
+        self.labelPatientsName.setObjectName("labelPatientsName")
+        self.OK = QtWidgets.QPushButton(self.MAIN)
+        self.OK.setGeometry(QtCore.QRect(190, 70, 101, 20))
+        self.OK.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                                "color: rgb(37,39,51);\n"
+                                "border-top-color: rgb(85, 86, 86);\n"
+                                "selection-background-color: rgb(197, 201, 201);\n"
+                                "")
+        self.OK.setObjectName("OK")
+        self.labelPatientsName_2 = QtWidgets.QLabel(self.MAIN)
+        self.labelPatientsName_2.setGeometry(QtCore.QRect(0, 50, 131, 21))
+        self.labelPatientsName_2.setStyleSheet("font: 14pt \".AppleSystemUIFont\";\n"
+                                                "background-color: rgb(255, 255, 255);\n"
+                                                "color: rgb(37,39,51);")
+        self.labelPatientsName_2.setObjectName("labelPatientsName_2")
+        self.PnameLine = QtWidgets.QLineEdit(self.MAIN)
+
+
+        self.PnameLine.setStyleSheet("background-color: rgb(255,252,241);\n"
+                                        "color: rgb(115, 116, 116);\n"
+                                        "selection-color: rgb(207, 212, 212);\n"
+                                        "border-color: rgb(156, 160, 159);\n"
+                                        "border-bottom-color: rgb(159, 163, 163);")
+
+
+        self.PnameLine.setGeometry(QtCore.QRect(0, 30, 281, 21))
+        self.PnameLine.setObjectName("PnameLine")
+
+
+        self.URnumLine = QtWidgets.QLineEdit(self.MAIN)
+        self.URnumLine.setGeometry(QtCore.QRect(0, 70, 181, 21))
+        self.URnumLine.setObjectName("URnumLine")
+
+        self.URnumLine.setStyleSheet("background-color: rgb(255,252,241);\n"
+                                        "color: rgb(115, 116, 116);\n"
+                                        "selection-color: rgb(207, 212, 212);\n"
+                                        "border-color: rgb(156, 160, 159);\n"
+                                        "border-bottom-color: rgb(159, 163, 163);")
+
+        # self.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(self)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 330, 24))
+        self.menubar.setObjectName("menubar")
+        # MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(self)
+        self.statusbar.setObjectName("statusbar")
+        # MainWindow.setStatusBar(self.statusbar)
+
+        self.OK.clicked.connect(self.save_UR_and_name)
+
+        _translate = QtCore.QCoreApplication.translate
+        self.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.labelPatientsName.setText(_translate("MainWindow", "Patient Name:"))
+        self.OK.setText(_translate("MainWindow", "OK"))
+        self.labelPatientsName_2.setText(_translate("MainWindow", "UR Number:"))
+
+        self.labelPatientsName.adjustSize()
+        self.labelPatientsName_2.adjustSize()
+
+    def save_UR_and_name(self):
+        text_file = open("./Patient Details/PatientName.txt", "w")
+        text_file.writelines('{}\n'.format(self.PnameLine.text()))
+        text_file.writelines('{}'.format(self.URnumLine.text()))
+        text_file.close()
+        self.close() 
+
+        
+
 class Ui_changePatientPopUp(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)

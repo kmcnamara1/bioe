@@ -723,13 +723,14 @@ class UIinitPatientSetUp(QDialog):
 
     def test_exit(self):
         print("close popup!")
-        self.close()    
+        self.close()  
+          
 
     def get_patient_name(self):
         text_input = self.patientSetup.text()
         print(text_input)
         # dir_path = os.path.dirname(os.path.realpath(__file__))
-        text_file = open(".\Patient Details\PatientName.txt", "w")
+        text_file = open("./Patient Details/PatientName.txt", "w")
         text_file.write("%s" % text_input)
         # print(text_input)
         text_file.close()  
