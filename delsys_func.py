@@ -1,5 +1,5 @@
 #####################################
-## Code from Sami Kaab, UQ student ##
+## Code from Sami Keabab, UQ student ##
 #####################################
 
 import socket
@@ -24,8 +24,8 @@ class DelsysSensors():
         self.initTriggers()
         self.sendSTART()
         print("sentStart")
-        self.streamEMGData()
-        print('not reached?')
+        # self.streamEMGData()
+        # print('not reached?')
 
     def initTrignoConnection(self):
             #initiate command port
@@ -69,33 +69,64 @@ class DelsysSensors():
 
 
     def streamEMGData(self):
-            self.emg_data = np.array([],ndmin = 2)
-            t0 = time.time()
-            triggered = False
-            samples = 0
-            while True:
-                # if samples > 100:
-                    # stop after 100 samples
-                    # self.sendSTOP
+        self.emg_data = np.array([],ndmin = 2)
+        t0 = time.time()
+        triggered = False
+        samples = 0
+        while True:
+            # if samples > 100:
+                # stop after 100 samples
+                # self.sendSTOP
 
-                # Try and get the next frame
-                frame = self.read_EMG(t0, triggered)
-                #check if data was received ie trig start pressed
-                if frame[0] != None:
-                    triggered = True
-                    self.emg_data = np.append(self.emg_data,frame)
-                    samples = samples + 1
+            # Try and get the next frame
+            frame = self.read_EMG(t0, triggered)
+            #check if data was received ie trig start pressed
+            if frame[0] != None:
+                triggered = True
+                self.emg_data = np.append(self.emg_data,frame)
+                samples = samples + 1
 
-                # if no data received and trig start was pressed ie trig stop was pressed
-                elif triggered:
-                    
-                    break
+            # if no data received and trig start was pressed ie trig stop was pressed
+            elif triggered:
+                
+                break
 
-                self.emg_data = self.emg_data.reshape(int(len(self.emg_data)/(self.EMG_DATA_PORT_LENGTH+1)),(self.EMG_DATA_PORT_LENGTH+1))
-                # print(self.emg_data)
-                if samples > 0 and abs(frame[0:16]).max() > self.maxContract:
-                    self.maxContract = abs(frame[0:16]).max()
-                    print("MAX CONTRACTION VALUE {}".format(self.maxContract) )
+            self.emg_data = self.emg_data.reshape(int(len(self.emg_data)/(self.EMG_DATA_PORT_LENGTH+1)),(self.EMG_DATA_PORT_LENGTH+1))
+            # print(self.emg_data)
+            if samples > 0 and abs(frame[0:16]).max() > self.maxContract:
+                self.maxContract = abs(frame[0:16]).max()
+                print("MAX CONTRACTION VALUE {}".format(self.maxContract) )
+    
+    def getEMGData(self):
+        self.emg_data = np.array([],ndmin = 2)
+        t0 = time.time()
+        triggered = False
+        samples = 0
+        # if samples > 100:
+            # stop after 100 samples
+            # self.sendSTOP
+
+        # Try and get the next frame
+        frame = self.read_EMG(t0, triggered)
+        #check if data was received ie trig start pressed
+        if frame[0] != None:
+            triggered = True
+            self.emg_data = np.append(self.emg_data,frame)
+            samples = samples + 1
+
+        # if no data received and trig start was pressed ie trig stop was pressed
+        elif triggered: 
+            return # TODO: Return a value that can be distinguished as an error (triggered thus no values returned) 
+
+        self.emg_data = self.emg_data.reshape(int(len(self.emg_data)/(self.EMG_DATA_PORT_LENGTH+1)),(self.EMG_DATA_PORT_LENGTH+1))
+        # print(self.emg_data)
+        maxContract = 0
+        if samples > 0 and abs(frame[0:16]).max() > maxContract:
+            maxContract = abs(frame[0:16]).max()
+            # print("MAX CONTRACTION VALUE {}".format(self.maxContract) )
+
+        print(maxContract)
+        return maxContract
 
 
     def getSensorsActive(self):

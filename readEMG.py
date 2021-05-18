@@ -5,6 +5,8 @@
 from delsys_func import *
 from tkinter import *
 from tkinter import messagebox
+from UI.mainFile import *
+
 
 class Main():
     def __init__(self,master):
@@ -12,7 +14,8 @@ class Main():
         print('hello?')
         print("hELLO??")
         self.sensors = DelsysSensors(self)
-
+        while True:
+            self.sensors.getEMGData()
         # self.master = master
         # self.maxContract = 0
         
@@ -45,10 +48,16 @@ class Main():
 
 
 if __name__ == "__main__":
-    print("readEMG.py\n")
-    root = Tk()
-    app = Main(root)
-    root.mainloop()
+    # print("readEMG.py\n")
+    # root = Tk()
+    # app = Main(root)
+    # root.mainloop()
+
+    app = QApplication(sys.argv)
+    w = MainWindow()
+
+    sys.exit(app.exec_())
+    
     # main()
 
 

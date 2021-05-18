@@ -15,11 +15,13 @@ import matplotlib as mpl
 import matplotlib.figure as mpl_fig
 import matplotlib.animation as anim
 import numpy as np
+from delsys_func import *
 
 
 
 def loadPatientName():
-        text_file = open("Patient Details/PatientName.txt", "r+")
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        text_file = open(dir_path + "\Patient Details/PatientName.txt", "r+")
         data = text_file.read()
         
         if data == None:
@@ -680,7 +682,8 @@ class UIinitPatientSetUp(QDialog):
 
     def get_patient_name(self):
         text_input = self.patientSetup.text()
-        text_file = open("Patient Details/PatientName.txt", "w")
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        text_file = open(dir_path + "\Patient Details\PatientName.txt", "w")
         text_file.write("%s" % text_input)
         # print(text_input)
         text_file.close()  
@@ -826,7 +829,7 @@ class Ui_SampleEMG(QDialog):
         # self.setCentralWidget(self.MuscleDemo)
 
         # 2. Place the matplotlib figure
-        self.myFig = MyFigureCanvas(x_len=200, y_range=[0, 100], interval=20)
+        self.myFig = MyFigureCanvas(x_len=200, y_range=[0., 0.0003], interval=20)
         self.lyt.addWidget(self.myFig)
 
 ##########################################################################################
@@ -925,6 +928,8 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         self._ax_  = self.figure.subplots()
         self._ax_.set_ylim(ymin=self._y_range_[0], ymax=self._y_range_[1])
         self._line_, = self._ax_.plot(x, y)
+        self.delsys = DelsysSensors(self)
+        print("USE THIS ")
 
         # Call superclass constructors
         anim.FuncAnimation.__init__(self, self.figure, self._update_canvas_, fargs=(y,), interval=interval, blit=True)
@@ -935,7 +940,7 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         This function gets called regularly by the timer.
 
         '''
-        y.append(round(get_next_datapoint(), 2))     # Add new datapoint
+        y.append(self.delsys.getEMGData())     # Add new datapoint
         y = y[-self._x_len_:]                        # Truncate list _y_
         self._line_.set_ydata(y)
         return self._line_,

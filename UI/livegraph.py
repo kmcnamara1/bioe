@@ -20,6 +20,7 @@ import matplotlib as mpl
 import matplotlib.figure as mpl_fig
 import matplotlib.animation as anim
 import numpy as np
+from delsys_func import *
 
 class ApplicationWindow(QtWidgets.QMainWindow):
     '''
@@ -70,7 +71,8 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         self._ax_  = self.figure.subplots()
         self._ax_.set_ylim(ymin=self._y_range_[0], ymax=self._y_range_[1])
         self._line_, = self._ax_.plot(x, y)
-
+        self.delsys = DelsysSensors()
+        print("USE THIS ")
         # Call superclass constructors
         anim.FuncAnimation.__init__(self, self.figure, self._update_canvas_, fargs=(y,), interval=interval, blit=True)
         return
@@ -80,22 +82,11 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         This function gets called regularly by the timer.
 
         '''
-        y.append(round(get_next_datapoint(), 2))     # Add new datapoint
+        y.append(round(self.delsys.getEMGData, 2))     # Add new datapoint
+
         y = y[-self._x_len_:]                        # Truncate list _y_
         self._line_.set_ydata(y)
         return self._line_,
-
-# Data source
-# ------------
-n = np.linspace(0, 499, 500)
-d = 50 + 25 * (np.sin(n / 8.3)) + 10 * (np.sin(n / 7.5)) - 5 * (np.sin(n / 1.5))
-i = 0
-def get_next_datapoint():
-    global i
-    i += 1
-    if i > 499:
-        i = 0
-    return d[i]
 
 if __name__ == "__main__":
     qapp = QtWidgets.QApplication(sys.argv)

@@ -4,9 +4,9 @@ from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, 
 import sys
 import re
 import os
-from previousPatientData import *
-from mainWindows import *
-from dialogs import *
+from UI.previousPatientData import *
+from UI.mainWindows import *
+from UI.dialogs import *
 
 LOAD_PREVIOUS = 1
 NEW_PATIENT = 0
@@ -90,10 +90,11 @@ def close_all():
         sys.exit(0)
 
 def loadClinicianName():
-        text_file = open("ClinicanName.txt", "r+")
-        data = text_file.read()
-        text_file.close()
-        return data
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    text_file = open(dir_path + '\ClinicianName.txt' , "r+")
+    data = text_file.read()
+    text_file.close()
+    return data
 
 ########################################################################################################################################
                                             # MAIN SECTION #
