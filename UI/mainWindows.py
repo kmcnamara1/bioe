@@ -568,66 +568,66 @@ class UIinitPatientSetUp(QDialog):
 
         self.layout = QVBoxLayout()
 
-        self.patientsnameFrame = QtWidgets.QFrame(self.centralwidget)
-        self.patientsnameFrame.setGeometry(QtCore.QRect(90, 0, 271, 81))
-        self.patientsnameFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.patientsnameFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.patientsnameFrame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.patientsnameFrame.setObjectName("patientsnameFrame")
+        # self.patientsnameFrame = QtWidgets.QFrame(self.centralwidget)
+        # self.patientsnameFrame.setGeometry(QtCore.QRect(90, 0, 271, 81))
+        # self.patientsnameFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
+        # self.patientsnameFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        # self.patientsnameFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        # self.patientsnameFrame.setObjectName("patientsnameFrame")
 
-        self.labelPatientsName = QtWidgets.QLabel(self.patientsnameFrame)
-        self.labelPatientsName.setGeometry(QtCore.QRect(20, 10, 191, 31))
-        self.labelPatientsName.setStyleSheet("font: 12pt \".AppleSystemUIFont\";\n"
-                "background-color: rgb(255, 255, 255);\n"
-                "color: rgb(37,39,51);")
+        # self.labelPatientsName = QtWidgets.QLabel(self.patientsnameFrame)
+        # self.labelPatientsName.setGeometry(QtCore.QRect(20, 10, 191, 31))
+        # self.labelPatientsName.setStyleSheet("font: 12pt \".AppleSystemUIFont\";\n"
+        #         "background-color: rgb(255, 255, 255);\n"
+        #         "color: rgb(37,39,51);")
 
-        self.labelPatientsName.setObjectName("labelPatientsName")
+        # self.labelPatientsName.setObjectName("labelPatientsName")
 
-        self.patientSetup = QtWidgets.QLineEdit(self.patientsnameFrame)
-        self.patientSetup.setGeometry(QtCore.QRect(30, 40, 211, 20))
+        # self.patientSetup = QtWidgets.QLineEdit(self.patientsnameFrame)
+        # self.patientSetup.setGeometry(QtCore.QRect(30, 40, 211, 20))
 
-        self.patientSetup.setStyleSheet("background-color: rgb(255,252,241);\n"
-                        "color: rgb(115, 116, 116);\n"
-                        "selection-color: rgb(207, 212, 212);\n"
-                        "border-color: rgb(156, 160, 159);\n"
-                        "border-bottom-color: rgb(159, 163, 163);")
+        # self.patientSetup.setStyleSheet("background-color: rgb(255,252,241);\n"
+        #                 "color: rgb(115, 116, 116);\n"
+        #                 "selection-color: rgb(207, 212, 212);\n"
+        #                 "border-color: rgb(156, 160, 159);\n"
+        #                 "border-bottom-color: rgb(159, 163, 163);")
 
-        self.patientSetup.setObjectName("PatientsNameEnter")
-        self.patientSetup.returnPressed.connect(self.get_patient_name)
+        # self.patientSetup.setObjectName("PatientsNameEnter")
+        # self.patientSetup.returnPressed.connect(self.get_patient_name)
 
 
-        self.patientURFrame = QtWidgets.QFrame(self.centralwidget)
-        self.patientURFrame.setGeometry(QtCore.QRect(90, 60, 271, 81))
-        self.patientURFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.patientURFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.patientURFrame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.patientURFrame.setObjectName("patientURFrame")
-        self.labelPatientUR = QtWidgets.QLabel(self.patientURFrame)
-        self.labelPatientUR.setGeometry(QtCore.QRect(20, 10, 191, 31))
-        self.labelPatientUR.setStyleSheet("font: 12pt \".AppleSystemUIFont\";\n"
-                "background-color: rgb(255, 255, 255);\n"
-                "color: rgb(37,39,51);")
+        # self.patientURFrame = QtWidgets.QFrame(self.centralwidget)
+        # self.patientURFrame.setGeometry(QtCore.QRect(90, 60, 271, 81))
+        # self.patientURFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
+        # self.patientURFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        # self.patientURFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        # self.patientURFrame.setObjectName("patientURFrame")
+        # self.labelPatientUR = QtWidgets.QLabel(self.patientURFrame)
+        # self.labelPatientUR.setGeometry(QtCore.QRect(20, 10, 191, 31))
+        # self.labelPatientUR.setStyleSheet("font: 12pt \".AppleSystemUIFont\";\n"
+        #         "background-color: rgb(255, 255, 255);\n"
+        #         "color: rgb(37,39,51);")
 
-        self.labelPatientUR.setObjectName("labelPatientsName")
+        # self.labelPatientUR.setObjectName("labelPatientsName")
 
-        self.patientURSetup = QtWidgets.QLineEdit(self.patientURFrame)
-        self.patientURSetup.setGeometry(QtCore.QRect(170, 10, 70, 20))
+        # self.patientURSetup = QtWidgets.QLineEdit(self.patientURFrame)
+        # self.patientURSetup.setGeometry(QtCore.QRect(170, 10, 70, 20))
 
-        self.patientURSetup.setStyleSheet("background-color: rgb(255,252,241);\n"
-                        "color: rgb(115, 116, 116);\n"
-                        "selection-color: rgb(207, 212, 212);\n"
-                        "border-color: rgb(156, 160, 159);\n"
-                        "border-bottom-color: rgb(159, 163, 163);")
+        # self.patientURSetup.setStyleSheet("background-color: rgb(255,252,241);\n"
+        #                 "color: rgb(115, 116, 116);\n"
+        #                 "selection-color: rgb(207, 212, 212);\n"
+        #                 "border-color: rgb(156, 160, 159);\n"
+        #                 "border-bottom-color: rgb(159, 163, 163);")
 
         
 
-        self.patientURSetup.setObjectName("PatientUREnter")
+        # self.patientURSetup.setObjectName("PatientUREnter")
 
 
         # self.patientURSetup.returnPressed.connect(self.get_patient_UR)
 
         self.MuscleDemo = QtWidgets.QFrame(self.centralwidget)
-        self.MuscleDemo.setGeometry(QtCore.QRect(20, 100, 411, 320))
+        self.MuscleDemo.setGeometry(QtCore.QRect(20, 30, 411, 320))
         self.MuscleDemo.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.MuscleDemo.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.MuscleDemo.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -641,16 +641,19 @@ class UIinitPatientSetUp(QDialog):
 
         self.examplemusclelabel = QtWidgets.QLabel(self.MuscleDemo)
         if (listInfo == 1):
+                muscle = 'wrist'
                 pixmap = QPixmap('icons/wrist1.jpg')
                 self.examplemusclelabel.setPixmap(pixmap)
                 self.examplemusclelabel.resize(pixmap.width()*1.8, pixmap.height()*1.8)
                 self.examplemusclelabel.move(30,-20)
         elif (listInfo == 2):
+                muscle = 'finger'
                 pixmap = QPixmap('icons/finger1.jpg')
                 self.examplemusclelabel.setPixmap(pixmap)
                 # self.examplemusclelabel.resize(pixmap.width()*1.5, pixmap.height()*1.8)
                 self.examplemusclelabel.move(40,50)                
         else:
+                muscle = 'shoulder'
                 pixmap = QPixmap('icons/shoulder1.jpg')
                 self.examplemusclelabel.setPixmap(pixmap)
                 self.examplemusclelabel.resize(pixmap.width()*1.8, pixmap.height()*1.8)
@@ -707,17 +710,19 @@ class UIinitPatientSetUp(QDialog):
 
 
         _translate = QtCore.QCoreApplication.translate
-        self.labelPatientsName.setText(_translate("Dialog", "Please Enter Patient\'s Name:"))
+        # self.labelPatientsName.setText(_translate("Dialog", "Please Enter Patient\'s Name:"))
 
-        self.labelPatientUR.setText(_translate("Dialog", "Patient UR Number:"))
+        # self.labelPatientUR.setText(_translate("Dialog", "Patient UR Number:"))
+        
+        self.findmuscleLabl.setText(_translate("Dialog", ("Find the {} muscle belly").format(muscle)))
 
-        self.findmuscleLabl.setText(_translate("Dialog", "Find the wrist muscle belly"))
+
         self.exampleLabel.setText(_translate("Dialog", "Example:"))
         self.exitButton.setText(_translate("Dialog", "Exit")) 
         self.nextButton.setText(_translate("Dialog", "Next")) 
 
-        self.labelPatientUR.adjustSize()
-        self.labelPatientsName.adjustSize()
+        # self.labelPatientUR.adjustSize()
+        # self.labelPatientsName.adjustSize()
         self.findmuscleLabl.adjustSize()
         self.exampleLabel.adjustSize()    
 

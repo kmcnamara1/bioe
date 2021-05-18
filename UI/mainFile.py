@@ -156,10 +156,7 @@ class MainWindow(QMainWindow):
             self.Window.patientSetup.clicked.connect(self.patientCheckExercisePopUp)         
         else:
             # This will check if a name is in the database and then re check if they want to overwrite this
-            if ((self.patientDetail.patientName) == None):
-                self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
-            else:
-                self.Window.patientSetup.clicked.connect(self.patientCheckPopUp)
+            self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
             self.show()       
 
     def patientRegister(self):
@@ -167,6 +164,8 @@ class MainWindow(QMainWindow):
         ui_patientReg = Ui_Register(self)
         popup = QMessageBox(ui_patientReg)
         ui_patientReg.OK.clicked.connect(self.startUIWindow)
+        ui_patientReg.OK.clicked.connect(lambda: self.checkDetail(ui_patientReg))
+        ui_patientReg.URnumLine.returnPressed.connect(lambda: self.checkDetail(ui_patientReg))
         ui_patientReg.URnumLine.returnPressed.connect(self.startUIWindow)
         ui_patientReg.show()
 
@@ -205,16 +204,19 @@ class MainWindow(QMainWindow):
         setUpPatient.setStyleSheet("background-color: rgb(255,252,241);");
         popup = QMessageBox(setUpPatient)
 
-        if (self.patientDetail.patientName == None):
-            pass
-        else:
-            name = self.patientDetail.patientName 
-            setUpPatient.patientSetup.setText(name)
+        # if (self.patientDetail.patientName == None):
+        #     pass
+        # else:
+        #     name = self.patientDetail.patientName 
+        #     setUpPatient.patientSetup.setText(name)
 
         #Assume that when next is pressed the full name is entered
         # Run function that will see if a text file of the patients id exists in "patients details/id.txt"
         # setUpPatient.patientSetup.returnPressed.connect(lambda: self.checkDetail(setUpPatient))
-        setUpPatient.nextButton.clicked.connect(lambda: self.checkDetail(setUpPatient))
+        # setUpPatient.nextButton.clicked.connect(lambda: self.checkDetail(setUpPatient))
+        # setUpPatient.patientSetup.returnPressed.connect(self.startEnterMeasurementsPopup)
+        setUpPatient.nextButton.clicked.connect(self.startEnterMeasurementsPopup)
+
         setUpPatient.show()
         
     def startEnterMeasurementsPopup(self):
@@ -335,10 +337,11 @@ class MainWindow(QMainWindow):
     # Checks id code ( the names initals ) for a current file under the given initals
     # IF a current file is there --> load in the data as the patients details
     # ELSE continue on new patient files
-    def checkDetail(self,setUpPatient):
+    def checkDetail(self,ui_patientReg):
 
         # Setting up the current details for the patient
-        name=setUpPatient.patientSetup.text()
+        name=ui_patientReg.PnameLine.text()
+        ur=ui_patientReg.URnumLine.text()
         print(name)
         self.patientDetail.patientName = name
         # set up current details class
@@ -361,7 +364,7 @@ class MainWindow(QMainWindow):
     
 
         # Start next pop-up for window
-        self.startEnterMeasurementsPopup()
+        # self.startEnterMeasurementsPopup()
 
 ########################################################################################################################################
                                             # Export Function #
