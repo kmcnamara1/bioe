@@ -450,3 +450,66 @@ class Ui_checkExercise(QDialog):
     def dialog_exit(self):
         print("Please Select Exercise First")
         self.close()   
+
+
+
+
+class Ui_finishEMGReading(QDialog):
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        
+        self.setObjectName("MainWindow")
+        self.resize(400, 176)
+        self.setMaximumSize(QtCore.QSize(400, 176))
+        self.setStyleSheet("background-color: rgb(255,252,241)\n"
+                                        "")
+        self.centralwidget = QtWidgets.QWidget(self)
+        self.centralwidget.setObjectName("centralwidget")
+        self.right = QtWidgets.QColumnView(self.centralwidget)
+        self.right.setGeometry(QtCore.QRect(380, 0, 20, 131))
+        self.right.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.right.setObjectName("right")
+        self.left = QtWidgets.QColumnView(self.centralwidget)
+        self.left.setGeometry(QtCore.QRect(0, -10, 20, 141))
+        self.left.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.left.setObjectName("left")
+        self.redoB = QtWidgets.QPushButton(self.centralwidget)
+        self.redoB.setGeometry(QtCore.QRect(30, 0, 101, 131))
+        self.redoB.setStyleSheet("background-color: rgb(255, 238, 245);\n"
+                                "color: rgb(37,39,51);\n"
+                                "border-top-color: rgb(85, 86, 86);\n"
+                                "selection-background-color: rgb(197, 201, 201);\n"
+                                "")
+        self.redoB.setObjectName("redoB")
+        self.middleB = QtWidgets.QPushButton(self.centralwidget)
+        self.middleB.setGeometry(QtCore.QRect(150, 0, 101, 131))
+        self.middleB.setStyleSheet("background-color: rgb(238, 255, 254);\n"
+                                        "color: rgb(37,39,51);\n"
+                                        "border-top-color: rgb(85, 86, 86);\n"
+                                        "selection-background-color: rgb(197, 201, 201);\n"
+                                        "")
+        self.middleB.setObjectName("middleB")
+        self.nextExB = QtWidgets.QPushButton(self.centralwidget)
+        self.nextExB.setGeometry(QtCore.QRect(270, 0, 101, 131))
+        self.nextExB.setStyleSheet("background-color: rgb(241, 255, 216);\n"
+                                        "color: rgb(37,39,51);\n"
+                                        "border-top-color: rgb(85, 86, 86);\n"
+                                        "selection-background-color: rgb(197, 201, 201);\n"
+                                        "")
+        self.nextExB.setObjectName("nextExB")
+        # MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(self)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 400, 24))
+        self.menubar.setObjectName("menubar")
+        # MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(self)
+        self.statusbar.setObjectName("statusbar")
+        # MainWindow.setStatusBar(self.statusbar)
+
+        _translate = QtCore.QCoreApplication.translate
+        self.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.redoB.setText(_translate("MainWindow", "REDO"))
+        self.middleB.setText(_translate("MainWindow", "Save and finish  \n"
+                                                        " session"))
+        self.nextExB.setText(_translate("MainWindow", "Next Exercise"))

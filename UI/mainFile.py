@@ -272,6 +272,9 @@ class MainWindow(QMainWindow):
         self.Window.label_7.setText(self.Window._translate("OverViewWindow", "41.322mV"))
         self.Window.label_7.adjustSize()
 
+    def stopButtonFun(self):
+        self.Window.label_7.setText(self.Window._translate("OverViewWindow", "41.322mV"))
+        self.Window.label_7.adjustSize()
 
     def changePatientButton(self):     
         self.currentDetails.clinicanName = None
