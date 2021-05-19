@@ -825,6 +825,10 @@ class UIinitMeasurePatientSetUp(QDialog):
 
     def test_done(self):
         print("Next to EMG data!")
+        text_input = self.PatientsNameEnter.text()
+        text_file = open("meas.txt", "w")
+        text_file.write("%s" % text_input)
+        text_file.close()
         self.close()  
 
     def test_back(self):

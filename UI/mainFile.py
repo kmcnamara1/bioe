@@ -97,6 +97,13 @@ def loadClinicianName():
     text_file.close()
     return data
 
+def get_meas_txt():
+    text_file = open("meas.txt", "r+")
+    data = text_file.read()
+    text_file.truncate(0)
+    text_file.close()
+    return data
+ 
 ########################################################################################################################################
                                             # MAIN SECTION #
 ########################################################################################################################################
@@ -112,6 +119,7 @@ class MainWindow(QMainWindow):
         loadClinicianName()
         self.currentDetails = patientDetails()
         self.startUIToolTab()
+        self.current_delsys_MVC = None
         self.EXERCISE_SET = None
         self.patientDetail = patientDetails() #start instance of patient details
 
@@ -204,12 +212,6 @@ class MainWindow(QMainWindow):
         ui_patientReg.URnumLine.returnPressed.connect(self.startUIWindow)
         ui_patientReg.show()
 
-    def patientCheckExercisePopUp(self):
-        ui_patientCheckPopUp = Ui_checkExercise(self)
-        popup = QMessageBox(ui_patientCheckPopUp)
-        ui_patientCheckPopUp.BACK.clicked.connect(self.startUIWindow)
-        ui_patientCheckPopUp.show()
-
     def startUIpatietnHistory(self):
         self.historyWindow = Ui_PatientHistoryWindow(self)
         self.setCentralWidget(self.historyWindow)
@@ -236,10 +238,7 @@ class MainWindow(QMainWindow):
 
         self.show()
 
-    def changetoHome(self):
-        popHome = changetohomeUI(self)
-        popHome.DONE.clicked.connect(self.startUIWindow)
-        popHome.show()        
+    
 
     def startSetUpPopup(self):
         #init the patient setup
@@ -255,24 +254,37 @@ class MainWindow(QMainWindow):
     def startEnterMeasurementsPopup(self):
         
         listInfo = self.EXERCISE_SET
-        startEnterMeasurementsPopup = UIinitMeasurePatientSetUp(parent=self,listInfo=listInfo)
+        self.startEnterMeasurementsPopup = UIinitMeasurePatientSetUp(parent=self,listInfo=listInfo)
 
         if ((self.currentDetails.setupMeasWrist != None) and (self.EXERCISE_SET ==1)):
-            startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasWrist)
-        elif((self.currentDetails.setupMeasWrist != None) and (self.EXERCISE_SET ==2)):
-            startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasFinger)
-        else:
-            startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasShoulder)
+            self.startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasWrist)
+        elif((self.currentDetails.setupMeasFinger != None) and (self.EXERCISE_SET ==2)):
+            self.startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasFinger)
+        elif((self.currentDetails.setupMeasShoulder != None) and (self.EXERCISE_SET ==3)):
+            self.startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasShoulder)
 
-        # self.currentDetails.setupMeasFinger
-        # self.currentDetails.setupMeasShoulder
+        # print(self.startEnterMeasurementsPopup.PatientsNameEnter.text())
 
-        startEnterMeasurementsPopup.backButton.clicked.connect(self.startSetUpPopup)
-        startEnterMeasurementsPopup.doneButton.clicked.connect(self.sampleEMGPopup)
-        startEnterMeasurementsPopup.show()
+        self.startEnterMeasurementsPopup.backButton.clicked.connect(self.startSetUpPopup)
+        self.startEnterMeasurementsPopup.doneButton.clicked.connect(self.sampleEMGPopup)
+        self.startEnterMeasurementsPopup.show()
+    
+
 
     def sampleEMGPopup(self):
         popup = Ui_SampleEMG(self)
+
+        if ((self.currentDetails.setupMeasWrist == None) and (self.EXERCISE_SET ==1)):
+            self.currentDetails.setupMeasWrist = get_meas_txt()
+        elif((self.currentDetails.setupMeasFinger == None) and (self.EXERCISE_SET ==2)):
+            self.currentDetails.setupMeasWrist = get_meas_txt()
+        elif((self.currentDetails.setupMeasShoulder == None) and (self.EXERCISE_SET ==3)):
+            self.currentDetails.setupMeasWrist = get_meas_txt()      
+
+        if((self.currentDetails.setupMeasWrist == None) and (self.EXERCISE_SET ==3)):
+            
+            self.currentDetails.setupMeasShoulder = self.startEnterMeasurementsPopup.PatientsNameEnter.text()
+
         popup.nextButton.clicked.connect(self.startUIWindow)
         popup.backBB.clicked.connect(self.startEnterMeasurementsPopup)
         popup.show()       
@@ -289,6 +301,14 @@ class MainWindow(QMainWindow):
         # changeExercisePopUp.WristExtension.clicked.connect(self.startUIWindow)
 
         changeExercisePopUp.show()   
+
+#################################################################
+         # Small checking dialog popup classes #
+#################################################################
+    def changetoHome(self):
+        popHome = changetohomeUI(self)
+        popHome.DONE.clicked.connect(self.startUIWindow)
+        popHome.show()    
 
     def patientCheckPopUp(self):
         ui_patientCheckPopUp = Ui_patientPopUp(self)
@@ -308,39 +328,84 @@ class MainWindow(QMainWindow):
         dialogPatientSetup = Ui_needPatientSetup(self)
         popup = QMessageBox(dialogPatientSetup)
         dialogPatientSetup.show()
+
+    def patientCheckExercisePopUp(self):
+        ui_patientCheckPopUp = Ui_checkExercise(self)
+        popup = QMessageBox(ui_patientCheckPopUp)
+        ui_patientCheckPopUp.BACK.clicked.connect(self.startUIWindow)
+        ui_patientCheckPopUp.show()
+
+
+
+
 ########################################################################################################################################
                                             # Class functions #
 ########################################################################################################################################
+
+
+#################################################################
+         # HERE WILL BE USED TO DISP READING VALUE #
+#################################################################
+    def get_reading(self):
+        return self.current_delsys_MVC    
+    
     def startButtonFun(self):
-        self.Window.label_7.setText(self.Window._translate("OverViewWindow", "41.322mV"))
+        value = self.get_reading()
+        
+        self.Window.label_7.setText(self.Window._translate("OverViewWindow", "{}".format(value)))
         self.Window.label_7.adjustSize()
 
+
+
+#################################################################
+         # Stop Button #
+#################################################################
     def stopButtonCheck(self,exercise):
         stopCheck = Ui_finishEMGReading(self)
         popup = QMessageBox(stopCheck)
 
         #functionality of the buttons
 
-        stopCheck.nextExB.clicked.connect(self.changeExercisePopUp)   
+        stopCheck.nextExB.clicked.connect(self.storeReading)   
 
         if (exercise == 1):
             #wrist
             stopCheck.redoB.clicked.connect(lambda: self.clearVal(exercise))
-            stopCheck.middleB.clicked.connect(self.exportData)
+            stopCheck.middleB.clicked.connect(self.checkFinished)
         elif (exercise == 2):
             #finger
             stopCheck.redoB.clicked.connect(lambda: self.clearVal(exercise))
-            stopCheck.middleB.clicked.connect(self.exportData)
+            stopCheck.middleB.clicked.connect(self.checkFinished)
         else:
             #shoulder
             stopCheck.redoB.clicked.connect(lambda: self.clearVal(exercise))
-            stopCheck.middleB.clicked.connect(self.exportData)
-
-
+            stopCheck.middleB.clicked.connect(self.checkFinished)
         stopCheck.show()
+
+    def checkFinished(self):
+        finished = checkFinishedUI(self)
+        finished.BACK.clicked.connect(self.stopButtonCheck)
+        finished.DONE.clicked.connect(self.exportData)
+        finished.show()
+
+    # stores reading after pressed the NEXT button
+    def storeReading(self,n):
+        if (n == 1):
+            #wrist
+            self.currentDetails.wristMVC = self.get_reading()
+        elif (n == 2):
+            #finger
+            self.currentDetails.fingerMVC = self.get_reading()
+        else:
+            #shoulder
+            self.currentDetails.shoulderMVC = self.get_reading()
+
+        self.changeExercisePopUp()
+
 
     def clearVal(self,exercise):
         print(exercise)
+        self.current_delsys_MVC  = None
         if (exercise == 1):
             self.currentDetails.wristMVC = None
         elif (exercise == 2):
@@ -385,6 +450,8 @@ class MainWindow(QMainWindow):
         self.Window.label_10.setText(self.Window._translate("OverViewWindow", "Patient: - "))   
         self.patientRegister()
 
+
+
     def passCurrentExercise(self,n):
         self.EXERCISE_SET = n
         self.startUIWindow()
@@ -401,6 +468,9 @@ class MainWindow(QMainWindow):
         
         self.Window.show()  
 
+########################################################################################################################################
+                                            # init prev patient #
+########################################################################################################################################
 
     def loadPreviousSessionData(self,ID):
         # find how many sessions they have had
@@ -463,8 +533,9 @@ class MainWindow(QMainWindow):
     def exportData(self):
 
         self.currentDetails.beenExported = YES
+
         # If patients first session must make a new directory for it
-        PATH = './Patient Details/{}'.format((self.currentDetails.patientID+self.currentDetails.ur))
+        PATH = 'Patient Details/{}'.format((self.currentDetails.patientID+self.currentDetails.ur))
         if (self.currentDetails.sessionNum == 1):
             os.mkdir(PATH)
         

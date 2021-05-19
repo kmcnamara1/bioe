@@ -592,3 +592,73 @@ class changetohomeUI(QDialog):
     def dialog_exit(self):
         print("Please change to home")
         self.close()   
+
+
+
+class checkFinishedUI(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.setObjectName("MainWindow")
+        self.resize(313, 110)
+        self.setMaximumSize(QtCore.QSize(313, 110))
+        self.setStyleSheet("background-color: rgb(255,252,241)\n"
+                "")
+        self.centralwidget = QtWidgets.QWidget(self)
+        self.centralwidget.setObjectName("centralwidget")
+        self.right = QtWidgets.QColumnView(self.centralwidget)
+        self.right.setGeometry(QtCore.QRect(290, 0, 25, 110))
+        self.right.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.right.setObjectName("right")
+        self.left = QtWidgets.QColumnView(self.centralwidget)
+        self.left.setGeometry(QtCore.QRect(0, 0, 20, 110))
+        self.left.setStyleSheet("background-color: rgb(78, 78, 78)")
+        self.left.setObjectName("left")
+        self.DONE = QtWidgets.QPushButton(self.centralwidget)
+        self.DONE.setGeometry(QtCore.QRect(190, 70, 101, 20))
+        self.DONE.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(37,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+        self.DONE.setObjectName("DONE")
+        self.BACK = QtWidgets.QPushButton(self.centralwidget)
+        self.BACK.setGeometry(QtCore.QRect(20, 70, 101, 20))
+        self.BACK.setStyleSheet("background-color: rgb(255,252,241);border-color: rgb(34, 34, 34);\n"
+                "color: rgb(37,39,51);\n"
+                "border-top-color: rgb(85, 86, 86);\n"
+                "selection-background-color: rgb(197, 201, 201);\n"
+                "")
+        self.BACK.setObjectName("BACK")
+        self.MAIN = QtWidgets.QFrame(self.centralwidget)
+        self.MAIN.setGeometry(QtCore.QRect(20, -10, 271, 81))
+        self.MAIN.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.MAIN.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.MAIN.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.MAIN.setObjectName("MAIN")
+        self.labelPatientsName = QtWidgets.QLabel(self.MAIN)
+        self.labelPatientsName.setGeometry(QtCore.QRect(30 , 20, 271, 50))
+        self.labelPatientsName.setStyleSheet("font: 13pt \".AppleSystemUIFont\";\n"
+                "background-color: rgb(255, 255, 255);\n"
+                "color: rgb(37,39,51);")
+
+        self.DONE.clicked.connect(self.dialog_exit)
+        self.BACK.clicked.connect(self.dialog_exit)   
+          
+        self.labelPatientsName.setObjectName("labelPatientsName")
+        self.menubar = QtWidgets.QMenuBar(self)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 313, 24))
+        self.menubar.setObjectName("menubar")
+        self.statusbar = QtWidgets.QStatusBar(self)
+        self.statusbar.setObjectName("statusbar")
+
+        _translate = QtCore.QCoreApplication.translate
+        self.DONE.setText(_translate("MainWindow", "Save"))
+        self.BACK.setText(_translate("MainWindow", "Back"))
+        self.labelPatientsName.setText(_translate("MainWindow", "This will end the Session if you want to\n continue click BACK and NEXT"))  
+        self.labelPatientsName.adjustSize()
+
+ 
+    def dialog_exit(self):
+        print("Please change to home")
+        self.close()  
