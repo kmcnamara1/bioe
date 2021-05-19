@@ -16,7 +16,11 @@ class DelsysSensors():
         self.EMG_DATA_PORT_LENGTH = 16
         self.EMG_SEG_LEN = self.EMG_DATA_PORT_LENGTH * 4
 
-        self.maxContract = 0
+        self._connected = False
+        self._reading = False
+
+        
+        self._maxContract = 0
         self.initTrignoConnection()
         print('inited')
         self.getSensorsActive()
@@ -26,6 +30,8 @@ class DelsysSensors():
         print("sentStart")
         # self.streamEMGData()
         # print('not reached?')
+
+
 
     def initTrignoConnection(self):
             #initiate command port
@@ -93,9 +99,9 @@ class DelsysSensors():
 
             self.emg_data = self.emg_data.reshape(int(len(self.emg_data)/(self.EMG_DATA_PORT_LENGTH+1)),(self.EMG_DATA_PORT_LENGTH+1))
             # print(self.emg_data)
-            if samples > 0 and abs(frame[0:16]).max() > self.maxContract:
-                self.maxContract = abs(frame[0:16]).max()
-                print("MAX CONTRACTION VALUE {}".format(self.maxContract) )
+            if samples > 0 and abs(frame[0:16]).max() > self._maxContract:
+                self._maxContract = abs(frame[0:16]).max()
+                print("MAX CONTRACTION VALUE {}".format(self._maxContract) )
     
     def getEMGData(self):
         self.emg_data = np.array([],ndmin = 2)
@@ -125,7 +131,8 @@ class DelsysSensors():
             maxContract = abs(frame[0:16]).max()
             # print("MAX CONTRACTION VALUE {}".format(self.maxContract) )
 
-        print(maxContract)
+        # print(maxContract)
+        maxContract = abs(frame[0:16]).max()
         return maxContract
 
 
