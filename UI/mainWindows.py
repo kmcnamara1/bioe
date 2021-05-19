@@ -109,6 +109,10 @@ class UIWindow(QWidget):
                 ";\n"
                 "border-color: rgb(34, 34, 34);")
         self.Logout.setObjectName("Logout")
+
+
+        self.Logout.clicked.connect(self.exit)
+
         self.changePatient = QtWidgets.QPushButton(self.centralwidget)
         self.changePatient.setGeometry(QtCore.QRect(0, 630, 201, 41))
         self.changePatient.setStyleSheet("background-color: rgb(78,78,78); color: white\n"
@@ -141,7 +145,7 @@ class UIWindow(QWidget):
 
         self.label_4.setObjectName("label_4")
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(220, 20, 171, 31))
+        self.label_5.setGeometry(QtCore.QRect(220, 20, 250, 31))
         self.label_5.setStyleSheet("font: 24pt \".AppleSystemUIFont\"; \n"
                 "background-color: rgb(255, 255, 255);\n"
                 "color:#323232")
@@ -274,9 +278,11 @@ class UIWindow(QWidget):
         self.label_8.adjustSize()
         self.label_6.adjustSize()
         self.label_7.adjustSize()
+        
         self.label_4.setGeometry(QtCore.QRect(130, 50, (self.label_4.width() + 25), 41))
 
-
+    def exit(self):
+            self.close()
 
 ###############################################################################################################
 
@@ -416,11 +422,10 @@ class UIToolTab(QWidget):
 
     def txtstate(self):
         text_input = self.lineEdit.text()
-        text_file = open("ClinicanName.txt", "w")
+        text_file = open("ClinicianName.txt", "w")
         text_file.write("%s" % text_input)
         text_file.close()
 
-        # print(text_input)
 
 ###############################################################################################################
 

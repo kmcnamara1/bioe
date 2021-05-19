@@ -126,7 +126,8 @@ class MainWindow(QMainWindow):
     def startUIWindow(self):
         self.Window = UIWindow(self)
         self.setCentralWidget(self.Window)
-        self.Window.Logout.clicked.connect(self.startUIToolTab)  
+
+        self.Window.Logout.clicked.connect(self.logout)  
 
         #set up patient details run next class
         if (self.currentDetails.sessionNum!=0):
@@ -161,6 +162,38 @@ class MainWindow(QMainWindow):
             self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
             self.show()       
 
+    # performs all clearing of data for logout
+    def logout(self):
+        self.currentDetails.clinicanName = None
+        self.currentDetails.date = None
+        self.currentDetails.patientID = None
+        self.currentDetails.patientName = None
+        self.currentDetails.sessionNum = 0
+        self.currentDetails.setupMeas = None
+        self.currentDetails.setupMeasWrist = None
+        self.currentDetails.setupMeasFinger = None
+        self.currentDetails.setupMeasShoulder = None
+        self.currentDetails.wristMVC = None
+        self.currentDetails.fingerMVC = None
+        self.currentDetails.shoulderMVC = None
+        self.currentDetails.beenExported = None  
+        self.currentDetails.ur = None
+
+        self.patientDetail.patientName = None
+        self.patientDetail.patientID = None
+        self.patientDetail.date = None
+        self.patientDetail.sessionNum = 0
+        self.patientDetail.setupMeas = None
+        self.patientDetail.setupMeasWrist = None
+        self.patientDetail.setupMeasFinger = None
+        self.patientDetail.setupMeasShoulder = None
+        self.patientDetail.wristMVC = None
+        self.patientDetail.fingerMVC = None
+        self.patientDetail.shoulderMVC = None
+        self.patientDetail.beenExported = None 
+        
+        self.startUIToolTab()
+
     def patientRegister(self):
         self.startUIWindow()
         ui_patientReg = Ui_Register(self)
@@ -181,6 +214,10 @@ class MainWindow(QMainWindow):
         self.historyWindow = Ui_PatientHistoryWindow(self)
         self.setCentralWidget(self.historyWindow)
 
+        self.historyWindow.Logout.clicked.connect(self.logout) 
+        self.historyWindow.changePatient.clicked.connect(self.patientChangeCheckPopUp)
+        self.historyWindow.patientSetup.clicked.connect(self.changetoHome)
+
         self.scroll = QtWidgets.QScrollBar(self.historyWindow.PastSessions)
 
         historyList = displayPatientHistory(self.currentDetails.patientID,self.currentDetails.ur,self.currentDetails.sessionNum, self.currentDetails.beenExported)
@@ -198,6 +235,11 @@ class MainWindow(QMainWindow):
         self.historyWindow.overviewSide.clicked.connect(self.startUIWindow)
 
         self.show()
+
+    def changetoHome(self):
+        popHome = changetohomeUI(self)
+        popHome.DONE.clicked.connect(self.startUIWindow)
+        popHome.show()        
 
     def startSetUpPopup(self):
         #init the patient setup
@@ -341,6 +383,7 @@ class MainWindow(QMainWindow):
 
         self.Window.label_5.setText(self.Window._translate("OverViewWindow", "Session no.  ")) 
         self.Window.label_10.setText(self.Window._translate("OverViewWindow", "Patient: - "))   
+        self.patientRegister()
 
     def passCurrentExercise(self,n):
         self.EXERCISE_SET = n
