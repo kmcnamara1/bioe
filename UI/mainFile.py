@@ -146,8 +146,9 @@ class MainWindow(QMainWindow):
         #view all past patient history
         self.Window.changePatient.clicked.connect(self.patientChangeCheckPopUp)
 
-
+        # this is for the start and stop functionality 
         self.Window.startButton.clicked.connect(self.startButtonFun)
+        self.Window.stopButton.clicked.connect(self.stopButtonCheck)
 
         self.Window.historySide.clicked.connect(self.startUIpatietnHistory)
         
@@ -272,9 +273,10 @@ class MainWindow(QMainWindow):
         self.Window.label_7.setText(self.Window._translate("OverViewWindow", "41.322mV"))
         self.Window.label_7.adjustSize()
 
-    def stopButtonFun(self):
-        self.Window.label_7.setText(self.Window._translate("OverViewWindow", "41.322mV"))
-        self.Window.label_7.adjustSize()
+    def stopButtonCheck(self):
+        stopCheck = Ui_finishEMGReading(self)
+        popup = QMessageBox(stopCheck)
+        stopCheck.show()
 
     def changePatientButton(self):     
         self.currentDetails.clinicanName = None
