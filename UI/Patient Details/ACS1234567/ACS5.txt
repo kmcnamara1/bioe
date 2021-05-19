@@ -3,9 +3,9 @@ PatientName:an cs sc
 Date:2021-05-12
 Clinician:we
 sessionNum:5
-setupMeasWrist:None
-setupMeasFinger:None
-setupMeasShoulder:None
+setupMeasWrist:2
+setupMeasFinger:3
+setupMeasShoulder:5
 wristMVC:None
 fingerMVC:None
 shoulderMVC:None

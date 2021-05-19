@@ -248,17 +248,6 @@ class MainWindow(QMainWindow):
         setUpPatient.setStyleSheet("background-color: rgb(255,252,241);");
         popup = QMessageBox(setUpPatient)
 
-        # if (self.patientDetail.patientName == None):
-        #     pass
-        # else:
-        #     name = self.patientDetail.patientName 
-        #     setUpPatient.patientSetup.setText(name)
-
-        #Assume that when next is pressed the full name is entered
-        # Run function that will see if a text file of the patients id exists in "patients details/id.txt"
-        # setUpPatient.patientSetup.returnPressed.connect(lambda: self.checkDetail(setUpPatient))
-        # setUpPatient.nextButton.clicked.connect(lambda: self.checkDetail(setUpPatient))
-        # setUpPatient.patientSetup.returnPressed.connect(self.startEnterMeasurementsPopup)
         setUpPatient.nextButton.clicked.connect(self.startEnterMeasurementsPopup)
 
         setUpPatient.show()
@@ -267,6 +256,17 @@ class MainWindow(QMainWindow):
         
         listInfo = self.EXERCISE_SET
         startEnterMeasurementsPopup = UIinitMeasurePatientSetUp(parent=self,listInfo=listInfo)
+
+        if ((self.currentDetails.setupMeasWrist != None) and (self.EXERCISE_SET ==1)):
+            startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasWrist)
+        elif((self.currentDetails.setupMeasWrist != None) and (self.EXERCISE_SET ==2)):
+            startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasFinger)
+        else:
+            startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasShoulder)
+
+        # self.currentDetails.setupMeasFinger
+        # self.currentDetails.setupMeasShoulder
+
         startEnterMeasurementsPopup.backButton.clicked.connect(self.startSetUpPopup)
         startEnterMeasurementsPopup.doneButton.clicked.connect(self.sampleEMGPopup)
         startEnterMeasurementsPopup.show()
@@ -411,6 +411,10 @@ class MainWindow(QMainWindow):
         self.previousData.shoulderMVC = getPreviousShoulder(self.previousData.sessionNum,ID,self.currentDetails.ur)
         self.previousData.fingerMVC = getPreviousFinger(self.previousData.sessionNum,ID,self.currentDetails.ur)
         self.previousData.setupMeas = getSetupMeasurement(self.previousData.sessionNum,ID,self.currentDetails.ur)
+
+        self.currentDetails.setupMeasWrist = self.previousData.setupMeas[0]
+        self.currentDetails.setupMeasFinger = self.previousData.setupMeas[1]
+        self.currentDetails.setupMeasShoulder = self.previousData.setupMeas[2]     
         
         self.Window.SessionNum = self.currentDetails.sessionNum
     

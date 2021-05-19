@@ -15,8 +15,17 @@ def getSetupMeasurement(sessionNum,ID,ur):
     #row 5 if counting from 1
     text_file = open('Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
     content = text_file.readlines()
-    line = content[5]
-    return(''.join(char for char in line if char.isdigit()))
+    values = []
+    for i in range(5,8):
+        line = content[i]  
+        line = ''.join(char for char in line if char.isdigit()) 
+        print(line)
+        val = "".join(re.findall('\d*\.?\d+',line))
+        values.append("{}".format(val))     
+    return(values)
+
+    # return(''.join(char for char in line if char.isdigit()))
+
 
 def getPreviousWrist(sessionNum,ID,ur):
     #row 8 if counting from 1

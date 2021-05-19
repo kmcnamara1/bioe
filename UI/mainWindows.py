@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 from typing import *
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -17,6 +16,7 @@ import matplotlib.animation as anim
 import numpy as np
 from numpy.core.records import array
 from delsys_func import *
+
 
 
 
@@ -730,21 +730,6 @@ class UIinitMeasurePatientSetUp(QDialog):
 
         self.examplemusclelabel = QtWidgets.QLabel(self.MuscleDemo)
 
-        if (listInfo == 1):
-                pixmap = QPixmap('icons/measWrist.png')
-                self.examplemusclelabel.setPixmap(pixmap)
-                self.examplemusclelabel.resize(pixmap.width()*1.8, pixmap.height()*1.8)
-                self.examplemusclelabel.move(70,100)
-        elif (listInfo == 2):
-                pixmap = QPixmap('icons/measFinger.png')
-                self.examplemusclelabel.setPixmap(pixmap)
-                self.examplemusclelabel.move(70,130)                
-        else:
-                pixmap = QPixmap('icons/measShoulder.png')
-                self.examplemusclelabel.setPixmap(pixmap)
-                # self.examplemusclelabel.resize(pixmap.width()*2, pixmap.height()*3)
-                self.examplemusclelabel.move(90,130)   
-        
 
         self.exampleLabel.setObjectName("exampleLabel")
         self.findmuscleLabl_2 = QtWidgets.QLabel(self.MuscleDemo)
@@ -761,8 +746,6 @@ class UIinitMeasurePatientSetUp(QDialog):
         self.leftSide.setGeometry(QtCore.QRect(0, 0, 20, 441))
         self.leftSide.setStyleSheet("background-color: rgb(78, 78, 78)")
         self.leftSide.setObjectName("leftSide")
-
-
 
         self.doneButton = QtWidgets.QPushButton(self.centralwidget)
         self.doneButton.setGeometry(QtCore.QRect(330, 420, 101, 20))
@@ -809,7 +792,25 @@ class UIinitMeasurePatientSetUp(QDialog):
         _translate = QtCore.QCoreApplication.translate
         self.findmuscleLabl.setText(_translate("MainWindow", "Place EMG on muscle belly"))
         self.exampleLabel.setText(_translate("MainWindow", "Example:"))
-        self.findmuscleLabl_2.setText(_translate("MainWindow", "Find Measurement from wrist crease to EMG Placement"))
+
+        if (listInfo == 1):
+                pixmap = QPixmap('icons/measWrist.png')
+                self.examplemusclelabel.setPixmap(pixmap)
+                self.examplemusclelabel.resize(pixmap.width()*1.8, pixmap.height()*1.8)
+                self.findmuscleLabl_2.setText(_translate("MainWindow", "Find Measurement from forearm crease to EMG Placement"))
+                self.examplemusclelabel.move(70,100)
+        elif (listInfo == 2):
+                pixmap = QPixmap('icons/measFinger.png')
+                self.examplemusclelabel.setPixmap(pixmap)
+                self.findmuscleLabl_2.setText(_translate("MainWindow", "Find Measurement from forearm to EMG Placement"))
+                self.examplemusclelabel.move(70,130)                
+        else:
+                pixmap = QPixmap('icons/measShoulder.png')
+                self.examplemusclelabel.setPixmap(pixmap)
+                self.findmuscleLabl_2.setText(_translate("MainWindow", "Find Measurement from armpit crease to EMG Placement"))
+                self.examplemusclelabel.move(90,130)  
+
+
         self.doneButton.setText(_translate("MainWindow", "Next"))
         self.backButton.setText(_translate("MainWindow", "Back"))
         self.labelPatientsName.setText(_translate("MainWindow", "ENTER MEASUREMENT (cm)"))
