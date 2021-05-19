@@ -15,6 +15,7 @@ import matplotlib as mpl
 import matplotlib.figure as mpl_fig
 import matplotlib.animation as anim
 import numpy as np
+from numpy.core.records import array
 from delsys_func import *
 
 
@@ -981,3 +982,26 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
 #     return d[i]
 
 ###############################################################################################################
+
+class Worker(QObject):
+        def __init__(self):
+                # self._sensors = sensors
+                self.running = pyqtSignal()
+                self.data = pyqtSignal(array)
+                self.finished = pyqtSignal()
+        
+        def setupConnection(self):
+                self.sensors = DelsysSensors()
+        
+        def startEMG(self):
+                self.sensors.streamEMGData()
+        
+        def stopEMG(self):
+                self.sensors.stopReading() #TODO: implement this
+        
+        def getSensorData(self):
+                self.data.emit(self.sensors.emg_data)
+
+                
+                
+
