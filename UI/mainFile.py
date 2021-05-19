@@ -273,18 +273,14 @@ class MainWindow(QMainWindow):
 
     def sampleEMGPopup(self):
         popup = Ui_SampleEMG(self)
-
         if ((self.currentDetails.setupMeasWrist == None) and (self.EXERCISE_SET ==1)):
             self.currentDetails.setupMeasWrist = get_meas_txt()
         elif((self.currentDetails.setupMeasFinger == None) and (self.EXERCISE_SET ==2)):
-            self.currentDetails.setupMeasWrist = get_meas_txt()
+            self.currentDetails.setupMeasFinger = get_meas_txt()
         elif((self.currentDetails.setupMeasShoulder == None) and (self.EXERCISE_SET ==3)):
-            self.currentDetails.setupMeasWrist = get_meas_txt()      
+            self.currentDetails.setupMeasShoulder = get_meas_txt()      
 
-        if((self.currentDetails.setupMeasWrist == None) and (self.EXERCISE_SET ==3)):
-            
-            self.currentDetails.setupMeasShoulder = self.startEnterMeasurementsPopup.PatientsNameEnter.text()
-
+  
         popup.nextButton.clicked.connect(self.startUIWindow)
         popup.backBB.clicked.connect(self.startEnterMeasurementsPopup)
         popup.show()       
