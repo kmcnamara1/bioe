@@ -21,7 +21,7 @@ from delsys_func import *
 
 def loadPatientName():
         # dir_path = os.path.dirname(os.path.realpath(__file__))
-        text_file = open("./Patient Details/PatientName.txt", "r+")
+        text_file = open("Patient Details/PatientName.txt", "r+")
         data = text_file.read()
         
         if data == None:
@@ -36,7 +36,7 @@ def loadPatientName():
 
 
 def loadClinicianName():
-        text_file = open("ClinicanName.txt", "r")
+        text_file = open("ClinicianName.txt", "r")
         data = text_file.read()
         text_file.close()
         return data
@@ -677,7 +677,7 @@ class UIinitPatientSetUp(QDialog):
         text_input = self.patientSetup.text()
         print(text_input)
         # dir_path = os.path.dirname(os.path.realpath(__file__))
-        text_file = open("./Patient Details/PatientName.txt", "w")
+        text_file = open("Patient Details/PatientName.txt", "w")
         text_file.write("%s" % text_input)
         # print(text_input)
         text_file.close()  

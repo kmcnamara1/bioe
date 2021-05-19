@@ -8,12 +8,12 @@ SHOULDER_LINE = 10
 
 def getNumSessions(ID):
     #get list of all files in inital directory
-    list_of_files = os.listdir('./Patient Details/{}/'.format(ID))
+    list_of_files = os.listdir('Patient Details/{}/'.format(ID))
     return len(list_of_files)
 
 def getSetupMeasurement(sessionNum,ID,ur):
     #row 5 if counting from 1
-    text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
+    text_file = open('Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
     content = text_file.readlines()
     line = content[5]
     return(''.join(char for char in line if char.isdigit()))
@@ -22,7 +22,7 @@ def getPreviousWrist(sessionNum,ID,ur):
     #row 8 if counting from 1
 
     if (sessionNum ==1):
-        text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
+        text_file = open('Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
         content = text_file.readlines()
         line = content[WRIST_LINE]
         return(''.join(char for char in line if char.isdigit()))
@@ -30,7 +30,7 @@ def getPreviousWrist(sessionNum,ID,ur):
         values = []
         for session in range(1,sessionNum+1):
             print(session)
-            text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,session), "r+")
+            text_file = open('Patient Details/{}/{}{}.txt'.format((ID+ur),ID,session), "r+")
             content = text_file.readlines()
             line = content[WRIST_LINE]   
             line = "".join(line)
@@ -47,14 +47,14 @@ def getPreviousWrist(sessionNum,ID,ur):
 def getPreviousShoulder(sessionNum,ID,ur):
 
     if (sessionNum ==1):
-        text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
+        text_file = open('Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
         content = text_file.readlines()
         line = content[SHOULDER_LINE]
         return(''.join(char for char in line if char.isdigit()))
     else:
         values = []
         for session in range(1,sessionNum+1):
-            text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,session), "r+")
+            text_file = open('Patient Details/{}/{}{}.txt'.format((ID+ur),ID,session), "r+")
             content = text_file.readlines()
             line = content[SHOULDER_LINE]   
             line = "".join(line)
@@ -71,14 +71,14 @@ def getPreviousShoulder(sessionNum,ID,ur):
 def getPreviousFinger(sessionNum,ID,ur):
 
     if (sessionNum ==1):
-        text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
+        text_file = open('Patient Details/{}/{}{}.txt'.format((ID+ur),ID,sessionNum), "r+")
         content = text_file.readlines()
         line = content[FINGER_LINE]
         return(''.join(char for char in line if char.isdigit()))
     else:
         values = []
         for session in range(1,sessionNum+1):
-            text_file = open('./Patient Details/{}/{}{}.txt'.format((ID+ur),ID,session), "r+")
+            text_file = open('Patient Details/{}/{}{}.txt'.format((ID+ur),ID,session), "r+")
             content = text_file.readlines()
             line = content[FINGER_LINE]   
             line = "".join(line)
@@ -136,7 +136,7 @@ def displayPatientHistory(PatientID,ur,sessionNum, exported):
     contents = ""
 
     if (sessionNum == 1):
-        text_file = open('./Patient Details/{}/{}{}.txt'.format((PatientID+ur),PatientID,sessionNum), "r+")
+        text_file = open('Patient Details/{}/{}{}.txt'.format((PatientID+ur),PatientID,sessionNum), "r+")
         content = text_file.readlines()
         line = content[:11]
         contents = " ".join(line)
@@ -145,7 +145,7 @@ def displayPatientHistory(PatientID,ur,sessionNum, exported):
     else:
         for session in range(1,sessionNum+1):
             print(session)
-            text_file = open('./Patient Details/{}/{}{}.txt'.format((PatientID+ur),PatientID,session), "r+")
+            text_file = open('Patient Details/{}/{}{}.txt'.format((PatientID+ur),PatientID,session), "r+")
             content = text_file.readlines()
             line = content[:11]   
             line = "".join(line)
