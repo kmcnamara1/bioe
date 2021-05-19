@@ -148,7 +148,7 @@ class MainWindow(QMainWindow):
 
         # this is for the start and stop functionality 
         self.Window.startButton.clicked.connect(self.startButtonFun)
-        self.Window.stopButton.clicked.connect(self.stopButtonCheck)
+        self.Window.stopButton.clicked.connect(lambda: self.stopButtonCheck(self.EXERCISE_SET))
 
         self.Window.historySide.clicked.connect(self.startUIpatietnHistory)
         
@@ -273,10 +273,42 @@ class MainWindow(QMainWindow):
         self.Window.label_7.setText(self.Window._translate("OverViewWindow", "41.322mV"))
         self.Window.label_7.adjustSize()
 
-    def stopButtonCheck(self):
+    def stopButtonCheck(self,exercise):
         stopCheck = Ui_finishEMGReading(self)
         popup = QMessageBox(stopCheck)
+
+        #functionality of the buttons
+
+        stopCheck.nextExB.clicked.connect(self.changeExercisePopUp)   
+
+        if (exercise == 1):
+            #wrist
+            stopCheck.redoB.clicked.connect(lambda: self.clearVal(exercise))
+            stopCheck.middleB.clicked.connect(self.exportData)
+        elif (exercise == 2):
+            #finger
+            stopCheck.redoB.clicked.connect(lambda: self.clearVal(exercise))
+            stopCheck.middleB.clicked.connect(self.exportData)
+        else:
+            #shoulder
+            stopCheck.redoB.clicked.connect(lambda: self.clearVal(exercise))
+            stopCheck.middleB.clicked.connect(self.exportData)
+
+
         stopCheck.show()
+
+    def clearVal(self,exercise):
+        print(exercise)
+        if (exercise == 1):
+            self.currentDetails.wristMVC = None
+        elif (exercise == 2):
+            self.currentDetails.fingerMVC = None
+        else:
+            self.currentDetails.shoulderMVC = None
+        self.passCurrentExercise(exercise)
+        self.startUIWindow()
+        
+        
 
     def changePatientButton(self):     
         self.currentDetails.clinicanName = None
@@ -373,7 +405,9 @@ class MainWindow(QMainWindow):
     
 
         # Start next pop-up for window
-        self.show() 
+        # self.show() 
+        self.startUIWindow()
+
 
 ########################################################################################################################################
                                             # Export Function #

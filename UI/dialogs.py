@@ -460,8 +460,8 @@ class Ui_finishEMGReading(QDialog):
         super().__init__(parent)
         
         self.setObjectName("MainWindow")
-        self.resize(400, 176)
-        self.setMaximumSize(QtCore.QSize(400, 176))
+        self.resize(400, 160)
+        self.setMaximumSize(QtCore.QSize(400, 160))
         self.setStyleSheet("background-color: rgb(255,252,241)\n"
                                         "")
         self.centralwidget = QtWidgets.QWidget(self)
@@ -506,6 +506,11 @@ class Ui_finishEMGReading(QDialog):
         self.statusbar = QtWidgets.QStatusBar(self)
         self.statusbar.setObjectName("statusbar")
         # MainWindow.setStatusBar(self.statusbar)
+        
+        self.nextExB.clicked.connect(self.dialog_exit)
+        self.middleB.clicked.connect(self.dialog_exit)
+        self.redoB.clicked.connect(self.dialog_exit)
+
 
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -513,3 +518,7 @@ class Ui_finishEMGReading(QDialog):
         self.middleB.setText(_translate("MainWindow", "Save and finish  \n"
                                                         " session"))
         self.nextExB.setText(_translate("MainWindow", "Next Exercise"))
+
+
+    def dialog_exit(self):
+        self.close()   
