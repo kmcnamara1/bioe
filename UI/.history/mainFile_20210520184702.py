@@ -69,39 +69,13 @@ class ScrollLabel(QScrollArea):
         # adding label to the layout
         lay.addWidget(self.label)  
 
-    def UiComponents(self,text,wristEntry,fingerEntry,shoulderEntry):
+    def UiComponents(self,text):
         # creating scroll label
         label = ScrollLabel(self)
-
-        if (text != "no previous sessions"):
-            self.tableFrame = QtWidgets.QFrame(self)
-                    # self.label.setWordWrap(True)
-            self.tableFrame.setGeometry(QtCore.QRect(500,170,300,145))
-            self.tableFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
-            self.tableFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-            self.tableFrame.setFrameShadow(QtWidgets.QFrame.Raised)
-            self.tableFrame.setObjectName("WelcomeFrame")
-
-
-            table = QTableWidget(self.tableFrame)
-            table.raise_()
-            table.setWordWrap(True)
-            table.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-                    "color:#323232")
-            table.setRowCount(3)
-            table.setColumnCount(1)
-            table.setItem(0,0,QTableWidgetItem('foo'))
-            table.setItem(0,1,QTableWidgetItem('bar'))
-            table.setItem(1,0,QTableWidgetItem('baz'))
-            table.setItem(1,1,QTableWidgetItem('qux'))
-            table.adjustSize()
-            layout = QGridLayout()
-            layout.addWidget(table, 1, 0)
-            self.tableFrame.setLayout(layout)
-
+  
         # setting text to the label
         # label.setText(text)
-        label.label.setText("\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r-----------------------------------------------------------------------------------------\n\r{}".format(text))
+        label.label.setText("\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r-----------------------------------------------------------------------------------------\n\r{}".format(text))
         label.label.setStyleSheet("font: 13pt \".AppleSystemUIFont\"; \n"
                                   "background-color: rgb(255, 255, 255);\n"
                                   "color: #000000")     
@@ -118,20 +92,20 @@ class dataTable(QTableWidget):
     def __init__(self, parent=None):
         super(dataTable,self).__init__(parent)
 
-        # self.table = QTableWidget(parent=self)
-        # self.table.setColumnCount(2)
-        # self.table.setRowCount(2)
-        # self.table.setHorizontalHeaderLabels(['col1','col2'])
-        # self.table.setVerticalHeaderLabels(['row1','row2'])
-        # self.table.setItem(0,0,QTableWidgetItem('foo'))
-        # self.table.setItem(0,1,QTableWidgetItem('bar'))
-        # self.table.setItem(1,0,QTableWidgetItem('baz'))
-        # self.table.setItem(1,1,QTableWidgetItem('qux'))
-        # self.table.setGeometry(QtCore.QRect(0, 10, 20, 101))
-        # layout = QGridLayout()
-        # layout.addWidget(self.table, 1, 0)
-        # self.setLayout(layout)
-        # self.table.raise_()
+        self.table = QTableWidget(parent=self)
+        self.table.setColumnCount(2)
+        self.table.setRowCount(2)
+        self.table.setHorizontalHeaderLabels(['col1','col2'])
+        self.table.setVerticalHeaderLabels(['row1','row2'])
+        self.table.setItem(0,0,QTableWidgetItem('foo'))
+        self.table.setItem(0,1,QTableWidgetItem('bar'))
+        self.table.setItem(1,0,QTableWidgetItem('baz'))
+        self.table.setItem(1,1,QTableWidgetItem('qux'))
+        self.table.setGeometry(QtCore.QRect(0, 10, 20, 101))
+        layout = QGridLayout()
+        layout.addWidget(self.table, 1, 0)
+        self.setLayout(layout)
+        self.table.raise_()
 
         # self.clip = QApplication.clipboard()
 
@@ -177,11 +151,12 @@ class MainWindow(QMainWindow):
 
     def startUIToolTab(self):
         
-        self.ToolTab = UIToolTab(self)
-        self.setCentralWidget(self.ToolTab)
-        self.ToolTab.lineEdit.returnPressed.connect(self.patientRegister)
-        self.ToolTab.startButton.clicked.connect(self.patientRegister)
-        self.show()
+        # self.ToolTab = UIToolTab(self)
+        # self.setCentralWidget(self.ToolTab)
+        # self.ToolTab.lineEdit.returnPressed.connect(self.patientRegister)
+        # self.ToolTab.startButton.clicked.connect(self.patientRegister)
+        dataTable(self)
+        # self.show()
 
     def startUIWindow(self):
         self.Window = UIWindow(self)
@@ -272,23 +247,13 @@ class MainWindow(QMainWindow):
         self.historyWindow.changePatient.clicked.connect(self.patientChangeCheckPopUp)
         self.historyWindow.patientSetup.clicked.connect(self.changetoHome)
 
-        ######################## TABLE ########################
-        # table = QTableWidget(self.historyWindow)
-        # table.setGeometry(300,200,300,200)
-        # table.raise_()
-        # table.setStyleSheet("background-color: rgb(255, 255, 255);")
-        # table.setRowCount(1)
-        # table.setColumnCount(1)
-        # table.adjustSize()
-        #######################################################
-
         self.scroll = QtWidgets.QScrollBar(self.historyWindow.PastSessions)
 
         historyList = displayPatientHistory(self.currentDetails.patientID,self.currentDetails.ur,self.currentDetails.sessionNum, self.currentDetails.beenExported)
         if (historyList == 0):
-            ScrollLabel.UiComponents(self.historyWindow,"no previous sessions",0,0,0)
+            ScrollLabel.UiComponents(self.historyWindow,"no previous sessions")
         else:
-            ScrollLabel.UiComponents(self.historyWindow,historyList,self.previousData.wristMVC,self.previousData.fingerMVC,self.previousData.shoulderMVC)
+            ScrollLabel.UiComponents(self.historyWindow,historyList)
 
         #Checks the name once patient set up is done
         if (self.patientDetail.patientName == None):

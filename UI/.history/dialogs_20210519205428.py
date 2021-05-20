@@ -1,7 +1,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap,QIcon
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QApplication , QMainWindow , QPushButton , QWidget, QDialog, QLabel,QDialogButtonBox,QVBoxLayout,QHBoxLayout,QScrollArea,QVBoxLayout
 import sys
 import os
 from PyQt5.QtCore import * 

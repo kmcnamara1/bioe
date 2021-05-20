@@ -72,32 +72,31 @@ class ScrollLabel(QScrollArea):
     def UiComponents(self,text,wristEntry,fingerEntry,shoulderEntry):
         # creating scroll label
         label = ScrollLabel(self)
+  
+        self.tableFrame = QtWidgets.QFrame(self)
+                # self.label.setWordWrap(True)
+        self.tableFrame.setGeometry(QtCore.QRect(500,170,300,145))
+        self.tableFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.tableFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.tableFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.tableFrame.setObjectName("WelcomeFrame")
 
-        if (text != "no previous sessions"):
-            self.tableFrame = QtWidgets.QFrame(self)
-                    # self.label.setWordWrap(True)
-            self.tableFrame.setGeometry(QtCore.QRect(500,170,300,145))
-            self.tableFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
-            self.tableFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-            self.tableFrame.setFrameShadow(QtWidgets.QFrame.Raised)
-            self.tableFrame.setObjectName("WelcomeFrame")
 
-
-            table = QTableWidget(self.tableFrame)
-            table.raise_()
-            table.setWordWrap(True)
-            table.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-                    "color:#323232")
-            table.setRowCount(3)
-            table.setColumnCount(1)
-            table.setItem(0,0,QTableWidgetItem('foo'))
-            table.setItem(0,1,QTableWidgetItem('bar'))
-            table.setItem(1,0,QTableWidgetItem('baz'))
-            table.setItem(1,1,QTableWidgetItem('qux'))
-            table.adjustSize()
-            layout = QGridLayout()
-            layout.addWidget(table, 1, 0)
-            self.tableFrame.setLayout(layout)
+        table = QTableWidget(self.tableFrame)
+        table.raise_()
+        table.setWordWrap(True)
+        table.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                "color:#323232")
+        table.setRowCount(3)
+        table.setColumnCount(1)
+        table.setItem(0,0,QTableWidgetItem('foo'))
+        table.setItem(0,1,QTableWidgetItem('bar'))
+        table.setItem(1,0,QTableWidgetItem('baz'))
+        table.setItem(1,1,QTableWidgetItem('qux'))
+        table.adjustSize()
+        layout = QGridLayout()
+        layout.addWidget(table, 1, 0)
+        self.tableFrame.setLayout(layout)
 
         # setting text to the label
         # label.setText(text)
@@ -286,9 +285,9 @@ class MainWindow(QMainWindow):
 
         historyList = displayPatientHistory(self.currentDetails.patientID,self.currentDetails.ur,self.currentDetails.sessionNum, self.currentDetails.beenExported)
         if (historyList == 0):
-            ScrollLabel.UiComponents(self.historyWindow,"no previous sessions",0,0,0)
+            ScrollLabel.UiComponents(self.historyWindow,"no previous sessions")
         else:
-            ScrollLabel.UiComponents(self.historyWindow,historyList,self.previousData.wristMVC,self.previousData.fingerMVC,self.previousData.shoulderMVC)
+            ScrollLabel.UiComponents(self.historyWindow,historyList)
 
         #Checks the name once patient set up is done
         if (self.patientDetail.patientName == None):

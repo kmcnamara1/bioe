@@ -286,7 +286,7 @@ class MainWindow(QMainWindow):
 
         historyList = displayPatientHistory(self.currentDetails.patientID,self.currentDetails.ur,self.currentDetails.sessionNum, self.currentDetails.beenExported)
         if (historyList == 0):
-            ScrollLabel.UiComponents(self.historyWindow,"no previous sessions",0,0,0)
+            ScrollLabel.UiComponents(self.historyWindow,"no previous sessions",self.previousData.wristMVC,self.previousData.fingerMVC,self.previousData.shoulderMVC)
         else:
             ScrollLabel.UiComponents(self.historyWindow,historyList,self.previousData.wristMVC,self.previousData.fingerMVC,self.previousData.shoulderMVC)
 
