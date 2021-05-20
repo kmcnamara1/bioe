@@ -83,24 +83,24 @@ class ScrollLabel(QScrollArea):
             self.tableFrame.setObjectName("WelcomeFrame")
 
 
-            table = QTableWidget(self.tableFrame)
-            table.raise_()
-            table.setWordWrap(True)
-            table.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+            self.table = QTableWidget(self.tableFrame)
+            self.table.raise_()
+            self.table.setWordWrap(True)
+            self.table.setStyleSheet("background-color: rgb(255, 255, 255);\n"
                     "color:#323232")
-            table.setRowCount(3)
-            table.setVerticalHeaderLabels(['Wrist (mvc)','Finger (mvc)','Shoulder (mvc)'])
+            self.table.setRowCount(3)
+            self.table.setVerticalHeaderLabels(['Wrist (mvc)','Finger (mvc)','Shoulder (mvc)'])
 
             sessionNameArray = []
             for i in range(1,(len(fingerEntry)+1)):
                 temp = "Ses {}".format(i)
                 sessionNameArray.insert(0,temp)
 
-            table.setColumnCount(len(fingerEntry))
-            table.setHorizontalHeaderLabels(sessionNameArray)
+            self.table.setColumnCount(len(fingerEntry))
+            self.table.setHorizontalHeaderLabels(sessionNameArray)
 
-            table.verticalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
-            table.horizontalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
+            self.table.verticalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
+            self.table.horizontalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
 
         
         
@@ -115,17 +115,18 @@ class ScrollLabel(QScrollArea):
                     else:
                         val = shoulderEntry[abs(column-(len(fingerEntry)-1))] 
      
-                    table.setItem(row,column,QTableWidgetItem(val))
+                    self.table.setItem(row,column,QTableWidgetItem(val))
 
 
 
-            table.adjustSize()
+            self.table.adjustSize()
 
 
-            table.adjustSize()
             layout = QGridLayout()
-            layout.addWidget(table, 1, 0)
+            layout.addWidget(self.table, 1, 0)
             self.tableFrame.setLayout(layout)
+
+            self.clip = QApplication.clipboard()
 
         # setting text to the label
         # label.setText(text)
@@ -135,6 +136,7 @@ class ScrollLabel(QScrollArea):
                                   "color: #000000")     
         # setting geometry
         label.setGeometry(QtCore.QRect(450, 150, 621, 581))
+
 
 
 ########################################################################################################################################
@@ -412,7 +414,23 @@ class MainWindow(QMainWindow):
         ui_patientCheckPopUp.show()
 
 
+    def keyPressEvent(self, e):
+        if (e.modifiers() & QtCore.Qt.ControlModifier):
+            selected = self.historyWindow.table.selectedRanges()
 
+            if e.key() == QtCore.Qt.Key_C: #copy
+                s = '\t'+"\t".join([str(self.historyWindow.table.horizontalHeaderItem(i).text()) for i in range(selected[0].leftColumn(), selected[0].rightColumn()+1)])
+                s = s + '\n'
+
+                for r in range(selected[0].topRow(), selected[0].bottomRow()+1):
+                    s += self.historyWindow.table.verticalHeaderItem(r).text() + '\t'
+                    for c in range(selected[0].leftColumn(), selected[0].rightColumn()+1):
+                        try:
+                            s += str(self.historyWindow.table.item(r,c).text()) + "\t"
+                        except AttributeError:
+                            s += "\t"
+                    s = s[:-1] + "\n" #eliminate last '\t'
+                self.historyWindow.clip.setText(s)
 
 ########################################################################################################################################
                                             # Class functions #
