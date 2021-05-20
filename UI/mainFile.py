@@ -76,7 +76,7 @@ class ScrollLabel(QScrollArea):
         if (text != "no previous sessions"):
             self.tableFrame = QtWidgets.QFrame(self)
                     # self.label.setWordWrap(True)
-            self.tableFrame.setGeometry(QtCore.QRect(500,170,300,145))
+            self.tableFrame.setGeometry(QtCore.QRect(500,170,500,145))
             self.tableFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
             self.tableFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
             self.tableFrame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -89,11 +89,19 @@ class ScrollLabel(QScrollArea):
             table.setStyleSheet("background-color: rgb(255, 255, 255);\n"
                     "color:#323232")
             table.setRowCount(3)
-            table.setColumnCount(1)
-            table.setItem(0,0,QTableWidgetItem('foo'))
-            table.setItem(0,1,QTableWidgetItem('bar'))
-            table.setItem(1,0,QTableWidgetItem('baz'))
-            table.setItem(1,1,QTableWidgetItem('qux'))
+            table.setVerticalHeaderLabels(['Wrist (mvc)','Finger (mvc)','Shoulder (mvc)'])
+
+            sessionNameArray = []
+            for i in range(1,(len(fingerEntry)+1)):
+                temp = "Ses {}".format(i)
+                sessionNameArray.insert(0,temp)
+
+            table.setColumnCount(len(fingerEntry))
+            table.setHorizontalHeaderLabels(sessionNameArray)
+
+            table.adjustSize()
+
+
             table.adjustSize()
             layout = QGridLayout()
             layout.addWidget(table, 1, 0)
@@ -271,16 +279,6 @@ class MainWindow(QMainWindow):
         self.historyWindow.Logout.clicked.connect(self.logout) 
         self.historyWindow.changePatient.clicked.connect(self.patientChangeCheckPopUp)
         self.historyWindow.patientSetup.clicked.connect(self.changetoHome)
-
-        ######################## TABLE ########################
-        # table = QTableWidget(self.historyWindow)
-        # table.setGeometry(300,200,300,200)
-        # table.raise_()
-        # table.setStyleSheet("background-color: rgb(255, 255, 255);")
-        # table.setRowCount(1)
-        # table.setColumnCount(1)
-        # table.adjustSize()
-        #######################################################
 
         self.scroll = QtWidgets.QScrollBar(self.historyWindow.PastSessions)
 
