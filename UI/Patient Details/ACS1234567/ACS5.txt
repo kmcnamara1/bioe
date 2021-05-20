@@ -6,6 +6,6 @@ sessionNum:5
 setupMeasWrist:2
 setupMeasFinger:3
 setupMeasShoulder:5
-wristMVC:None
-fingerMVC:None
-shoulderMVC:None
+wristMVC:100
+fingerMVC:101
+shoulderMVC:103

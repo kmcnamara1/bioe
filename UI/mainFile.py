@@ -99,6 +99,26 @@ class ScrollLabel(QScrollArea):
             table.setColumnCount(len(fingerEntry))
             table.setHorizontalHeaderLabels(sessionNameArray)
 
+            table.verticalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
+            table.horizontalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
+
+        
+        
+
+            for column in range(0,(len(fingerEntry))):
+                for row in range(0,3):
+
+                    if (row == 0):
+                        val = wristEntry[abs(column-(len(fingerEntry)-1))]
+                    elif (row == 1):
+                        val = fingerEntry[abs(column-(len(fingerEntry)-1))]    
+                    else:
+                        val = shoulderEntry[abs(column-(len(fingerEntry)-1))] 
+     
+                    table.setItem(row,column,QTableWidgetItem(val))
+
+
+
             table.adjustSize()
 
 
@@ -537,6 +557,8 @@ class MainWindow(QMainWindow):
         self.previousData.shoulderMVC = getPreviousShoulder(self.previousData.sessionNum,ID,self.currentDetails.ur)
         self.previousData.fingerMVC = getPreviousFinger(self.previousData.sessionNum,ID,self.currentDetails.ur)
         self.previousData.setupMeas = getSetupMeasurement(self.previousData.sessionNum,ID,self.currentDetails.ur)
+
+        print(self.previousData.wristMVC)
 
         self.currentDetails.setupMeasWrist = self.previousData.setupMeas[0]
         self.currentDetails.setupMeasFinger = self.previousData.setupMeas[1]

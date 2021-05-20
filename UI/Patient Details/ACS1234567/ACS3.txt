@@ -4,7 +4,7 @@ Date:03/04/2021
 Clinician:Pippa Scol
 sessionNum:3
 setupMeasWrist:5.7
-setupMeasFinger:0
+setupMeasFinger:40
 setupMeasShoulder:0
 wristMVC:68.09
 fingerMVC:0

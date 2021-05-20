@@ -46,7 +46,6 @@ def getPreviousWrist(sessionNum,ID,ur):
             val = "".join(re.findall('\d*\.?\d+',line))
 
             text_file.close()
-
             values.append("{}".format(val))
 
         return(values)    
