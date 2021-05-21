@@ -336,20 +336,20 @@ class MainWindow(QMainWindow):
     def startEnterMeasurementsPopup(self):
         
         listInfo = self.EXERCISE_SET
-        self.startEnterMeasurementsPopup = UIinitMeasurePatientSetUp(parent=self,listInfo=listInfo)
+        self.EnterMeasurementsPopup = UIinitMeasurePatientSetUp(parent=self,listInfo=listInfo)
 
         if ((self.currentDetails.setupMeasWrist != None) and (self.EXERCISE_SET ==1)):
-            self.startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasWrist)
+            self.EnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasWrist)
         elif((self.currentDetails.setupMeasFinger != None) and (self.EXERCISE_SET ==2)):
-            self.startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasFinger)
+            self.EnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasFinger)
         elif((self.currentDetails.setupMeasShoulder != None) and (self.EXERCISE_SET ==3)):
-            self.startEnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasShoulder)
+            self.EnterMeasurementsPopup.PatientsNameEnter.setText(self.currentDetails.setupMeasShoulder)
 
         # print(self.startEnterMeasurementsPopup.PatientsNameEnter.text())
 
-        self.startEnterMeasurementsPopup.backButton.clicked.connect(self.startSetUpPopup)
-        self.startEnterMeasurementsPopup.doneButton.clicked.connect(self.sampleEMGPopup)
-        self.startEnterMeasurementsPopup.show()
+        self.EnterMeasurementsPopup.backButton.clicked.connect(self.startSetUpPopup)
+        self.EnterMeasurementsPopup.doneButton.clicked.connect(self.sampleEMGPopup)
+        self.EnterMeasurementsPopup.show()
     
 
 

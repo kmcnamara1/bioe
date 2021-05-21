@@ -960,7 +960,7 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         self._ax_  = self.figure.subplots()
         self._ax_.set_ylim(ymin=self._y_range_[0], ymax=self._y_range_[1])
         self._line_, = self._ax_.plot(x, y)
-        self.delsys = DelsysSensors(self)
+        # self.delsys = DelsysSensors(self)
         print("USE THIS ")
 
         # Call superclass constructors
@@ -972,9 +972,9 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         This function gets called regularly by the timer.
 
         '''
-        y.append(self.delsys.getEMGData())     # Add new datapoint
-        y = y[-self._x_len_:]                        # Truncate list _y_
-        self._line_.set_ydata(y)
+        # y.append(self.delsys.getEMGData())     # Add new datapoint
+        # y = y[-self._x_len_:]                        # Truncate list _y_
+        # self._line_.set_ydata(y)
         return self._line_,
 
 # # Data source
