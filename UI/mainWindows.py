@@ -961,6 +961,8 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         self._ax_.set_ylim(ymin=self._y_range_[0], ymax=self._y_range_[1])
         self._line_, = self._ax_.plot(x, y)
         # self.delsys = DelsysSensors(self)
+        self.delsysWorker = SensorGUI()
+        self.delsysWorker.startEMGThread()
         print("USE THIS ")
 
         # Call superclass constructors
@@ -972,9 +974,14 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         This function gets called regularly by the timer.
 
         '''
+        emgArr = self.delsysWorker.getEMG()
+        if len(emgArr) > 0:
+                y.append(emgArr[len(emgArr) - 1])
+        
+
         # y.append(self.delsys.getEMGData())     # Add new datapoint
-        # y = y[-self._x_len_:]                        # Truncate list _y_
-        # self._line_.set_ydata(y)
+        y = y[-self._x_len_:]                        # Truncate list _y_
+        self._line_.set_ydata(y)
         return self._line_,
 
 # # Data source
@@ -992,24 +999,24 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
 
 ###############################################################################################################
 
-class Worker(QObject):
-        def __init__(self):
-                # self._sensors = sensors
-                self.running = pyqtSignal()
-                self.data = pyqtSignal(array)
-                self.finished = pyqtSignal()
+# class Worker(QObject):
+#         def __init__(self):
+#                 # self._sensors = sensors
+#                 self.running = pyqtSignal()
+#                 self.data = pyqtSignal(array)
+#                 self.finished = pyqtSignal()
         
-        def setupConnection(self):
-                self.sensors = DelsysSensors()
+#         def setupConnection(self):
+#                 self.sensors = DelsysSensors()
         
-        def startEMG(self):
-                self.sensors.streamEMGData()
+#         def startEMG(self):
+#                 self.sensors.streamEMGData()
         
-        def stopEMG(self):
-                self.sensors.stopReading() #TODO: implement this
+#         def stopEMG(self):
+#                 self.sensors.stopReading() #TODO: implement this
         
-        def getSensorData(self):
-                self.data.emit(self.sensors.emg_data)
+#         def getSensorData(self):
+#                 self.data.emit(self.sensors.emg_data)
 
                 
                 

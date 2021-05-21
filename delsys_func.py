@@ -5,24 +5,43 @@
 import socket
 import struct
 from tkinter import messagebox
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
 import numpy as np
 import time
 
 
-class DelsysSensors():
-    def __init__(self, master):
+#############################################################
+# Local functions (should not access outside this file)
+# Global functions (accessible by GUI) are at the end of the file
+#############################################################
+
+class DelsysSensors(QObject):
+    runningSig = pyqtSignal(bool)
+    dataSig = pyqtSignal(int)
+    def __init__(self, master, parent=None):
+        # super(DelsysSensors, self).__init__(parent)
+        QObject.__init__(self,parent)
         print('delsyssensor class')
         self.master = master
         self.EMG_DATA_PORT_LENGTH = 16
         self.EMG_SEG_LEN = self.EMG_DATA_PORT_LENGTH * 4
 
         self.maxContract = 0
+
+        #add signals
+        # self.runningSig = pyqtSignal()
+        # self.dataSig = pyqtSignal(np.array)
+        # self.finishedSig = pyqtSignal()
+
+        self.streamOn = False
+
+
         self.initTrignoConnection()
         print('inited')
         self.getSensorsActive()
         print('^^sensors')
         self.initTriggers()
-        self.sendSTART()
+        # self.sendSTART()
         print("sentStart")
         # self.streamEMGData()
         # print('not reached?')
@@ -70,21 +89,40 @@ class DelsysSensors():
 
     def streamEMGData(self):
         self.emg_data = np.array([],ndmin = 2)
+        self._data = []
         t0 = time.time()
         triggered = False
         samples = 0
-        while True:
-            # if samples > 100:
+        self.runningSig.emit(True)
+        print("delsys emitted True")
+        # check which sensors to look at
+        sensorsActiveIndex = [i for i,x in enumerate(self.sensor_active_list) if x]
+        sensorIndex = sensorsActiveIndex[0] #we only care about the first sensor available
+
+
+        while self.streamOn == True:
+            if samples > 100 and samples < 105:
                 # stop after 100 samples
                 # self.sendSTOP
+                self.runningSig.emit(False)
 
             # Try and get the next frame
             frame = self.read_EMG(t0, triggered)
+            emgValue = frame[sensorIndex]
             #check if data was received ie trig start pressed
-            if frame[0] != None:
+            if emgValue != None:
                 triggered = True
                 self.emg_data = np.append(self.emg_data,frame)
+                self._data.append(emgValue)#this is what we'll use
                 samples = samples + 1
+                # if samples > 20000:
+                #     emgFile = open("emgDatatest.txt", 'w')
+                #     for row in self._data:
+                #         np.savetxt(emgFile,row)
+                
+                self.dataSig.emit(emgValue) ### THIS IS WHAT WE CARE ABOUT
+
+
 
             # if no data received and trig start was pressed ie trig stop was pressed
             elif triggered:
@@ -96,6 +134,8 @@ class DelsysSensors():
             if samples > 0 and abs(frame[0:16]).max() > self.maxContract:
                 self.maxContract = abs(frame[0:16]).max()
                 print("MAX CONTRACTION VALUE {}".format(self.maxContract) )
+
+
     
     def getEMGData(self):
         self.emg_data = np.array([],ndmin = 2)
@@ -152,11 +192,125 @@ class DelsysSensors():
         self.send_delsys_cmd("TRIGGER?")
         self.send_delsys_cmd("START")
         
-        
-
     def sendSTOP(self):
         cmd =  "STOP"
-        self.send_delsys_cmd(cmd)        
+        self.send_delsys_cmd(cmd)   
+    
+    def sendQUIT(self):
+        self.send_delsys_cmd("QUIT")   
+
+    # Commands received from GUI thread
+    def receiveStart(self):
+        self.sendSTART()
+        self.streamOn = True
+        self.streamEMGData()
+
+    def receiveStop(self):
+        self.sendSTOP()
+        self.streamOn = False
+    
+    def receiveQuit(self):
+        self.sendSTOP()
+        self.sendQUIT()
+        # TODO: figure out how to handle quitting properly
+        
+
+        
+
+
+# def emgThread(callbackFunction):
+#     delsys = DelsysSensors()
+#     delsys.runningSig.connect(callbackFunction)
+#     delsys.streamEMGData()
+
+
+################################################################
+# The following classes are accessible to the GUI. Nothing above 
+# this line should be accessed by GUI thread, 
+# otherwise we'll have problems
+################################################################
+
+
+class SensorGUI(QObject):
+    
+    def __init__(self):
+        super()
+        self.isRunning = False
+        self.max = None
+        self.emgLatest = []
+        self.counter = 0
+
+    def startEMGThread(self):
+        self.sensors = DelsysSensors(self)
+        self.qThread = QThread(self)
+
+        # init signals coming from EMG to GUI
+        self.sensors.runningSig.connect(self.setRunning)
+        self.sensors.dataSig.connect(self.setEMG)
+
+        # init signals going from GUI to EMG
+        self.commands = CommandsGUI(self)
+        self.commands.guiStart.connect(self.sensors.receiveStart)
+        self.commands.guiStop.connect(self.sensors.receiveStop)
+        self.commands.guiQuit.connect(self.sensors.receiveQuit)
+
+        self.sensors.moveToThread(self.qThread)
+        self.qThread.started.connect(self.sensors.streamEMGData)
+        self.qThread.start()
+
+        
+    
+    ### Setting functions - slots for signals from delsys thread ###
+    def setRunning(self, val):
+        self.isRunning = val
+
+    def setMax(self):
+        self.max = max(self.emgLatest)
+
+    def setEMG(self, val):
+        self.emgLatest.append(val)
+        self.counter += 1
+        if len(self.emgLatest) > 200:
+            # every 50 samples, we delete 50 samples
+            # this way the array doesn't get too big
+            # might play around with this number though
+            self.emgLatest = self.emgLatest[50:]
+            # array thus varies in length between 150 and 200
+        
+        self.setMax() # replace this with some sophistry later
+
+    ### Getting functions - called from GUI directly #####
+    def getRunning(self):
+        return self.isRunning
+
+    def getEMG(self):
+        return self.emgLatest
+
+    def getMax(self):
+        return self.max
+    
+
+
+
+class CommandsGUI(QObject):
+    guiStart = pyqtSignal()
+    guiStop = pyqtSignal()
+    guiQuit = pyqtSignal()
+    def __init__(self, parent=None):
+        QObject.__init__(self,parent)
+        self.master = parent
+
+    def guiSendStart(self):
+        self.guiStart.emit()
+    def guiSendStop(self):
+        self.guiStop.emit()
+    def guiSendQuit(self):
+        # when do we call this?
+        self.guiQuit.emit()
+
+
+        
+
 
 
 

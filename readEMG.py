@@ -2,10 +2,13 @@
 # Code to read raw EMG data and save it to a file
 ########
 
+import sys
+from PyQt5.QtCore import QThread
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from delsys_func import *
 from tkinter import *
 from tkinter import messagebox
-from UI.mainFile import *
+# from UI.mainFile import *
 
 
 class Main():
@@ -13,9 +16,14 @@ class Main():
         
         print('hello?')
         print("hELLO??")
-        self.sensors = DelsysSensors(self)
-        while True:
-            self.sensors.getEMGData()
+        
+        
+
+        # self.sensors = DelsysSensors(self)
+        # self.startThread()
+        # self.sensors.streamEMGData()
+        # while True:
+            # self.sensors.getEMGData()
         # self.master = master
         # self.maxContract = 0
         
@@ -26,7 +34,23 @@ class Main():
 
         # streamEMGData(self)
 
+
+class LilWidget(QMainWindow):
+    def startThread(self):
+        self.sensors = DelsysSensors(self)
+        self.qThread = QThread(self)
+        self.sensors.runningSig.connect(self.printRunning)
+        self.sensors.moveToThread(self.qThread)
+        self.qThread.started.connect(self.sensors.streamEMGData)
+        self.qThread.start()
+    
+    def printRunning(self, val):
+        print(val)
+
         
+def guiCallback(self, value):
+    print(value)
+
 # def main():
 #     print("main")
 #     sensors = DelsysSensors()
@@ -53,8 +77,11 @@ if __name__ == "__main__":
     # app = Main(root)
     # root.mainloop()
 
+
     app = QApplication(sys.argv)
-    w = MainWindow()
+    w = LilWidget()
+    w.show()
+    w.startThread()
 
     sys.exit(app.exec_())
     
