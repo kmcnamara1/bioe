@@ -29,7 +29,10 @@ from delsys_func import *
 
 
 
-
+"""
+LOADPATIENTNAME
+return: name of patient
+"""
 def loadPatientName():
         # dir_path = os.path.dirname(os.path.realpath(__file__))
         text_file = open("Patient Details/PatientName.txt", "r+")
@@ -46,6 +49,10 @@ def loadPatientName():
         
 
 
+"""
+LOADCLINICIANNAME
+return: name of clinician
+"""
 def loadClinicianName():
         text_file = open("ClinicianName.txt", "r")
         data = text_file.read()
@@ -53,6 +60,10 @@ def loadClinicianName():
         return data
 
 
+"""
+UIWINDOW: HOME WINDOW
+This is the class is the layout for the HOME window of the GUI
+"""
 class UIWindow(QWidget):
     def __init__(self, parent=None):
         super(UIWindow, self).__init__(parent)
@@ -85,11 +96,8 @@ class UIWindow(QWidget):
         self.ExportDataButton.setStyleSheet("background-color: rgb(242,153,74)")
         self.ExportDataButton.setObjectName("ExportDataButton")
 
-
         #icon!
         self.ExportDataButton.setIcon(QIcon('icons/export.png'))
-
-
 
         self.SideColum = QtWidgets.QColumnView(self.centralwidget)
         self.SideColum.setGeometry(QtCore.QRect(0, 0, 201, 741))
@@ -296,6 +304,10 @@ class UIWindow(QWidget):
 
 ###############################################################################################################
 
+"""
+UITOOLTAB: LOGIN WINDOW
+This is the class is the layout for the WELCOME LOGIN window
+"""
 class UIToolTab(QWidget):
     def __init__(self, parent=None):
         super(UIToolTab, self).__init__(parent)
@@ -439,6 +451,10 @@ class UIToolTab(QWidget):
 
 ###############################################################################################################
 
+"""
+UIPATIENTHISTORYWINDOW: PATIENT HISTORY WINDOW
+This is the class that has all the patient history layout
+"""
 class Ui_PatientHistoryWindow(QWidget):
     def __init__(self, parent=None):
         super(Ui_PatientHistoryWindow, self).__init__(parent)
@@ -565,6 +581,12 @@ class Ui_PatientHistoryWindow(QWidget):
 
 
 ###############################################################################################################
+
+"""
+UIPATIENTSETUP: PATIENT SETUP (WINDOW 1)
+This is the class that has all patient setup dialogs
+It shows the first image for placement finding for the EMG
+"""
 class UIinitPatientSetUp(QDialog):
     
     def __init__(self,listInfo,parent=None):
@@ -697,15 +719,13 @@ class UIinitPatientSetUp(QDialog):
         # print(text_input)
         text_file.close()  
 
-#     def get_patient_UR(self):
-#         text_input = self.patientSetup.text()
-#         dir_path = os.path.dirname(os.path.realpath(__file__))
-#         text_file = open(dir_path + "\Patient Details\PatientName.txt", "a")
-#         text_file.write("\n%s" % text_input)
-#         # print(text_input)
-#         text_file.close()  
 
 ###############################################################################################################
+"""
+UIPATIENTSETUP: PATIENT SETUP (WINDOW 2)
+This is the class that has all patient setup dialogs
+It shows the second image and enter location for placement
+"""
 class UIinitMeasurePatientSetUp(QDialog):
     
     def __init__(self,listInfo,parent=None):
@@ -846,6 +866,10 @@ class UIinitMeasurePatientSetUp(QDialog):
         self.close()       
 ###############################################################################################################
 
+"""
+UISAMPLEEMG: RAW EMG DATA (WINDOW 3)
+This displays the raw EMG sensor data on a graph
+"""
 class Ui_SampleEMG(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)

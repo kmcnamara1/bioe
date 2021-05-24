@@ -175,7 +175,7 @@ class ScrollLabel(QScrollArea):
 
 
 ########################################################################################################################################
-                                        # Generic Functions #
+                                    # Generic Functions #
 ########################################################################################################################################
 
 def close_all():
@@ -202,6 +202,7 @@ def get_meas_txt():
 
 class MainWindow(QMainWindow):
 
+    #start classes and login window
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setGeometry(50, 50, 400, 450)
@@ -214,6 +215,7 @@ class MainWindow(QMainWindow):
         self.EXERCISE_SET = None
         self.patientDetail = patientDetails() #start instance of patient details
 
+    #Start login
     def startUIToolTab(self):
         
         self.ToolTab = UIToolTab(self)
@@ -222,6 +224,7 @@ class MainWindow(QMainWindow):
         self.ToolTab.startButton.clicked.connect(self.patientRegister)
         self.show()
 
+    #Start HOME window
     def startUIWindow(self):
         self.Window = UIWindow(self)
         self.setCentralWidget(self.Window)
@@ -290,20 +293,23 @@ class MainWindow(QMainWindow):
         self.patientDetail.fingerMVC = None
         self.patientDetail.shoulderMVC = None
         self.patientDetail.beenExported = None 
-        
+        #display LOGIN window
         self.startUIToolTab()
 
+    # Register Patient NAME and UR
     def patientRegister(self):
         self.startUIWindow()
         ui_patientReg = Ui_Register(self)
         popup = QMessageBox(ui_patientReg)
         ui_patientReg.OK.clicked.connect(self.startUIWindow)
+        #check if patient is previous or new
         ui_patientReg.OK.clicked.connect(lambda: self.checkDetail(ui_patientReg))
         ui_patientReg.URnumLine.returnPressed.connect(lambda: self.checkDetail(ui_patientReg))
         ui_patientReg.URnumLine.returnPressed.connect(self.startUIWindow)
+        #display dialog
         ui_patientReg.show()
 
-
+    #Shows the patient history window
     def startUIpatietnHistory(self):
         self.historyWindow = Ui_PatientHistoryWindow(self)
         self.setCentralWidget(self.historyWindow)
@@ -556,8 +562,6 @@ class MainWindow(QMainWindow):
         self.patientDetail.shoulderMVC = None
         self.patientDetail.beenExported = None 
 
-        # self.Window.label_5.setText(self.Window._translate("OverViewWindow", "Session no.  ")) 
-        # self.Window.label_10.setText(self.Window._translate("OverViewWindow", "Patient: - "))   
         self.patientRegister()
 
 
