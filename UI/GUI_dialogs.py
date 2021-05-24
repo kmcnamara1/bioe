@@ -1,3 +1,12 @@
+########################################################################################################################################
+# This file:
+# - has all of the checking popups for the main windows
+# 
+# Team 4
+# Date Modified: 25/05/2021
+# Author: Anna Scolaro 
+########################################################################################################################################
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap,QIcon
@@ -5,8 +14,6 @@ from PyQt5.QtWidgets import *
 import sys
 import os
 from PyQt5.QtCore import * 
-
-
 
 
 class Ui_Register(QDialog):

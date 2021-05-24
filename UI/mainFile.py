@@ -1,3 +1,15 @@
+########################################################################################################################################
+# This file:
+# - joins all the dialog popups and classes together
+# - controls the whole GUI
+# 
+# Team 4
+# Date Modified: 25/05/2021
+# Author: Anna Scolaro 
+########################################################################################################################################
+
+
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from datetime import datetime
 import copy
@@ -5,9 +17,9 @@ from PyQt5.QtWidgets import *
 import sys
 import re
 import os
-from previousPatientData import *
-from mainWindows import *
-from dialogs import *
+from GUI_patientData import *
+from GUI_mainWindows import *
+from GUI_dialogs import *
 
 LOAD_PREVIOUS = 1
 NEW_PATIENT = 0
@@ -20,9 +32,9 @@ YES = 1
 ########################################################################################################################################
 
 class previousPatientData:
-    wristMVC = None;
-    shoulderMVC = None;
-    fingerMVC = None;
+    wristMVC = None
+    shoulderMVC = None
+    fingerMVC = None
     previousSessionNum = None
     setupMeas = None;
 
@@ -78,84 +90,79 @@ class ScrollLabel(QScrollArea):
         FE = copy.deepcopy(fingerEntry)
         SE = copy.deepcopy(shoulderEntry)
 
-        if (text != "no previous sessions"):
+        # if (text != "no previous sessions"):
 
-            lengths = [len(wristEntry),len(fingerEntry),len(shoulderEntry)]
-            maxVal = max(lengths)
+        lengths = [len(wristEntry),len(fingerEntry),len(shoulderEntry)]
+        maxVal = max(lengths)
 
-            if (maxVal != len(wristEntry)):
-             
-                diff = maxVal-len(wristEntry)
-                for i in range(1,(diff+1)):
-                    WE.append('-')
-
-            if(maxVal != len(fingerEntry)):
-           
-                diff = maxVal-len(fingerEntry)
-                for i in range(1,(diff+1)):
-                    FE.append('-')
-
-            if(maxVal != len(shoulderEntry)):
-           
-                diff = maxVal-len(shoulderEntry)
-                for i in range(1,(diff+1)):
-                    SE.append('-')
-
-            print(maxVal)
-            print(WE)
-            print(FE)
-            print(SE)
-
-            self.tableFrame = QtWidgets.QFrame(self)
-                    # self.label.setWordWrap(True)
-            self.tableFrame.setGeometry(QtCore.QRect(500,170,500,145))
-            self.tableFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
-            self.tableFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-            self.tableFrame.setFrameShadow(QtWidgets.QFrame.Raised)
-            self.tableFrame.setObjectName("WelcomeFrame")
-
-
-            self.table = QTableWidget(self.tableFrame)
-            self.table.raise_()
-            self.table.setWordWrap(True)
-            self.table.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-                    "color:#323232")
-            self.table.setRowCount(3)
-            self.table.setVerticalHeaderLabels(['Wrist (mvc)','Finger (mvc)','Shoulder (mvc)'])
-
-            sessionNameArray = []
-            for i in range(1,(maxVal+1)):
-                temp = "Ses {}".format(i)
-                sessionNameArray.insert(0,temp)
-
-            self.table.setColumnCount(maxVal)
-            self.table.setHorizontalHeaderLabels(sessionNameArray)
-
-            self.table.verticalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
-            self.table.horizontalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
+        if (maxVal != len(wristEntry)):
             
-            
+            diff = maxVal-len(wristEntry)
+            for i in range(1,(diff+1)):
+                WE.append('-')
 
-            for column in range(0,maxVal):
-                for row in range(0,3):
+        if(maxVal != len(fingerEntry)):
+        
+            diff = maxVal-len(fingerEntry)
+            for i in range(1,(diff+1)):
+                FE.append('-')
 
-                    if (row == 0):
-                        val = WE[abs(column-(maxVal-1))]
-                    elif (row == 1):
-                        val = FE[abs(column-(maxVal-1))]    
-                    else:
-                        val = SE[abs(column-(maxVal-1))] 
-     
-                    self.table.setItem(row,column,QTableWidgetItem(val))
+        if(maxVal != len(shoulderEntry)):
+        
+            diff = maxVal-len(shoulderEntry)
+            for i in range(1,(diff+1)):
+                SE.append('-')
 
-            self.table.adjustSize()
+        self.tableFrame = QtWidgets.QFrame(self)
+                # self.label.setWordWrap(True)
+        self.tableFrame.setGeometry(QtCore.QRect(500,170,500,145))
+        self.tableFrame.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.tableFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.tableFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.tableFrame.setObjectName("WelcomeFrame")
 
 
-            layout = QGridLayout()
-            layout.addWidget(self.table, 1, 0)
-            self.tableFrame.setLayout(layout)
+        self.table = QTableWidget(self.tableFrame)
+        self.table.raise_()
+        self.table.setWordWrap(True)
+        self.table.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                "color:#323232")
+        self.table.setRowCount(3)
+        self.table.setVerticalHeaderLabels(['Wrist (mvc)','Finger (mvc)','Shoulder (mvc)'])
 
-            self.clip = QApplication.clipboard()
+        sessionNameArray = []
+        for i in range(1,(maxVal+1)):
+            temp = "Ses {}".format(i)
+            sessionNameArray.insert(0,temp)
+
+        self.table.setColumnCount(maxVal)
+        self.table.setHorizontalHeaderLabels(sessionNameArray)
+
+        self.table.verticalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
+        self.table.horizontalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
+        
+        
+
+        for column in range(0,maxVal):
+            for row in range(0,3):
+
+                if (row == 0):
+                    val = WE[abs(column-(maxVal-1))]
+                elif (row == 1):
+                    val = FE[abs(column-(maxVal-1))]    
+                else:
+                    val = SE[abs(column-(maxVal-1))] 
+    
+                self.table.setItem(row,column,QTableWidgetItem(val))
+
+        self.table.adjustSize()
+
+
+        layout = QGridLayout()
+        layout.addWidget(self.table, 1, 0)
+        self.tableFrame.setLayout(layout)
+
+        self.clip = QApplication.clipboard()
 
         # setting text to the label
         # label.setText(text)
@@ -296,6 +303,7 @@ class MainWindow(QMainWindow):
         ui_patientReg.URnumLine.returnPressed.connect(self.startUIWindow)
         ui_patientReg.show()
 
+
     def startUIpatietnHistory(self):
         self.historyWindow = Ui_PatientHistoryWindow(self)
         self.setCentralWidget(self.historyWindow)
@@ -308,24 +316,18 @@ class MainWindow(QMainWindow):
 
         historyList = displayPatientHistory(self.currentDetails.patientID,self.currentDetails.ur,self.currentDetails.sessionNum, self.currentDetails.beenExported)
         if (historyList == 0):
-            ScrollLabel.UiComponents(self.historyWindow,"no previous sessions",0,0,0)
+            ScrollLabel.UiComponents(self.historyWindow,"no previous sessions saved",self.previousData.wristMVC,self.previousData.fingerMVC,self.previousData.shoulderMVC)
         else:
-
-            # copy.deepcopy
-            # WE = self.previousData.wristMVC
-            # FE = self.previousData.fingerMVC
-            # SE = self.previousData.shoulderMVC
-            # print(WE)
-            # print(FE)
-            # print(SE)
             ScrollLabel.UiComponents(self.historyWindow,historyList,self.previousData.wristMVC,self.previousData.fingerMVC,self.previousData.shoulderMVC)
 
         #Checks the name once patient set up is done
         if (self.patientDetail.patientName == None):
             self.historyWindow.label_10.setText(self.historyWindow._translate("OverViewWindow", "Patient: - "))
+            self.historyWindow.label_5.setText(self.historyWindow._translate("OverViewWindow", "Session no. -"))
         else:
             self.historyWindow.label_10.setText(self.historyWindow._translate("OverViewWindow", "Patient: {}".format(self.patientDetail.patientName) ))
-        
+            self.historyWindow.label_5.setText(self.historyWindow._translate("OverViewWindow", "Session no.{} ".format(self.currentDetails.sessionNum)))
+
         self.historyWindow.overviewSide.clicked.connect(self.startUIWindow)
 
         self.show()
@@ -495,7 +497,6 @@ class MainWindow(QMainWindow):
 
     # stores reading after pressed the NEXT button
     def storeReading(self,n):
-        print("N:{}\n".format(n))
         if (n == 1):
             #wrist
             self.currentDetails.wristMVC = self.get_reading()
@@ -555,8 +556,8 @@ class MainWindow(QMainWindow):
         self.patientDetail.shoulderMVC = None
         self.patientDetail.beenExported = None 
 
-        self.Window.label_5.setText(self.Window._translate("OverViewWindow", "Session no.  ")) 
-        self.Window.label_10.setText(self.Window._translate("OverViewWindow", "Patient: - "))   
+        # self.Window.label_5.setText(self.Window._translate("OverViewWindow", "Session no.  ")) 
+        # self.Window.label_10.setText(self.Window._translate("OverViewWindow", "Patient: - "))   
         self.patientRegister()
 
 
@@ -592,6 +593,8 @@ class MainWindow(QMainWindow):
         self.previousData.setupMeas = getSetupMeasurement(self.previousData.sessionNum,ID,self.currentDetails.ur)
 
         print(self.previousData.wristMVC)
+        print(self.previousData.fingerMVC)
+        print(self.previousData.shoulderMVC)
 
         self.currentDetails.setupMeasWrist = self.previousData.setupMeas[0]
         self.currentDetails.setupMeasFinger = self.previousData.setupMeas[1]
@@ -629,6 +632,10 @@ class MainWindow(QMainWindow):
             self.loadPreviousSessionData(self.currentDetails.patientID)
         else:
             print("NEW PATIENT")
+            self.previousData = previousPatientData()
+            self.previousData.wristMVC = []
+            self.previousData.fingerMVC= []
+            self.previousData.shoulderMVC = []
             self.currentDetails.sessionNum = 1
     
 

@@ -1,0 +1,11 @@
+PatientID:AA
+PatientName:a a
+Date:2021-05-24
+Clinician:a
+sessionNum:1
+setupMeasWrist:None
+setupMeasFinger:None
+setupMeasShoulder:None
+wristMVC:30
+fingerMVC:30
+shoulderMVC:None
