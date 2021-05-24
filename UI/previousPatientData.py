@@ -161,7 +161,7 @@ def displayPatientHistory(PatientID,ur,sessionNum, exported):
 
             text_file.close()
             contents += line
-            print(contents)
+            # print(contents)
 
             # contents = contents.join("\n") 
 

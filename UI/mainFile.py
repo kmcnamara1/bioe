@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from datetime import datetime
+import copy
 from PyQt5.QtWidgets import * 
 import sys
 import re
@@ -73,7 +74,38 @@ class ScrollLabel(QScrollArea):
         # creating scroll label
         label = ScrollLabel(self)
 
+        WE = copy.deepcopy(wristEntry)
+        FE = copy.deepcopy(fingerEntry)
+        SE = copy.deepcopy(shoulderEntry)
+
         if (text != "no previous sessions"):
+
+            lengths = [len(wristEntry),len(fingerEntry),len(shoulderEntry)]
+            maxVal = max(lengths)
+
+            if (maxVal != len(wristEntry)):
+             
+                diff = maxVal-len(wristEntry)
+                for i in range(1,(diff+1)):
+                    WE.append('-')
+
+            if(maxVal != len(fingerEntry)):
+           
+                diff = maxVal-len(fingerEntry)
+                for i in range(1,(diff+1)):
+                    FE.append('-')
+
+            if(maxVal != len(shoulderEntry)):
+           
+                diff = maxVal-len(shoulderEntry)
+                for i in range(1,(diff+1)):
+                    SE.append('-')
+
+            print(maxVal)
+            print(WE)
+            print(FE)
+            print(SE)
+
             self.tableFrame = QtWidgets.QFrame(self)
                     # self.label.setWordWrap(True)
             self.tableFrame.setGeometry(QtCore.QRect(500,170,500,145))
@@ -92,32 +124,29 @@ class ScrollLabel(QScrollArea):
             self.table.setVerticalHeaderLabels(['Wrist (mvc)','Finger (mvc)','Shoulder (mvc)'])
 
             sessionNameArray = []
-            for i in range(1,(len(fingerEntry)+1)):
+            for i in range(1,(maxVal+1)):
                 temp = "Ses {}".format(i)
                 sessionNameArray.insert(0,temp)
 
-            self.table.setColumnCount(len(fingerEntry))
+            self.table.setColumnCount(maxVal)
             self.table.setHorizontalHeaderLabels(sessionNameArray)
 
             self.table.verticalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
             self.table.horizontalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
+            
+            
 
-        
-        
-
-            for column in range(0,(len(fingerEntry))):
+            for column in range(0,maxVal):
                 for row in range(0,3):
 
                     if (row == 0):
-                        val = wristEntry[abs(column-(len(fingerEntry)-1))]
+                        val = WE[abs(column-(maxVal-1))]
                     elif (row == 1):
-                        val = fingerEntry[abs(column-(len(fingerEntry)-1))]    
+                        val = FE[abs(column-(maxVal-1))]    
                     else:
-                        val = shoulderEntry[abs(column-(len(fingerEntry)-1))] 
+                        val = SE[abs(column-(maxVal-1))] 
      
                     self.table.setItem(row,column,QTableWidgetItem(val))
-
-
 
             self.table.adjustSize()
 
@@ -137,33 +166,6 @@ class ScrollLabel(QScrollArea):
         # setting geometry
         label.setGeometry(QtCore.QRect(450, 150, 621, 581))
 
-
-
-########################################################################################################################################
-                                         # Table #
-########################################################################################################################################
-        
-class dataTable(QTableWidget):
-    # contructor
-    def __init__(self, parent=None):
-        super(dataTable,self).__init__(parent)
-
-        # self.table = QTableWidget(parent=self)
-        # self.table.setColumnCount(2)
-        # self.table.setRowCount(2)
-        # self.table.setHorizontalHeaderLabels(['col1','col2'])
-        # self.table.setVerticalHeaderLabels(['row1','row2'])
-        # self.table.setItem(0,0,QTableWidgetItem('foo'))
-        # self.table.setItem(0,1,QTableWidgetItem('bar'))
-        # self.table.setItem(1,0,QTableWidgetItem('baz'))
-        # self.table.setItem(1,1,QTableWidgetItem('qux'))
-        # self.table.setGeometry(QtCore.QRect(0, 10, 20, 101))
-        # layout = QGridLayout()
-        # layout.addWidget(self.table, 1, 0)
-        # self.setLayout(layout)
-        # self.table.raise_()
-
-        # self.clip = QApplication.clipboard()
 
 ########################################################################################################################################
                                         # Generic Functions #
@@ -308,6 +310,14 @@ class MainWindow(QMainWindow):
         if (historyList == 0):
             ScrollLabel.UiComponents(self.historyWindow,"no previous sessions",0,0,0)
         else:
+
+            # copy.deepcopy
+            # WE = self.previousData.wristMVC
+            # FE = self.previousData.fingerMVC
+            # SE = self.previousData.shoulderMVC
+            # print(WE)
+            # print(FE)
+            # print(SE)
             ScrollLabel.UiComponents(self.historyWindow,historyList,self.previousData.wristMVC,self.previousData.fingerMVC,self.previousData.shoulderMVC)
 
         #Checks the name once patient set up is done
@@ -441,7 +451,8 @@ class MainWindow(QMainWindow):
          # HERE WILL BE USED TO DISP READING VALUE #
 #################################################################
     def get_reading(self):
-        return self.current_delsys_MVC    
+        return 30 
+        # return self.current_delsys_MVC    
     
     def startButtonFun(self):
         value = self.get_reading()
@@ -460,7 +471,7 @@ class MainWindow(QMainWindow):
 
         #functionality of the buttons
 
-        stopCheck.nextExB.clicked.connect(self.storeReading)   
+        stopCheck.nextExB.clicked.connect(lambda: self.storeReading(exercise))   
 
         if (exercise == 1):
             #wrist
@@ -484,15 +495,19 @@ class MainWindow(QMainWindow):
 
     # stores reading after pressed the NEXT button
     def storeReading(self,n):
+        print("N:{}\n".format(n))
         if (n == 1):
             #wrist
             self.currentDetails.wristMVC = self.get_reading()
+            self.previousData.wristMVC.append("{}".format(self.currentDetails.wristMVC))
         elif (n == 2):
             #finger
             self.currentDetails.fingerMVC = self.get_reading()
-        else:
+            self.previousData.fingerMVC.append("{}".format(self.currentDetails.fingerMVC))
+        elif (n == 3):
             #shoulder
             self.currentDetails.shoulderMVC = self.get_reading()
+            self.previousData.shoulderMVC.append("{}".format(self.currentDetails.shoulderMVC))
 
         self.changeExercisePopUp()
 
