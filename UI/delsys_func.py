@@ -17,7 +17,7 @@ import time
 
 class DelsysSensors(QObject):
     runningSig = pyqtSignal(bool)
-    dataSig = pyqtSignal(int)
+    dataSig = pyqtSignal(float)
     def __init__(self, master, parent=None):
         # super(DelsysSensors, self).__init__(parent)
         QObject.__init__(self,parent)
@@ -27,7 +27,7 @@ class DelsysSensors(QObject):
         self.EMG_SEG_LEN = self.EMG_DATA_PORT_LENGTH * 4
 
         self.maxContract = 0
-
+        self.timeouts = 0
         #add signals
         # self.runningSig = pyqtSignal()
         # self.dataSig = pyqtSignal(np.array)
@@ -42,7 +42,7 @@ class DelsysSensors(QObject):
         print('^^sensors')
         self.initTriggers()
         # self.sendSTART()
-        print("sentStart")
+        # print("sentStart")
         # self.streamEMGData()
         # print('not reached?')
 
@@ -102,15 +102,29 @@ class DelsysSensors(QObject):
 
 
         while self.streamOn == True:
-            if samples > 100 and samples < 105:
+            # if samples > 100 and samples < 105:
                 # stop after 100 samples
                 # self.sendSTOP
-                print("delsys emmited false")
-                self.runningSig.emit(False)
+                # print("delsys emmited false")
+                # self.runningSig.emit(False)
 
             # Try and get the next frame
             frame = self.read_EMG(t0, triggered)
+            if frame[0] == None:
+                self.timeouts += 1
+                if self.timeouts > 100:
+                    # we've had 100 timeouts in a row, this is a problem
+                    print("100 consecutive timeouts, let's return an error")
+                    return -1
+                continue
+
+            if samples > 15000 and samples < 15005:
+                print(frame)
+                print("sensorIndex: {}".format(sensorIndex))
+
+            # We received data, extract the right emg value for our sensor
             emgValue = frame[sensorIndex]
+
             #check if data was received ie trig start pressed
             if emgValue != None:
                 triggered = True
@@ -121,7 +135,9 @@ class DelsysSensors(QObject):
                 #     emgFile = open("emgDatatest.txt", 'w')
                 #     for row in self._data:
                 #         np.savetxt(emgFile,row)
-                
+
+                # if abs(emgValue) > 0:
+                    # print("emgValue is {}".format(emgValue))
                 self.dataSig.emit(emgValue) ### THIS IS WHAT WE CARE ABOUT
 
 
@@ -270,17 +286,20 @@ class SensorGUI(QObject):
         self.isRunning = val
 
     def setMax(self):
-        self.max = max(self.emgLatest)
+        # self.max = max(self.emgLatest)
+        self.max = 1
 
     def setEMG(self, val):
         self.emgLatest.append(val)
         self.counter += 1
-        if len(self.emgLatest) > 200:
+        if len(self.emgLatest) > 25000:
             # every 50 samples, we delete 50 samples
             # this way the array doesn't get too big
             # might play around with this number though
+            if self.counter < 202:
+                print("truncating")
             self.emgLatest = self.emgLatest[50:]
-            # array thus varies in length between 150 and 200
+            # array thus varies in length between 200 and 250
         
         self.setMax() # replace this with some sophistry later
 

@@ -1,14 +1,5 @@
-########################################################################################################################################
-# This file:
-# - has all of the main GUI window designs
-# 
-# Team 4
-# Date Modified: 25/05/2021
-# Author: Anna Scolaro 
-########################################################################################################################################
-
-
 from __future__ import annotations
+from tkinter.constants import E
 from typing import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap,QIcon,QFont
@@ -871,7 +862,7 @@ class Ui_SampleEMG(QDialog):
         # self.setCentralWidget(self.MuscleDemo)
 
         # 2. Place the matplotlib figure
-        self.myFig = MyFigureCanvas(x_len=200, y_range=[0., 0.0003], interval=20)
+        self.myFig = MyFigureCanvas(x_len=20000, y_range=[0., 0.02], interval=20)
         self.lyt.addWidget(self.myFig)
 
 ##########################################################################################
@@ -1006,12 +997,11 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
                         self._y_range = [min(emgArr), max(emgArr)]
                         self._ax_.set_ylim(ymin=min(emgArr), ymax=max(emgArr))
                 except:
-                        print("we got an error")
+                        print("we got an error hooray")
         # else:
 
                 
         return self._line_,
-
 
 # # Data source
 # # ------------
