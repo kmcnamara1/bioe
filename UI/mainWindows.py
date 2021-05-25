@@ -871,7 +871,7 @@ class Ui_SampleEMG(QDialog):
         # self.setCentralWidget(self.MuscleDemo)
 
         # 2. Place the matplotlib figure
-        self.myFig = MyFigureCanvas(x_len=200, y_range=[0., 0.0003], interval=20)
+        self.myFig = MyFigureCanvas(x_len=20000, y_range=[0., 0.02], interval=20)
         self.lyt.addWidget(self.myFig)
 
 ##########################################################################################
