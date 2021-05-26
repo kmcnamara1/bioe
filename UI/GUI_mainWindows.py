@@ -25,7 +25,7 @@ import matplotlib.figure as mpl_fig
 import matplotlib.animation as anim
 import numpy as np
 from numpy.core.records import array
-from delsys_func import *
+from EMG_delsys import *
 
 
 
