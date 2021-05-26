@@ -895,7 +895,7 @@ class Ui_SampleEMG(QDialog):
         # self.setCentralWidget(self.MuscleDemo)
 
         # 2. Place the matplotlib figure
-        self.myFig = MyFigureCanvas(x_len=200, y_range=[0., 0.0003], interval=20)
+        self.myFig = MyFigureCanvas(x_len=20000, y_range=[0., 0.02], interval=20)
         self.lyt.addWidget(self.myFig)
 
 ##########################################################################################
@@ -989,7 +989,8 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         # Store two lists _x_ and _y_
         x = list(range(0, x_len))
         y = [0] * x_len
-
+        self.temp = False
+        self.temp2 = True
         # Store a figure and ax
         self._ax_  = self.figure.subplots()
         self._ax_.set_ylim(ymin=self._y_range_[0], ymax=self._y_range_[1])
@@ -1008,14 +1009,31 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         This function gets called regularly by the timer.
 
         '''
-        emgArr = self.delsysWorker.getEMG()
-        if len(emgArr) > 0:
-                y.append(emgArr[len(emgArr) - 1])
-        
+        # if self.delsysWorker.getRunning() == False:
+                # sensor is not running
+                # return self._line_
 
-        # y.append(self.delsys.getEMGData())     # Add new datapoint
-        y = y[-self._x_len_:]                        # Truncate list _y_
-        self._line_.set_ydata(y)
+        emgArr = self.delsysWorker.getEMG()
+        if len(emgArr) < self._x_len_:
+                # at the start, pad emgArr with zeros
+                y = [0] * (self._x_len_ + 1) 
+                emgArr.extend(y) #emgArr will now be longer than necessary, but we will truncate it later
+
+        if len(emgArr) > self._x_len_:
+                # if self.temp == False:
+                #         print("updating")
+                #         self.temp == True
+                # # y.append(emgArr[len(emgArr) - 1])        
+                # y = y[-self._x_len_:]                        # Truncate list _y_
+                try:
+                        self._line_.set_ydata(emgArr[0:self._x_len_]) #new
+                        self._y_range = [min(emgArr), max(emgArr)]
+                        self._ax_.set_ylim(ymin=min(emgArr), ymax=max(emgArr))
+                except:
+                        print("we got an error")
+        # else:
+
+                
         return self._line_,
 
 # # Data source

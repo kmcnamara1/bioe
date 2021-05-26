@@ -154,6 +154,9 @@ class DelsysSensors(QObject):
                 print("MAX CONTRACTION VALUE {}".format(self.maxContract) )
 
 
+
+
+
     
     def getEMGData(self):
         self.emg_data = np.array([],ndmin = 2)
@@ -220,8 +223,12 @@ class DelsysSensors(QObject):
     # Commands received from GUI thread
     def receiveStart(self):
         self.sendSTART()
-        self.streamOn = True
-        self.streamEMGData()
+        if self.streamOn == True:
+            print("already running")
+            # don't do anything else
+        else:
+            self.streamOn = True
+            self.streamEMGData()
 
     def receiveStop(self):
         self.sendSTOP()
@@ -276,7 +283,7 @@ class SensorGUI(QObject):
 
         self.sensors.moveToThread(self.qThread)
         self.qThread.started.connect(self.sensors.receiveStart)
-        print("starting EMG thread")
+        print("starting EMG thread") 
         self.qThread.start()
 
         
@@ -303,6 +310,10 @@ class SensorGUI(QObject):
         
         self.setMax() # replace this with some sophistry later
 
+    def clearEMG(self):
+        # clears stored EMG array (eg when starting a measurement)
+        self.emgLatest = []
+
     ### Getting functions - called from GUI directly #####
     def getRunning(self):
         return self.isRunning
@@ -325,13 +336,15 @@ class CommandsGUI(QObject):
         self.master = parent
 
     def guiSendStart(self):
-        self.guiStart.emit()
+        self.master.clearEMG()
+        # self.guiStart.emit()
         print("sending start from gui to emg")
     def guiSendStop(self):
         self.guiStop.emit()
     def guiSendQuit(self):
         # when do we call this?
         self.guiQuit.emit()
+
 
 
         
