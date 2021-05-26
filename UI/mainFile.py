@@ -21,6 +21,7 @@ from GUI_patientData import *
 from GUI_mainWindows import *
 from GUI_dialogs import *
 
+
 LOAD_PREVIOUS = 1
 NEW_PATIENT = 0
 YES = 1
@@ -372,7 +373,7 @@ class MainWindow(QMainWindow):
 
 
     def sampleEMGPopup(self):
-        popup = Ui_SampleEMG(self)
+        self.popup = Ui_SampleEMG(self)
         if ((self.currentDetails.setupMeasWrist == None) and (self.EXERCISE_SET ==1)):
             self.currentDetails.setupMeasWrist = get_meas_txt()
         elif((self.currentDetails.setupMeasFinger == None) and (self.EXERCISE_SET ==2)):
@@ -381,9 +382,9 @@ class MainWindow(QMainWindow):
             self.currentDetails.setupMeasShoulder = get_meas_txt()      
 
   
-        popup.nextButton.clicked.connect(self.startUIWindow)
-        popup.backBB.clicked.connect(self.startEnterMeasurementsPopup)
-        popup.show()       
+        self.popup.nextButton.clicked.connect(self.startUIWindow)
+        self.popup.backBB.clicked.connect(self.startEnterMeasurementsPopup)
+        self.popup.show()       
 
     def changeExercisePopUp(self):
         changeExercisePopUp = UIchangeExercisePopUp(self)
@@ -459,13 +460,17 @@ class MainWindow(QMainWindow):
          # HERE WILL BE USED TO DISP READING VALUE #
 #################################################################
     def get_reading(self):
-        return 30 
+        # called after measurements have been taken
+        mvc = self.popup.myFig.delsysWorker.getMax()
+        print("getreading {}".format(mvc))
+        return mvc
         # return self.current_delsys_MVC    
     
+
     def startButtonFun(self):
-        value = self.get_reading()
-        
-        self.Window.label_7.setText(self.Window._translate("OverViewWindow", "{}".format(value)))
+        self.popup.myFig.delsysWorker.clearEMG()
+
+        self.Window.label_7.setText(self.Window._translate("OverViewWindow", ". . ."))
         self.Window.label_7.adjustSize()
 
 
@@ -477,32 +482,54 @@ class MainWindow(QMainWindow):
         stopCheck = Ui_finishEMGReading(self)
         popup = QMessageBox(stopCheck)
 
-        #functionality of the buttons
+        # send stop to EMG thread and update display
+        self.popup.myFig.delsysWorker.commands.guiSendStop()
+        mvc = self.get_reading()
+        self.Window.label_7.setText(self.Window._translate("OverViewWindow","{}".format(mvc)))
+        self.Window.label_7.adjustSize()
 
+        #functionality of the buttons
+        
         stopCheck.nextExB.clicked.connect(lambda: self.storeReading(exercise))   
 
         if (exercise == 1):
             #wrist
             stopCheck.redoB.clicked.connect(lambda: self.clearVal(exercise))
-            stopCheck.middleB.clicked.connect(self.checkFinished)
+            stopCheck.middleB.clicked.connect(lambda: self.checkFinished(exercise))
         elif (exercise == 2):
             #finger
             stopCheck.redoB.clicked.connect(lambda: self.clearVal(exercise))
-            stopCheck.middleB.clicked.connect(self.checkFinished)
+            stopCheck.middleB.clicked.connect(lambda: self.checkFinished(exercise))
         else:
             #shoulder
             stopCheck.redoB.clicked.connect(lambda: self.clearVal(exercise))
-            stopCheck.middleB.clicked.connect(self.checkFinished)
+            stopCheck.middleB.clicked.connect(lambda: self.checkFinished(exercise))
         stopCheck.show()
 
-    def checkFinished(self):
+    def checkFinished(self,n):
         finished = checkFinishedUI(self)
+        self.popup.myFig.delsysWorker.clearEMG()
+        self.popup.myFig.delsysWorker.commands.guiSendQuit()
+
+        if (n == 1):
+            #wrist
+            self.currentDetails.wristMVC = self.get_reading()
+        elif (n == 2):
+            #finger
+            self.currentDetails.fingerMVC = self.get_reading()
+        elif (n == 3):
+            #shoulder
+            self.currentDetails.shoulderMVC = self.get_reading()
+
         finished.BACK.clicked.connect(self.stopButtonCheck)
         finished.DONE.clicked.connect(self.exportData)
         finished.show()
 
     # stores reading after pressed the NEXT button
     def storeReading(self,n):
+        self.popup.myFig.delsysWorker.clearEMG()
+        self.popup.myFig.delsysWorker.commands.guiSendQuit()
+
         if (n == 1):
             #wrist
             self.currentDetails.wristMVC = self.get_reading()

@@ -55,11 +55,10 @@ class DelsysSensors(QObject):
                 print(self.trigno_cmd_port.recv(1024).decode('ascii'))
                 self.trigno_imu_data_port = socket.create_connection((host, 50044),0.5)
                 self.trigno_emg_data_port = socket.create_connection((host, 50043),0.5)
-
+                self.send_delsys_cmd("MASTER")
                 
             except:
                 messagebox.showerror("TCP Error","Could not establish connection with Trigno base.\nMake sure \"Trigno Control Utility\" is open and run the program again.")
-                self.master.destroy()
                 exit()
 
 
@@ -123,6 +122,7 @@ class DelsysSensors(QObject):
                 print("sensorIndex: {}".format(sensorIndex))
 
             # We received data, extract the right emg value for our sensor
+            
             emgValue = frame[sensorIndex]
 
             #check if data was received ie trig start pressed
@@ -138,7 +138,8 @@ class DelsysSensors(QObject):
 
                 # if abs(emgValue) > 0:
                     # print("emgValue is {}".format(emgValue))
-                self.dataSig.emit(emgValue) ### THIS IS WHAT WE CARE ABOUT
+                if samples % 2:
+                    self.dataSig.emit(emgValue) ### THIS IS WHAT WE CARE ABOUT
 
 
 
@@ -237,6 +238,10 @@ class DelsysSensors(QObject):
     def receiveQuit(self):
         self.sendSTOP()
         self.sendQUIT()
+        print("quitting")
+        self.trigno_emg_data_port.close()
+        self.trigno_cmd_port.close()
+        self.trigno_imu_data_port.close()
         # TODO: figure out how to handle quitting properly
         
 
@@ -293,8 +298,8 @@ class SensorGUI(QObject):
         self.isRunning = val
 
     def setMax(self):
-        # self.max = max(self.emgLatest)
-        self.max = 1
+        self.max = max(list(map(abs, self.emgLatest)))
+        # self.max = 1
 
     def setEMG(self, val):
         self.emgLatest.append(val)
