@@ -1,13 +1,14 @@
 ########################################################################################################################################
+########################################################################################################################################
 # This file:
 # - joins all the dialog popups and classes together
 # - controls the whole GUI
 # 
 # Team 4
-# Date Modified: 25/05/2021
+# Date Modified: 27/05/2021
 # Author: Anna Scolaro 
 ########################################################################################################################################
-
+########################################################################################################################################
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -22,6 +23,9 @@ from GUI_mainWindows import *
 from GUI_dialogs import *
 
 
+'''
+GLOBALS
+''' 
 LOAD_PREVIOUS = 1
 NEW_PATIENT = 0
 YES = 1
@@ -29,7 +33,7 @@ YES = 1
 
 
 ########################################################################################################################################
-                                         # CLASSES #
+                                         # Global #
 ########################################################################################################################################
 
 class previousPatientData:
@@ -60,7 +64,9 @@ class patientDetails:
                                          # SCROLL #
 ########################################################################################################################################
 
-
+'''
+Handles: Display and functionality of the table and HISTORY window
+''' 
 class ScrollLabel(QScrollArea):
       
     # contructor
@@ -82,7 +88,10 @@ class ScrollLabel(QScrollArea):
         self.label.setWordWrap(True)
         # adding label to the layout
         lay.addWidget(self.label)  
-
+    '''
+    Handles: Display and functionality of the HOME window
+    Inputs: Text (the history), wrist, finger and shoulder past MVC values as lists
+    ''' 
     def UiComponents(self,text,wristEntry,fingerEntry,shoulderEntry):
         # creating scroll label
         label = ScrollLabel(self)
@@ -122,7 +131,7 @@ class ScrollLabel(QScrollArea):
         self.tableFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.tableFrame.setObjectName("WelcomeFrame")
 
-
+        #making the table
         self.table = QTableWidget(self.tableFrame)
         self.table.raise_()
         self.table.setWordWrap(True)
@@ -131,6 +140,7 @@ class ScrollLabel(QScrollArea):
         self.table.setRowCount(3)
         self.table.setVerticalHeaderLabels(['Wrist (mvc)','Finger (mvc)','Shoulder (mvc)'])
 
+        # adding title names to the headers
         sessionNameArray = []
         for i in range(1,(maxVal+1)):
             temp = "Ses {}".format(i)
@@ -143,10 +153,10 @@ class ScrollLabel(QScrollArea):
         self.table.horizontalHeader().setStyleSheet("background-color: rgb(207, 207, 207);\n" "border-radius:14px")
         
         
-
+        # loads in data to table
         for column in range(0,maxVal):
             for row in range(0,3):
-
+                #making sure it goes in backwards order
                 if (row == 0):
                     val = WE[abs(column-(maxVal-1))]
                 elif (row == 1):
@@ -179,9 +189,9 @@ class ScrollLabel(QScrollArea):
                                     # Generic Functions #
 ########################################################################################################################################
 
-def close_all():
-        sys.exit(0)
-
+"""
+Loads the store name of the clinican for home window display-ing
+"""
 def loadClinicianName():
     # dir_path = os.path.dirname(os.path.realpath(__file__))
     text_file = open('ClinicianName.txt' , "r+")
@@ -189,6 +199,9 @@ def loadClinicianName():
     text_file.close()
     return data
 
+"""
+Gets the stored measurement from the EMG location popup
+"""
 def get_meas_txt():
     text_file = open("meas.txt", "r+")
     data = text_file.read()
@@ -217,7 +230,9 @@ class MainWindow(QMainWindow):
         self.patientDetail = patientDetails() #start instance of patient details
         self.setWindowTitle("EMG Assessment")
 
-    #Start login
+    '''
+    Handles: Display and functionality of the LOGIN window
+    ''' 
     def startUIToolTab(self):
         
         self.ToolTab = UIToolTab(self)
@@ -226,7 +241,10 @@ class MainWindow(QMainWindow):
         self.ToolTab.startButton.clicked.connect(self.patientRegister)
         self.show()
 
-    #Start HOME window
+
+    '''
+    Handles: Display and functionality of the HOME window
+    '''  
     def startUIWindow(self):
         self.Window = UIWindow(self)
         self.setCentralWidget(self.Window)
@@ -264,9 +282,11 @@ class MainWindow(QMainWindow):
         else:
             # This will check if a name is in the database and then re check if they want to overwrite this
             self.Window.patientSetup.clicked.connect(self.startSetUpPopup)
-            self.show()       
+            self.show()      
 
-    # performs all clearing of data for logout
+    '''
+    Handles: performs all clearing of data for logout
+    '''  
     def logout(self):
         self.currentDetails.clinicanName = None
         self.currentDetails.date = None
@@ -298,7 +318,10 @@ class MainWindow(QMainWindow):
         #display LOGIN window
         self.startUIToolTab()
 
-    # Register Patient NAME and UR
+
+    '''
+    Handles: Register Patient NAME and UR
+    '''  
     def patientRegister(self):
         self.startUIWindow()
         ui_patientReg = Ui_Register(self)
@@ -311,7 +334,9 @@ class MainWindow(QMainWindow):
         #display dialog
         ui_patientReg.show()
 
-    #Shows the patient history window
+    '''
+    Handles: Shows the patient history window
+    '''  
     def startUIpatietnHistory(self):
         self.historyWindow = Ui_PatientHistoryWindow(self)
         self.setCentralWidget(self.historyWindow)
@@ -335,13 +360,16 @@ class MainWindow(QMainWindow):
         else:
             self.historyWindow.label_10.setText(self.historyWindow._translate("OverViewWindow", "Patient: {}".format(self.patientDetail.patientName) ))
             self.historyWindow.label_5.setText(self.historyWindow._translate("OverViewWindow", "Session no.{} ".format(self.currentDetails.sessionNum)))
+            self.historyWindow.label_5.adjustSize()
 
         self.historyWindow.overviewSide.clicked.connect(self.startUIWindow)
 
         self.show()
 
     
-
+    '''
+    Handles: First popup for exercise setup
+    '''  
     def startSetUpPopup(self):
         #init the patient setup
         listInfo = self.EXERCISE_SET
@@ -352,7 +380,10 @@ class MainWindow(QMainWindow):
         setUpPatient.nextButton.clicked.connect(self.startEnterMeasurementsPopup)
 
         setUpPatient.show()
-        
+
+    '''
+    Handles: Second popup for exercise setup
+    '''    
     def startEnterMeasurementsPopup(self):
         
         listInfo = self.EXERCISE_SET
@@ -371,10 +402,12 @@ class MainWindow(QMainWindow):
         self.EnterMeasurementsPopup.doneButton.clicked.connect(self.sampleEMGPopup)
         self.EnterMeasurementsPopup.show()
     
-
-
+    '''
+    Handles: Third popup for exercise setup
+    '''
     def sampleEMGPopup(self):
         self.popup = Ui_SampleEMG(self)
+        #making sure functionality is set for each exercise
         if ((self.currentDetails.setupMeasWrist == None) and (self.EXERCISE_SET ==1)):
             self.currentDetails.setupMeasWrist = get_meas_txt()
         elif((self.currentDetails.setupMeasFinger == None) and (self.EXERCISE_SET ==2)):
@@ -387,6 +420,9 @@ class MainWindow(QMainWindow):
         self.popup.backBB.clicked.connect(self.startEnterMeasurementsPopup)
         self.popup.show()       
 
+    '''
+    Handles: Exercise change
+    '''
     def changeExercisePopUp(self):
         changeExercisePopUp = UIchangeExercisePopUp(self)
         self.EXERCISE_SET = 1
@@ -396,18 +432,22 @@ class MainWindow(QMainWindow):
         changeExercisePopUp.FingerFlexion.clicked.connect(lambda: self.passCurrentExercise(2))
         changeExercisePopUp.Deltoid.clicked.connect(lambda: self.passCurrentExercise(3))
 
-        # changeExercisePopUp.WristExtension.clicked.connect(self.startUIWindow)
-
         changeExercisePopUp.show()   
 
 #################################################################
          # Small checking dialog popup classes #
 #################################################################
+    '''
+    Go to home window
+    '''
     def changetoHome(self):
         popHome = changetohomeUI(self)
         popHome.DONE.clicked.connect(self.startUIWindow)
         popHome.show()    
 
+    '''
+    Go to patient name and UR popup
+    '''
     def patientCheckPopUp(self):
         ui_patientCheckPopUp = Ui_patientPopUp(self)
         popup = QMessageBox(ui_patientCheckPopUp)
@@ -415,6 +455,9 @@ class MainWindow(QMainWindow):
         ui_patientCheckPopUp.BACK.clicked.connect(self.startUIWindow)
         ui_patientCheckPopUp.show()
 
+    '''
+    check if user want to change patient popup
+    '''
     def patientChangeCheckPopUp(self):
         ui_patientChangeCheckPopUp = Ui_changePatientPopUp(self)
         popup = QMessageBox(ui_patientChangeCheckPopUp)
@@ -422,18 +465,21 @@ class MainWindow(QMainWindow):
         ui_patientChangeCheckPopUp.BACK.clicked.connect(self.startUIWindow)
         ui_patientChangeCheckPopUp.show()        
 
-    def checkPatientSetup(self):
-        dialogPatientSetup = Ui_needPatientSetup(self)
-        popup = QMessageBox(dialogPatientSetup)
-        dialogPatientSetup.show()
-
+    '''
+    Start the exercise selection popup
+    '''
     def patientCheckExercisePopUp(self):
         ui_patientCheckPopUp = Ui_checkExercise(self)
         popup = QMessageBox(ui_patientCheckPopUp)
         ui_patientCheckPopUp.BACK.clicked.connect(self.startUIWindow)
         ui_patientCheckPopUp.show()
 
-
+#################################################################
+         # Allows the table to copy and paste #
+#################################################################
+    '''
+    Handles the interupts to be able to copy and paste info from table
+    '''
     def keyPressEvent(self, e):
         if (e.modifiers() & QtCore.Qt.ControlModifier):
             selected = self.historyWindow.table.selectedRanges()
@@ -460,6 +506,9 @@ class MainWindow(QMainWindow):
 #################################################################
          # HERE WILL BE USED TO DISP READING VALUE #
 #################################################################
+    '''
+    Return: MVC
+    '''
     def get_reading(self):
         # called after measurements have been taken
         mvc = self.popup.myFig.delsysWorker.getMax()
@@ -467,18 +516,21 @@ class MainWindow(QMainWindow):
         return mvc
         # return self.current_delsys_MVC    
     
-
+    '''
+    Start EMG reading for MVC
+    '''
     def startButtonFun(self):
         self.popup.myFig.delsysWorker.clearEMG()
 
         self.Window.label_7.setText(self.Window._translate("OverViewWindow", ". . ."))
         self.Window.label_7.adjustSize()
 
-
-
 #################################################################
          # Stop Button #
 #################################################################
+    '''
+    User has pressed stop button and needs to check if they want to redo, save, or next exercise
+    '''
     def stopButtonCheck(self,exercise):
         stopCheck = Ui_finishEMGReading(self)
         popup = QMessageBox(stopCheck)
@@ -507,6 +559,9 @@ class MainWindow(QMainWindow):
             stopCheck.middleB.clicked.connect(lambda: self.checkFinished(exercise))
         stopCheck.show()
 
+    '''
+    checks if the EMG readings are finished
+    '''
     def checkFinished(self,n):
         finished = checkFinishedUI(self)
         self.popup.myFig.delsysWorker.clearEMG()
@@ -526,7 +581,9 @@ class MainWindow(QMainWindow):
         finished.DONE.clicked.connect(self.exportData)
         finished.show()
 
-    # stores reading after pressed the NEXT button
+    '''
+    stores reading after pressed the NEXT button
+    '''
     def storeReading(self,n):
         self.popup.myFig.delsysWorker.clearEMG()
         self.popup.myFig.delsysWorker.commands.guiSendQuit()
@@ -546,7 +603,9 @@ class MainWindow(QMainWindow):
 
         self.changeExercisePopUp()
 
-
+    '''
+    clears current reading if REDO is pressed
+    '''
     def clearVal(self,exercise):
         print(exercise)
         self.current_delsys_MVC  = None
@@ -559,8 +618,9 @@ class MainWindow(QMainWindow):
         self.passCurrentExercise(exercise)
         self.startUIWindow()
         
-        
-
+    """
+    clears all patient info from pressing "change patient"
+    """
     def changePatientButton(self):     
         self.currentDetails.clinicanName = None
         self.currentDetails.date = None
@@ -592,11 +652,14 @@ class MainWindow(QMainWindow):
 
         self.patientRegister()
 
-
-
+    """
+    used to display the current exercise selection
+    """
     def passCurrentExercise(self,n):
         self.EXERCISE_SET = n
         self.startUIWindow()
+
+        #setting the test depending on what exercise was chosen
         if n==1:
             self.Window.currentExerciseSelection = "Wrist Extension"
                   
@@ -614,6 +677,9 @@ class MainWindow(QMainWindow):
                                             # init prev patient #
 ########################################################################################################################################
 
+    '''
+    Loads in the previous session data of patient
+    '''
     def loadPreviousSessionData(self,ID):
         # find how many sessions they have had
         self.previousData.sessionNum = getNumSessions(ID+self.currentDetails.ur)
@@ -634,11 +700,13 @@ class MainWindow(QMainWindow):
         
         self.Window.SessionNum = self.currentDetails.sessionNum
     
-
-    # Run after patients name is entered 
-    # Checks id code ( the names initals ) for a current file under the given initals
-    # IF a current file is there --> load in the data as the patients details
-    # ELSE continue on new patient files
+    """
+    run after patients name is entered 
+    Checks id code ( the names initals ) for a current file under the given initals
+    IF a current file is there --> load in the data as the patients details
+    ELSE continue on new patient files
+    input: patient exercise setup class
+    """
     def checkDetail(self,ui_patientReg):
 
         # Setting up the current details for the patient
@@ -679,7 +747,9 @@ class MainWindow(QMainWindow):
 ########################################################################################################################################
                                             # Export Function #
 ########################################################################################################################################
-   
+    '''
+    This function exports the current session data from currentDetails into a new text file
+    '''
     def exportData(self):
 
         self.currentDetails.beenExported = YES
@@ -707,6 +777,9 @@ class MainWindow(QMainWindow):
                                             # Start Application #
 ########################################################################################################################################
 
+'''
+runs the whole application
+'''
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
