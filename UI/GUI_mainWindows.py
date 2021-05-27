@@ -3,7 +3,7 @@
 # - has all of the main GUI window designs
 # 
 # Team 4
-# Date Modified: 25/05/2021
+# Date Modified: 27/05/2021
 # Author: Anna Scolaro 
 ########################################################################################################################################
 
@@ -26,7 +26,7 @@ import matplotlib.animation as anim
 import numpy as np
 from numpy.core.records import array
 from EMG_delsys import *
-
+import time
 
 
 """
@@ -989,8 +989,9 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         # Store two lists _x_ and _y_
         x = list(range(0, x_len))
         y = [0] * x_len
-        self.temp = False
-        self.temp2 = True
+
+        # create a variable to be used for saving data later
+        self.saved = False
         # Store a figure and ax
         self._ax_  = self.figure.subplots()
         self._ax_.set_ylim(ymin=self._y_range_[0], ymax=self._y_range_[1])
@@ -1009,67 +1010,34 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         This function gets called regularly by the timer.
 
         '''
-        # if self.delsysWorker.getRunning() == False:
-                # sensor is not running
-                # return self._line_
-
+        
         emgArr = self.delsysWorker.getEMG()
+
+        if len(emgArr) > self._x_len and self.saved == False:
+                tim = time.time()
+                emgFile = open("emgData_{}.txt".format(tim), 'w')
+                for row in self._data:
+                        np.savetxt(emgFile,row)
+                self.saved = True
+
+
+
         if len(emgArr) < self._x_len_:
                 # at the start, pad emgArr with zeros
                 y = [0] * (self._x_len_ + 1) 
-                emgArr.extend(y) #emgArr will now be longer than necessary, but we will truncate it later
+                emgArr.extend(y) 
+                #emgArr will now be longer than necessary, but we will truncate it later
 
         if len(emgArr) > self._x_len_:
-                # if self.temp == False:
-                #         print("updating")
-                #         self.temp == True
-                # # y.append(emgArr[len(emgArr) - 1])        
-                # y = y[-self._x_len_:]                        # Truncate list _y_
+                
+                
                 try:
                         self._line_.set_ydata(emgArr[0:self._x_len_]) #new
                         self._y_range = [min(emgArr), max(emgArr)]
                         self._ax_.set_ylim(ymin=min(emgArr), ymax=max(emgArr))
                 except:
                         print("we got an error")
-        # else:
-
-                
+        
+                        
         return self._line_,
-
-# # Data source
-# # ------------
-# n = np.linspace(0, 499, 500)
-# d = 50 + 25 * (np.sin(n / 8.3)) + 10 * (np.sin(n / 7.5)) - 5 * (np.sin(n / 1.5))
-# i = 0
-
-# def get_next_datapoint():
-#     global i
-#     i += 1
-#     if i > 499:
-#         i = 0
-#     return d[i]
-
-###############################################################################################################
-
-# class Worker(QObject):
-#         def __init__(self):
-#                 # self._sensors = sensors
-#                 self.running = pyqtSignal()
-#                 self.data = pyqtSignal(array)
-#                 self.finished = pyqtSignal()
-        
-#         def setupConnection(self):
-#                 self.sensors = DelsysSensors()
-        
-#         def startEMG(self):
-#                 self.sensors.streamEMGData()
-        
-#         def stopEMG(self):
-#                 self.sensors.stopReading() #TODO: implement this
-        
-#         def getSensorData(self):
-#                 self.data.emit(self.sensors.emg_data)
-
-                
-                
 
