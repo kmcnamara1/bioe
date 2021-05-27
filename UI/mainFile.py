@@ -215,6 +215,7 @@ class MainWindow(QMainWindow):
         self.current_delsys_MVC = None
         self.EXERCISE_SET = None
         self.patientDetail = patientDetails() #start instance of patient details
+        self.setWindowTitle("EMG Assessment")
 
     #Start login
     def startUIToolTab(self):
