@@ -60,7 +60,7 @@ def loadClinicianName():
         return data
 
 
-"""
+""" GENERATED FROM PYQT5 DESIGNER 
 UIWINDOW: HOME WINDOW
 This is the class is the layout for the HOME window of the GUI
 """
@@ -304,7 +304,7 @@ class UIWindow(QWidget):
 
 ###############################################################################################################
 
-"""
+""" GENERATED FROM PYQT5 DESIGNER 
 UITOOLTAB: LOGIN WINDOW
 This is the class is the layout for the WELCOME LOGIN window
 """
@@ -367,14 +367,12 @@ class UIToolTab(QWidget):
                                         "border-bottom-color: rgb(159, 163, 163);")
         self.lineEdit.setObjectName("lineEdit")
 
-#################################Setting for typing input and print on enter################################### 
+        ##############Setting for typing input and print on enter#####
        
-
         self.lineEdit.returnPressed.connect(self.txtstate)
         self.startButton.clicked.connect(self.txtstate)
 
         self.startButton.setIcon(QIcon('icons/ENTER.png'))
-###############################################################################################################
      
         self.label = QtWidgets.QLabel(self.LoginFrame)
         self.label.setGeometry(QtCore.QRect(190, 17, 71, 21))
@@ -419,16 +417,12 @@ class UIToolTab(QWidget):
                 "selection-background-color: rgb(197, 201, 201);\n"
                 "")
         self.extButton.setObjectName("extButton")
-        # self.extButton.clicked.connect(self.exitUI)
 
-        # MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(self.LoginFrame)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 22))
         self.menubar.setObjectName("menubar")
-        # LoginWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(self.LoginFrame)
         self.statusbar.setObjectName("statusbar")
-        # LoginWindow.setStatusBar(self.statusbar)
 
         _translate = QtCore.QCoreApplication.translate
         self.LoginFrame.setWindowTitle(_translate("LoginWindow", "LoginWindow"))
@@ -442,6 +436,9 @@ class UIToolTab(QWidget):
         self.label_3.adjustSize()
         self.label.adjustSize()
 
+    '''
+    Saves the clinicals name to eb read in home window
+    '''
     def txtstate(self):
         text_input = self.lineEdit.text()
         text_file = open("ClinicianName.txt", "w")
@@ -451,7 +448,7 @@ class UIToolTab(QWidget):
 
 ###############################################################################################################
 
-"""
+""" GENERATED FROM PYQT5 DESIGNER 
 UIPATIENTHISTORYWINDOW: PATIENT HISTORY WINDOW
 This is the class that has all the patient history layout
 """
@@ -582,8 +579,8 @@ class Ui_PatientHistoryWindow(QWidget):
 
 ###############################################################################################################
 
-"""
-UIPATIENTSETUP: PATIENT SETUP (WINDOW 1)
+""" GENERATED FROM PYQT5 DESIGNER 
+UIPATIENTSETUP: PATIENT SETUP (WINDOW 1) 
 This is the class that has all patient setup dialogs
 It shows the first image for placement finding for the EMG
 """
@@ -689,19 +686,12 @@ class UIinitPatientSetUp(QDialog):
 
 
         _translate = QtCore.QCoreApplication.translate
-        # self.labelPatientsName.setText(_translate("Dialog", "Please Enter Patient\'s Name:"))
-
-        # self.labelPatientUR.setText(_translate("Dialog", "Patient UR Number:"))
-        
         self.findmuscleLabl.setText(_translate("Dialog", ("Find the {} muscle belly").format(muscle)))
 
 
         self.exampleLabel.setText(_translate("Dialog", "Example:"))
         self.exitButton.setText(_translate("Dialog", "Exit")) 
         self.nextButton.setText(_translate("Dialog", "Next")) 
-
-        # self.labelPatientUR.adjustSize()
-        # self.labelPatientsName.adjustSize()
         self.findmuscleLabl.adjustSize()
         self.exampleLabel.adjustSize()    
 
@@ -709,7 +699,9 @@ class UIinitPatientSetUp(QDialog):
         print("close popup!")
         self.close()  
           
-
+    '''
+    Gets the patients name and saves it to be accessed by the home window and other classes
+    '''
     def get_patient_name(self):
         text_input = self.patientSetup.text()
         print(text_input)
@@ -721,7 +713,7 @@ class UIinitPatientSetUp(QDialog):
 
 
 ###############################################################################################################
-"""
+""" GENERATED FROM PYQT5 DESIGNER 
 UIPATIENTSETUP: PATIENT SETUP (WINDOW 2)
 This is the class that has all patient setup dialogs
 It shows the second image and enter location for placement
@@ -853,6 +845,9 @@ class UIinitMeasurePatientSetUp(QDialog):
         self.exampleLabel.adjustSize()
         self.labelPatientsName.adjustSize()
 
+    '''
+    writes and stores the sensor measurement location
+    '''
     def test_done(self):
         print("Next to EMG data!")
         text_input = self.PatientsNameEnter.text()
@@ -861,12 +856,15 @@ class UIinitMeasurePatientSetUp(QDialog):
         text_file.close()
         self.close()  
 
+    '''
+    closes intance of itself and goes back to home
+    '''
     def test_back(self):
         print("back to name page!")
         self.close()       
 ###############################################################################################################
 
-"""
+""" GENERATED FROM PYQT5 DESIGNER 
 UISAMPLEEMG: RAW EMG DATA (WINDOW 3)
 This displays the raw EMG sensor data on a graph
 """
@@ -888,8 +886,6 @@ class Ui_SampleEMG(QDialog):
         self.MuscleDemo.setFrameShadow(QtWidgets.QFrame.Raised)
         self.MuscleDemo.setObjectName("MuscleDemo")
 
-##########################################################################################
-
         self.lyt = QtWidgets.QVBoxLayout()
         self.MuscleDemo.setLayout(self.lyt)
         # self.setCentralWidget(self.MuscleDemo)
@@ -897,8 +893,6 @@ class Ui_SampleEMG(QDialog):
         # 2. Place the matplotlib figure
         self.myFig = MyFigureCanvas(x_len=20000, y_range=[0., 0.02], interval=20)
         self.lyt.addWidget(self.myFig)
-
-##########################################################################################
 
         self.exampleLabel = QtWidgets.QLabel(self.MuscleDemo)
         self.exampleLabel.setGeometry(QtCore.QRect(155, 21, 81, 21))
@@ -958,11 +952,16 @@ class Ui_SampleEMG(QDialog):
 
         self.exampleLabel.adjustSize()
         self.labelPatientsName.adjustSize()
-
+        
+    '''
+    closes intance of itself and goes back to home
+    '''
     def test_done(self):
         print("FINISHED!")
         self.close()  
-
+    '''
+    closes intance of itself and goes back to home
+    '''
     def test_back(self):
         print("back to measurement page!")
         self.close()  

@@ -3,7 +3,7 @@
 # - has all of the checking popups for the main windows
 # 
 # Team 4
-# Date Modified: 25/05/2021
+# Date Modified: 27/05/2021
 # Author: Anna Scolaro 
 ########################################################################################################################################
 
@@ -15,7 +15,10 @@ import sys
 import os
 from PyQt5.QtCore import * 
 
-
+""" GENERATED FROM PYQT5 DESIGNER 
+UIREGISTER: Register UR and Name dialog
+This is the class is the layout for the name entering and dialog
+"""
 class Ui_Register(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -83,14 +86,11 @@ class Ui_Register(QDialog):
                                         "border-color: rgb(156, 160, 159);\n"
                                         "border-bottom-color: rgb(159, 163, 163);")
 
-        # self.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 330, 24))
         self.menubar.setObjectName("menubar")
-        # MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(self)
         self.statusbar.setObjectName("statusbar")
-        # MainWindow.setStatusBar(self.statusbar)
 
         self.OK.clicked.connect(self.save_UR_and_name)
 
@@ -111,7 +111,10 @@ class Ui_Register(QDialog):
         self.close() 
 
         
-
+""" GENERATED FROM PYQT5 DESIGNER 
+UIPATIENTPOPUP: Change patient check popup
+This is the class to check is you want to change the patient and clear data
+"""
 class Ui_changePatientPopUp(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -176,13 +179,19 @@ class Ui_changePatientPopUp(QDialog):
 
 
         self.labelPatientsName.adjustSize()
-
+    '''
+    Closes self and goes to home
+    '''
     def dialog_exit(self):
         print("close exercise change patient!")
         self.close()   
 
 ######################################################################################################
 
+""" GENERATED FROM PYQT5 DESIGNER 
+UICHANGEEXERCISEPOPUP: Change exercise check popup
+This is the class that lets you change between the three exercise choices
+"""
 class UIchangeExercisePopUp(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -246,16 +255,12 @@ class UIchangeExercisePopUp(QDialog):
         self.WristExtension.clicked.connect(self.test_exit)
         self.FingerFlexion.clicked.connect(self.test_exit)
         self.Deltoid.clicked.connect(self.test_exit)
-#########################################################################################
 
-        # MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 240, 24))
         self.menubar.setObjectName("menubar")
-        # MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(self)
         self.statusbar.setObjectName("statusbar")
-        # MainWindow.setStatusBar(self.statusbar)
 
         _translate = QtCore.QCoreApplication.translate
         self.chooseExercise.setText(_translate("MainWindow", "Choose Exercise:"))
@@ -266,13 +271,19 @@ class UIchangeExercisePopUp(QDialog):
         self.chooseExercise.setAlignment(Qt.AlignCenter)
         self.chooseExercise.adjustSize()
 
-
+    '''
+    This closes the popup to go to home
+    '''
     def test_exit(self):
         print("close exercise change popup!")
         self.close()    
 
 ######################################################################################################
 
+""" GENERATED FROM PYQT5 DESIGNER 
+UIPATIENTPOPUP: Change patient check popup
+This is the class that lets you change patients
+"""
 class Ui_patientPopUp(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -341,6 +352,10 @@ class Ui_patientPopUp(QDialog):
 
 ######################################################################################################
 
+""" GENERATED FROM PYQT5 DESIGNER 
+UIPATIENTPOPUP: Set up patient dialog
+This is the class that lets you setup the patients data
+"""
 class Ui_needPatientSetup(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -393,11 +408,16 @@ class Ui_needPatientSetup(QDialog):
         self.DONE.setText(_translate("MainWindow", "OK"))
         self.labelPatientsName.setText(_translate("MainWindow", "You need to select Activity"))       
 
+    '''
+    Closes dialog and goes to home
+    '''
     def dialog_exit(self):
         print("close exercise change popup!")
         self.close()   
 
-
+""" GENERATED FROM PYQT5 DESIGNER 
+UICHECKEXERCISE: Make sure they have selected an exercise dialogs
+"""
 class Ui_checkExercise(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -454,13 +474,18 @@ class Ui_checkExercise(QDialog):
 
         self.labelPatientsName.adjustSize()
 
+    '''
+    Closes dialog to home
+    '''
     def dialog_exit(self):
         print("Please Select Exercise First")
         self.close()   
 
 
-
-
+""" GENERATED FROM PYQT5 DESIGNER 
+UIFINISHEMGREADING: displays after pressing stop
+shows REDO, SAVE and NEXT EXERCISE
+"""
 class Ui_finishEMGReading(QDialog):
 
     def __init__(self, parent=None):
@@ -526,12 +551,16 @@ class Ui_finishEMGReading(QDialog):
                                                         " session"))
         self.nextExB.setText(_translate("MainWindow", "Next Exercise"))
 
-
+    '''
+    Closes dialog to home
+    '''
     def dialog_exit(self):
         self.close()   
 
 
-
+""" GENERATED FROM PYQT5 DESIGNER 
+CHANGETOHOMEUI: Dialog to tell them they must be on home
+"""
 class changetohomeUI(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -595,13 +624,17 @@ class changetohomeUI(QDialog):
         self.labelPatientsName.setText(_translate("MainWindow", "You must be on HOME to do this"))  
         self.labelPatientsName.adjustSize()
 
- 
+    '''
+    Closes dialog to home
+    '''
     def dialog_exit(self):
         print("Please change to home")
         self.close()   
 
 
-
+""" GENERATED FROM PYQT5 DESIGNER 
+CHECKFINISHEDUI: Check the user really wants to end the session
+"""
 class checkFinishedUI(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -665,7 +698,9 @@ class checkFinishedUI(QDialog):
         self.labelPatientsName.setText(_translate("MainWindow", "This will end the Session if you want to\n continue click BACK and NEXT"))  
         self.labelPatientsName.adjustSize()
 
- 
+    '''
+    Closes dialog to home
+    '''
     def dialog_exit(self):
         print("Please change to home")
         self.close()  
