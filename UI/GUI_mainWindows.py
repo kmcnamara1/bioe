@@ -998,7 +998,7 @@ class MyFigureCanvas(FigureCanvas, anim.FuncAnimation):
         # self.delsys = DelsysSensors(self)
         self.delsysWorker = SensorGUI()
         self.delsysWorker.startEMGThread()
-        print("USE THIS ")
+
 
         # Call superclass constructors
         anim.FuncAnimation.__init__(self, self.figure, self._update_canvas_, fargs=(y,), interval=interval, blit=True)

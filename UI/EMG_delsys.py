@@ -6,8 +6,9 @@
 # Team 4
 # Date Modified: 27/05/2021
 # Author: Joshua Rolls
-## Code from Sami Keabab, UQ student ##
+## Some code adapted from Sami Keabab, UQ student ##
 ########################################################################################################################################
+
 
 
 import socket
@@ -23,11 +24,20 @@ import time
 # Global functions (accessible by GUI) are at the end of the file
 #############################################################
 
+
 class DelsysSensors(QObject):
-    runningSig = pyqtSignal(bool)
-    dataSig = pyqtSignal(float)
+    '''
+    This is the class in which direct interaction with the sensor is handled.
+    Attributes and methods in this class should only be handled within the EMG thread
+
+    '''
+    runningSig = pyqtSignal(bool) # signal to show if measurements are being taken
+    dataSig = pyqtSignal(float) # signal to send EMG data between threads
     def __init__(self, master, parent=None):
-        # super(DelsysSensors, self).__init__(parent)
+        '''
+        :param master - parent class
+        
+        '''
         QObject.__init__(self,parent)
         print('delsyssensor class')
         self.master = master
@@ -36,11 +46,8 @@ class DelsysSensors(QObject):
 
         self.maxContract = 0
         self.timeouts = 0
-        #add signals
-        # self.runningSig = pyqtSignal()
-        # self.dataSig = pyqtSignal(np.array)
-        # self.finishedSig = pyqtSignal()
-
+        
+        
         self.streamOn = False
 
 
@@ -49,12 +56,16 @@ class DelsysSensors(QObject):
         self.getSensorsActive()
         print('^^sensors')
         self.initTriggers()
-        # self.sendSTART()
-        # print("sentStart")
-        # self.streamEMGData()
-        # print('not reached?')
+        
+        
 
     def initTrignoConnection(self):
+            '''
+            Initiates TCP connection with Trigno Control Program
+            :requires Delsys Sensor Control Box needs to be connected
+                        and Trigno Control Utility open before use
+
+            '''
             #initiate command port
             host = socket.gethostname()
             # create command socket and consume the servers initial response
@@ -63,6 +74,7 @@ class DelsysSensors(QObject):
                 print(self.trigno_cmd_port.recv(1024).decode('ascii'))
                 self.trigno_imu_data_port = socket.create_connection((host, 50044),0.5)
                 self.trigno_emg_data_port = socket.create_connection((host, 50043),0.5)
+                # set connection to master if not already
                 self.send_delsys_cmd("MASTER")
                 
             except:
@@ -71,30 +83,48 @@ class DelsysSensors(QObject):
 
 
 
-
-
     def send_delsys_cmd(self,cmd):
-            self.trigno_cmd_port.send(bytes("{}{}".format(cmd,'\r\n\r\n'),encoding = 'ascii'))
-            resp = self.trigno_cmd_port.recv(1040)
-            print(resp.decode('ascii'))
-            return(resp.decode('ascii'))
+        '''
+        Sends commands to Delsys sensors via TCP and waits for response
+        Inputs: cmd: the command to send to sensors (string)
+        Returns: the response received from the sensor
+
+        '''
+        self.trigno_cmd_port.send(bytes("{}{}".format(cmd,'\r\n\r\n'),encoding = 'ascii'))
+        resp = self.trigno_cmd_port.recv(1040)
+        print(resp.decode('ascii'))
+        return(resp.decode('ascii'))
 
     def read_EMG(self,t0,trgd): 
-            try:
-                packet = self.trigno_emg_data_port.recv(self.EMG_SEG_LEN)
-                if not trgd:
-                    trgd = True
-            except socket.timeout:
-                print('timeout\n\n')
-                return(np.array([None]))
-            
-            data = np.asarray(struct.unpack('<'+'f'*self.EMG_DATA_PORT_LENGTH, packet))
-            t = time.time() - t0
-            data = np.append(data,t)
-            return(data)
+        '''
+        Reads one frame of EMG data
+        Inputs: t0: the start time
+                trgd: indicates whether data has started being received or not
+        Returns: Array of length (self.EMG_SEG_LEN + 1), where the first self.EMG_SEG_LEN
+                    values represent measurements from each sensor, and the last value
+                    represents sample time
+
+        '''
+        try:
+            packet = self.trigno_emg_data_port.recv(self.EMG_SEG_LEN)
+            if not trgd:
+                trgd = True
+        except socket.timeout:
+            print('timeout\n\n')
+            return(np.array([None]))
+        
+        data = np.asarray(struct.unpack('<'+'f'*self.EMG_DATA_PORT_LENGTH, packet))
+        t = time.time() - t0
+        data = np.append(data,t)
+        return(data)
 
 
     def streamEMGData(self):
+        '''
+        Receives data from sensors and emits it to self.dataSig
+        Currently only handles one sensor maximum
+
+        '''
         self.emg_data = np.array([],ndmin = 2)
         self._data = []
         t0 = time.time()
@@ -109,45 +139,30 @@ class DelsysSensors(QObject):
 
 
         while self.streamOn == True:
-            # if samples > 100 and samples < 105:
-                # stop after 100 samples
-                # self.sendSTOP
-                # print("delsys emmited false")
-                # self.runningSig.emit(False)
-
+            
             # Try and get the next frame
             frame = self.read_EMG(t0, triggered)
             if frame[0] == None:
                 self.timeouts += 1
                 if self.timeouts > 100:
                     # we've had 100 timeouts in a row, this is a problem
-                    print("100 consecutive timeouts, let's return an error")
+                    print("100 consecutive timeouts - stopping streaming")
                     return -1
                 continue
 
-            if samples > 15000 and samples < 15005:
-                print(frame)
-                print("sensorIndex: {}".format(sensorIndex))
-
-            # We received data, extract the right emg value for our sensor
-            
+            # We received data, extract the right emg value for our sensor            
             emgValue = frame[sensorIndex]
 
             #check if data was received ie trig start pressed
             if emgValue != None:
                 triggered = True
                 self.emg_data = np.append(self.emg_data,frame)
-                self._data.append(emgValue)#this is what we'll use
+                self._data.append(emgValue)
                 samples = samples + 1
-                # if samples > 20000:
-                #     emgFile = open("emgDatatest.txt", 'w')
-                #     for row in self._data:
-                #         np.savetxt(emgFile,row)
-
-                # if abs(emgValue) > 0:
-                    # print("emgValue is {}".format(emgValue))
+                
+                
                 if samples % 2:
-                    self.dataSig.emit(emgValue) ### THIS IS WHAT WE CARE ABOUT
+                    self.dataSig.emit(emgValue) #Emit signal to GUI
 
 
 
@@ -157,25 +172,20 @@ class DelsysSensors(QObject):
                 break
 
             self.emg_data = self.emg_data.reshape(int(len(self.emg_data)/(self.EMG_DATA_PORT_LENGTH+1)),(self.EMG_DATA_PORT_LENGTH+1))
-            # print(self.emg_data)
-            if samples > 0 and abs(frame[0:16]).max() > self.maxContract:
-                self.maxContract = abs(frame[0:16]).max()
-                print("MAX CONTRACTION VALUE {}".format(self.maxContract) )
-
-
-
 
 
     
     def getEMGData(self):
+        '''
+        OBSOLETE: gets one EMG frame and returns the maximum value (which will be the value from our sensor)
+        Returns: one EMG value
+
+        '''
         self.emg_data = np.array([],ndmin = 2)
         t0 = time.time()
         triggered = False
         samples = 0
-        # if samples > 100:
-            # stop after 100 samples
-            # self.sendSTOP
-
+        
         # Try and get the next frame
         frame = self.read_EMG(t0, triggered)
         #check if data was received ie trig start pressed
@@ -186,51 +196,77 @@ class DelsysSensors(QObject):
 
         # if no data received and trig start was pressed ie trig stop was pressed
         elif triggered: 
-            return # TODO: Return a value that can be distinguished as an error (triggered thus no values returned) 
+            return None
 
         self.emg_data = self.emg_data.reshape(int(len(self.emg_data)/(self.EMG_DATA_PORT_LENGTH+1)),(self.EMG_DATA_PORT_LENGTH+1))
-        # print(self.emg_data)
+
         maxContract = 0
         if samples > 0 and abs(frame[0:16]).max() > maxContract:
             maxContract = abs(frame[0:16]).max()
-            # print("MAX CONTRACTION VALUE {}".format(self.maxContract) )
 
         print(maxContract)
         return maxContract
 
 
     def getSensorsActive(self):
-            # A function to check which sensor are active
-            # used to determine which sensor checkbox and data to display
-            self.sensor_active_list = []
-            for s in range(16):
-                cmd = "SENSOR {} ACTIVE?".format(s+1)
-                resp = self.send_delsys_cmd(cmd)
-                if "YES" in resp:
-                    self.sensor_active_list.append(True)
-                else:
-                    self.sensor_active_list.append(False)
-            print(self.sensor_active_list)  
+        '''
+        A function to check which sensors are active
+        Sensor status is stored in self.sensor_active_list
 
-    ### Delsys Commands
+        '''
+        self.sensor_active_list = []
+        for s in range(16):
+            cmd = "SENSOR {} ACTIVE?".format(s+1)
+            resp = self.send_delsys_cmd(cmd)
+            if "YES" in resp:
+                self.sensor_active_list.append(True)
+            else:
+                self.sensor_active_list.append(False)
+        print(self.sensor_active_list)  
+
+
+
+    """Delsys Commands"""
     def initTriggers(self):
+        '''
+        Initiates Delsys triggers to off
+
+        '''
         self.send_delsys_cmd("TRIGGER START OFF")
         self.send_delsys_cmd("TRIGGER STOP OFF")
 
     def sendSTART(self):
+        '''
+        Sends a START command to the delsys sensors
+
+        '''
         # checks if trigger is activated, sends start
         self.send_delsys_cmd("TRIGGER?")
         self.send_delsys_cmd("START")
         
     def sendSTOP(self):
+        '''
+        Sends a STOP command to the delsys sensors
+        
+        '''
         cmd =  "STOP"
         self.send_delsys_cmd(cmd)   
     
     def sendQUIT(self):
+        '''
+        Sends a QUIT command to the delsys sensors
+        
+        '''
         self.send_delsys_cmd("QUIT")   
 
-    # Commands received from GUI thread
+    
+
+    """Commands received from GUI thread"""
     def receiveStart(self):
+        '''
+        Responds to a start signal received from GUI thread
+
+        '''
         self.sendSTART()
         if self.streamOn == True:
             print("already running")
@@ -240,26 +276,26 @@ class DelsysSensors(QObject):
             self.streamEMGData()
 
     def receiveStop(self):
+        '''
+        Responds to a start signal received from GUI thread
+
+        '''
         self.sendSTOP()
         self.streamOn = False
     
     def receiveQuit(self):
+        '''
+        Responds to a quit signal received from GUI thread
+
+        '''
         self.sendSTOP()
         self.sendQUIT()
         print("quitting")
         self.trigno_emg_data_port.close()
         self.trigno_cmd_port.close()
         self.trigno_imu_data_port.close()
-        # TODO: figure out how to handle quitting properly
         
-
         
-
-
-# def emgThread(callbackFunction):
-#     delsys = DelsysSensors()
-#     delsys.runningSig.connect(callbackFunction)
-#     delsys.streamEMGData()
 
 
 ################################################################
@@ -270,8 +306,14 @@ class DelsysSensors(QObject):
 
 
 class SensorGUI(QObject):
-    
+    '''
+    A class to handle interactions between the GUI and the EMG threads
+    '''
     def __init__(self, parent=None):
+        '''
+        Initialises the QObject, and clears variables
+
+        '''
         QObject.__init__(self,parent)
         self.isRunning = False
         self.max = None
@@ -279,7 +321,10 @@ class SensorGUI(QObject):
         self.counter = 0
 
     def startEMGThread(self):
-        # should be called by GUI itself
+        '''
+        Starts the EMG thread. Should be called directly from GUI.
+
+        '''
 
         self.sensors = DelsysSensors(self)
         self.qThread = QThread(self)
@@ -301,15 +346,29 @@ class SensorGUI(QObject):
 
         
     
-    ### Setting functions - slots for signals from delsys thread ###
+    """ Setting functions - slots for signals from delsys thread """
     def setRunning(self, val):
+        '''
+        Sets the isRunning variable
+        Input: bool (True for running, False for not)
+        '''
         self.isRunning = val
 
     def setMax(self):
+        '''
+        Sets the maximum contraction value by taking the maximum absolute value of the EMG array
+
+        '''
         self.max = max(list(map(abs, self.emgLatest)))
-        # self.max = 1
 
     def setEMG(self, val):
+        '''
+        Sets the EMG array. Called inside the GUI thread whenever dataSig has been emitted from the EMG thread
+        Trims the array to only keep the most recent 20-25k values
+
+        Inputs: raw EMG value (integer)
+
+        '''
         self.emgLatest.append(val)
         self.counter += 1
         if len(self.emgLatest) > 25000:
@@ -318,44 +377,86 @@ class SensorGUI(QObject):
             # might play around with this number though
             if self.counter < 202:
                 print("truncating")
+            
             self.emgLatest = self.emgLatest[50:]
-            # array thus varies in length between 200 and 250
+            # array thus varies in length between 20k and 25k values
         
         self.setMax() # replace this with some sophistry later
 
     def clearEMG(self):
-        # clears stored EMG array (eg when starting a measurement)
+        '''
+        Clears the EMG array stored by the GUI thread
+        (eg when starting a measurement or clicking redo)
+
+        '''
         self.emgLatest = []
 
-    ### Getting functions - called from GUI directly #####
+
+    '''Getting functions - called from GUI directly'''
     def getRunning(self):
+        '''
+        Returns state of the EMG sensors (True if Running, False if not)
+
+        '''
         return self.isRunning
 
     def getEMG(self):
+        '''
+        Returns the current EMG array
+
+        '''
         return self.emgLatest
 
     def getMax(self):
+        '''
+        Returns the MVC
+
+        '''
         return self.max
     
 
 
 
 class CommandsGUI(QObject):
+    '''
+    Handles commands sent from the GUI thread to the EMG thread
+
+    '''
     guiStart = pyqtSignal()
     guiStop = pyqtSignal()
     guiQuit = pyqtSignal()
     def __init__(self, parent=None):
+        '''
+        Input: parent SensorGUI object
+
+        '''
         QObject.__init__(self,parent)
         self.master = parent
 
     def guiSendStart(self):
+        '''
+        Sends a start command from the gui to the emg thread
+
+        '''
         self.master.clearEMG()
-        # self.guiStart.emit()
+
+        # don't need to do anything else since emg is running by default
+
         print("sending start from gui to emg")
+
     def guiSendStop(self):
+        '''
+        Sends a stop command from the gui to the emg thread
+
+        '''
         self.guiStop.emit()
+
+
     def guiSendQuit(self):
-        # when do we call this?
+        '''
+        Sends a Quit command from the gui to the emg thread
+
+        '''
         self.guiQuit.emit()
 
 
